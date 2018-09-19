@@ -1,0 +1,56 @@
+﻿<Window x:Class="GenericEngines.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenericEngines"
+        mc:Ignorable="d"
+        Title="Generic Engines" Height="620.051" Width="975.835">
+	<Grid Margin="0,0,0,0" Background="#FFDDDDDD">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="36"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Image Margin="4,4,0,0" Source="add.png" Cursor="Hand" MouseDown="addButton_MouseDown" ToolTip="Add new engine config"/>
+		<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" Cursor="Hand" MouseDown="removeButton_MouseDown" ToolTip="Remove all selected engine configs"/>
+		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" Cursor="Hand" MouseDown="saveButton_MouseDown" ToolTip="Save current engine configs"/>
+		<DataGrid Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="6" Background="#FFBBBBBB">
+			
+		</DataGrid>
+
+	</Grid>
+	<Window.Resources>
+		<Style TargetType="Image">
+			<Setter Property="ToolTipService.InitialShowDelay" Value="333"/>
+			<Setter Property="ToolTipService.BetweenShowDelay" Value="333"/>
+			<Setter Property="ToolTipService.ShowDuration" Value="3600000"/>
+		</Style>
+		<Style TargetType="ToolTip">
+			<Setter Property="FontFamily" Value="Verdana"/>
+			<Setter Property="Background" Value="#bbbbbb"/>
+			<Setter Property="Foreground" Value="#444444"/>
+			<Setter Property="HasDropShadow" Value="false"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="BorderBrush" Value="#444444"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ToolTip">
+						<Border CornerRadius="0" SnapsToDevicePixels="True" BorderThickness="2, 2, 0, 0" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="#444444" Background="#bbbbbb">
+							<ContentPresenter Margin="2, 2, 4, 4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Resources>
+</Window>
+
+<!-- <Setter Property="" Value=""/> -->

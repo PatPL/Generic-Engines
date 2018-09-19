@@ -1,0 +1,15 @@
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\bin\Debug\GenericEngines.exe.config
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\bin\Debug\GenericEngines.exe
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\bin\Debug\GenericEngines.pdb
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.csprojAssemblyReference.cache
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\MainWindow.g.cs
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\App.g.cs
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines_MarkupCompile.cache
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines_MarkupCompile.lref
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\MainWindow.baml
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.g.resources
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.Properties.Resources.resources
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.csproj.GenerateResource.cache
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.csproj.CoreCompileInputs.cache
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.exe
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.pdb
