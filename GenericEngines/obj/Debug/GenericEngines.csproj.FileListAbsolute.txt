@@ -13,3 +13,5 @@ C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngi
 C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.csproj.CoreCompileInputs.cache
 C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.exe
 C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\GenericEngines.pdb
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\ConfirmWindow.g.cs
+C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\ConfirmWindow.baml

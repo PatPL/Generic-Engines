@@ -9,11 +9,27 @@ namespace GenericEngines {
 		public bool Selected { get; set; }
 		public bool Active { get; set; }
 		public string Name { get; set; }
+		public double Mass { get; set; }
+		public double Thrust { get; set; }
+		public double AtmIsp { get; set; }
+		public double VacIsp { get; set; }
 
-		public Engine (bool _Selected, bool _Active, string _Name) {
+		public Engine (
+			bool _Selected = false,
+			bool _Active = false,
+			string _Name = "New Engine",
+			double _Mass = 1.0,
+			double _Thrust = 100.0,
+			double _AtmIsp = 100.0,
+			double _VacIsp = 200.0
+		) {
 			Selected = _Selected;
 			Active = _Active;
 			Name = _Name;
+			Mass = _Mass;
+			Thrust = _Thrust;
+			AtmIsp = _AtmIsp;
+			VacIsp = _VacIsp;
 		}
 	}
 }

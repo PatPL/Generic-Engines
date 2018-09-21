@@ -20,61 +20,47 @@ namespace GenericEngines {
 	public partial class MainWindow : Window {
 		public MainWindow () {
 			InitializeComponent ();
-
-			
 		}
 
-		private void addButton_MouseDown (object sender, MouseButtonEventArgs e) {
-
-			Application.Current.Shutdown ();
+		DataGrid mainDataGrid;
+		List<Engine> Engines {
+			get {
+				if (mainDataGrid != null) {
+					return (List<Engine>) mainDataGrid.ItemsSource;
+				} else {
+					throw new NullReferenceException ("mainDataGrid is null");
+				}
+			} set {
+				if (mainDataGrid != null) {
+					mainDataGrid.ItemsSource = value;
+					mainDataGrid.Items.Refresh ();
+				} else {
+					throw new NullReferenceException ("mainDataGrid is null");
+				}
+			}
 		}
 
-		private void removeButton_MouseDown (object sender, MouseButtonEventArgs e) {
-
+		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			Engines.Add (new Engine ());
+			mainDataGrid.Items.Refresh ();
 		}
 
-		private void saveButton_MouseDown (object sender, MouseButtonEventArgs e) {
+		private void removeButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (ConfirmBox.Show ("test")) {
+				Engines.Add (new Engine ());
+				mainDataGrid.Items.Refresh ();
+			}
+		}
+
+		private void saveButton_MouseUp (object sender, MouseButtonEventArgs e) {
 
 		}
 
 		private void mainDataGrid_Loaded (object sender, RoutedEventArgs e) {
-			((DataGrid) sender).ItemsSource = GenerateEngines ();
+			mainDataGrid = ((DataGrid) sender);
+			mainDataGrid.ItemsSource = new List<Engine> ();
+			mainDataGrid.Items.Refresh ();
 		}
-
-		private static List<Engine> GenerateEngines () {
-			List<Engine> output = new List<Engine> ();
-
-			output.Add (new Engine (
-				true,
-				false,
-				"Test 1"
-			));
-
-			output.Add (new Engine (
-				true,
-				true,
-				"Test two"
-			));
-
-			output.Add (new Engine (
-				false,
-				false,
-				"Test THREE"
-			));
-
-			output.Add (new Engine (
-				false,
-				true,
-				"Test4"
-			));
-
-			output.Add (new Engine (
-				true,
-				false,
-				"Test%"
-			));
-
-			return output;
-		}
+		
 	}
 }

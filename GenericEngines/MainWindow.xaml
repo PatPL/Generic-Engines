@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="620.051" Width="975.835">
+        Title="Generic Engines" Height="600" Width="800">
 	<Grid Margin="0,0,0,0" Background="#FFDDDDDD">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="36"/>
@@ -19,15 +19,24 @@
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Margin="4,4,0,0" Source="add.png" Cursor="Hand" MouseDown="addButton_MouseDown" ToolTip="Add new engine config"/>
-		<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" Cursor="Hand" MouseDown="removeButton_MouseDown" ToolTip="Remove all selected engine configs"/>
-		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" Cursor="Hand" MouseDown="saveButton_MouseDown" ToolTip="Save current engine configs"/>
-		<DataGrid Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="6" Background="#FFBBBBBB">
-			
-		</DataGrid>
+		<Image Margin="4,4,0,0" Source="add.png" Cursor="Hand" MouseUp="addButton_MouseUp" ToolTip="Add new engine config"/>
+		<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" Cursor="Hand" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs"/>
+		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" Cursor="Hand" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs"/>
+		<DataGrid Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="6" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444"/>
 
 	</Grid>
 	<Window.Resources>
+		<Style TargetType="DataGrid">
+			<Setter Property="FontFamily" Value="Verdana"/>
+			<Setter Property="RowHeaderWidth" Value="0"/>
+		</Style>
+		<Style TargetType="DataGridColumnHeader">
+			<Setter Property="Background" Value="#FF999999"/>
+			<Setter Property="BorderBrush" Value="#FF444444"/>
+			<Setter Property="BorderThickness" Value="0, 0, 1, 1"/>
+			<Setter Property="SnapsToDevicePixels" Value="True"/>
+			<Setter Property="Padding" Value="4, 0, 4, 0"/>
+		</Style>
 		<Style TargetType="Image">
 			<Setter Property="ToolTipService.InitialShowDelay" Value="333"/>
 			<Setter Property="ToolTipService.BetweenShowDelay" Value="333"/>
@@ -43,7 +52,7 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ToolTip">
-						<Border CornerRadius="0" SnapsToDevicePixels="True" BorderThickness="2, 2, 0, 0" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="#444444" Background="#bbbbbb">
+						<Border CornerRadius="0" SnapsToDevicePixels="True" BorderThickness="2, 2, 1, 1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="#444444" Background="#bbbbbb">
 							<ContentPresenter Margin="2, 2, 4, 4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 						</Border>
 					</ControlTemplate>
