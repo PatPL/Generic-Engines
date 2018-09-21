@@ -18,6 +18,9 @@ namespace GenericEngines {
 	/// Logika interakcji dla klasy MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : Window {
+
+		bool isEdited = false;
+
 		public MainWindow () {
 			InitializeComponent ();
 		}
@@ -46,9 +49,15 @@ namespace GenericEngines {
 		}
 
 		private void removeButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			if (ConfirmBox.Show ("test")) {
-				Engines.Add (new Engine ());
-				mainDataGrid.Items.Refresh ();
+			if (mainDataGrid.SelectedIndex != -1) {
+				if (ConfirmBox.Show ($"You are about to delete\n{mainDataGrid.SelectedItems.Count} item(s). Are you sure?")) {
+
+					foreach (Engine i in mainDataGrid.SelectedItems) {
+						Engines.Remove (i);
+					}
+
+					mainDataGrid.Items.Refresh ();
+				}
 			}
 		}
 
@@ -61,6 +70,19 @@ namespace GenericEngines {
 			mainDataGrid.ItemsSource = new List<Engine> ();
 			mainDataGrid.Items.Refresh ();
 		}
-		
+
+		private void mainDataGrid_KeyUp (object sender, KeyEventArgs e) {
+			if (e.Key == Key.Delete && !isEdited) {
+				removeButton_MouseUp (null, null);
+			}
+		}
+
+		private void mainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
+			isEdited = true;
+		}
+
+		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
+			isEdited = false;
+		}
 	}
 }

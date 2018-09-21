@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace GenericEngines {
 	public class Engine {
-		public bool Selected { get; set; }
 		public bool Active { get; set; }
 		public string Name { get; set; }
 		public double Mass { get; set; }
@@ -15,7 +14,6 @@ namespace GenericEngines {
 		public double VacIsp { get; set; }
 
 		public Engine (
-			bool _Selected = false,
 			bool _Active = false,
 			string _Name = "New Engine",
 			double _Mass = 1.0,
@@ -23,7 +21,6 @@ namespace GenericEngines {
 			double _AtmIsp = 100.0,
 			double _VacIsp = 200.0
 		) {
-			Selected = _Selected;
 			Active = _Active;
 			Name = _Name;
 			Mass = _Mass;
