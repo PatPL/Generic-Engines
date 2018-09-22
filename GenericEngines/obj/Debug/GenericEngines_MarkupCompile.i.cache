@@ -1,20 +1,20 @@
 ﻿GenericEngines
 
 
-winexe
+exe
 C#
 .cs
-C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\obj\Debug\
+C:\Users\Patryk\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\
 GenericEngines
 none
 false
 DEBUG;TRACE
-C:\Users\Patryk\source\repos\GenericEngines\GenericEngines\App.xaml
+C:\Users\Patryk\Documents\GitHub\Generic-Engines\GenericEngines\App.xaml
 21975423602
 
 121946310361
 13-1662647192
 ConfirmWindow.xaml;MainWindow.xaml;
 
-False
+True
 

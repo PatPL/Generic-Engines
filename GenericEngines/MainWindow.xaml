@@ -19,13 +19,112 @@
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Margin="4,4,0,0" Source="add.png" Cursor="Hand" MouseUp="addButton_MouseUp" ToolTip="Add new engine config"/>
-		<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" Cursor="Hand" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs"/>
-		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" Cursor="Hand" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs"/>
-		<DataGrid BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="6" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444"/>
+		<Image Margin="4,4,0,0" Source="add.png" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
+		<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
+		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
+		<DataGrid AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="6" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444">
+			<DataGrid.Columns>
+				<DataGridTemplateColumn Header="Active">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding Path=Active, UpdateSourceTrigger=PropertyChanged}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn Header="Engine name">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Name}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,0,0,0"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Name}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Mass">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Mass, StringFormat={}{0}t}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Mass}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Vacuum Thrust">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Thrust, StringFormat={}{0}kN}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Thrust}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Sea level Isp">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=AtmIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=AtmIsp}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Vacuum Isp">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=VacIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=VacIsp}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Image Grid.Column="3" Margin="4,4,0,0" Source="open.png" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
+		<Image Grid.Column="4" Margin="4,4,0,0" Source="export.png" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
+
 
 	</Grid>
 	<Window.Resources>
+		<Style TargetType="CheckBox">
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="Margin" Value="1, 1, 1, 1"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="CheckBox">
+						<Border BorderBrush="#FF444444" BorderThickness="1">
+							<Rectangle x:Name="CheckboxRectangle" Width="14" Height="14" Fill="#FF4444FF"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsChecked" Value="False">
+								<Setter TargetName="CheckboxRectangle" Property="Fill" Value="#FF444444"/>
+							</Trigger>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter TargetName="CheckboxRectangle" Property="Fill" Value="#FF44BB44"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 		<Style TargetType="DataGrid">
 			<Setter Property="FontFamily" Value="Verdana"/>
 			<Setter Property="RowHeaderWidth" Value="0"/>
@@ -41,6 +140,12 @@
 			<Setter Property="ToolTipService.InitialShowDelay" Value="333"/>
 			<Setter Property="ToolTipService.BetweenShowDelay" Value="333"/>
 			<Setter Property="ToolTipService.ShowDuration" Value="3600000"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Opacity" Value="0.6"/>
+				</Trigger>
+			</Style.Triggers>
 		</Style>
 		<Style TargetType="ToolTip">
 			<Setter Property="FontFamily" Value="Verdana"/>
@@ -63,3 +168,6 @@
 </Window>
 
 <!-- <Setter Property="" Value=""/> -->
+
+<!-- Suffix 't' -->
+<!-- <TextBlock Text="{Binding Name, StringFormat={}{0:#,#.0}t}"></TextBlock> -->

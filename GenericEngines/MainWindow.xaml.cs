@@ -44,6 +44,9 @@ namespace GenericEngines {
 		}
 
 		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			mainDataGrid.CommitEdit ();
+			mainDataGrid.CancelEdit ();
+
 			Engines.Add (new Engine ());
 			mainDataGrid.Items.Refresh ();
 		}
@@ -62,6 +65,12 @@ namespace GenericEngines {
 		}
 
 		private void saveButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			foreach (Engine en in Engines) {
+				Console.WriteLine ($"{en.Active}, {en.Name}");
+			}
+		}
+
+		private void openButton_MouseUp (object sender, MouseButtonEventArgs e) {
 
 		}
 
@@ -83,6 +92,16 @@ namespace GenericEngines {
 
 		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
 			isEdited = false;
+		}
+
+		private void mainDataGrid_AutoGeneratingColumn (object sender, DataGridAutoGeneratingColumnEventArgs e) {
+			if (e.PropertyName == "Mass") {
+				((DataGridBoundColumn) e.Column).Binding.StringFormat = "{0}t";
+			}
+		}
+
+		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
+
 		}
 	}
 }
