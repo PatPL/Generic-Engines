@@ -79,9 +79,9 @@ namespace GenericEngines {
 			return Serialize (this);
 		}
 
-		public static Engine Deserialize (byte[] input) {
+		public static Engine Deserialize (byte[] input, out int addedOffset, int offset = 0) {
 			Engine output = new Engine ();
-			int i = 0;
+			int i = offset;
 
 			//Boolean - Active
 			output.Active = input[i++] == 1;
@@ -117,6 +117,7 @@ namespace GenericEngines {
 			output.VacIsp = BitConverter.ToDouble (input, i);
 			i += 8;
 
+			addedOffset = i - offset;
 			return output;
 		}
 	}

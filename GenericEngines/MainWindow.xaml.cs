@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,12 +21,22 @@ namespace GenericEngines {
 	public partial class MainWindow : Window {
 
 		bool isEdited = false;
+		DataGrid mainDataGrid;
+
+		private string _currentFile = null;
+		string currentFile {
+			get {
+				return _currentFile;
+			} set {
+				_currentFile = value;
+				Title = $"Generic Engines | {_currentFile}";
+			}
+		}
 
 		public MainWindow () {
 			InitializeComponent ();
 		}
 
-		DataGrid mainDataGrid;
 		List<Engine> Engines {
 			get {
 				if (mainDataGrid != null) {
@@ -35,6 +46,7 @@ namespace GenericEngines {
 				}
 			} set {
 				if (mainDataGrid != null) {
+					mainDataGrid.ItemsSource = null;
 					mainDataGrid.ItemsSource = value;
 					mainDataGrid.Items.Refresh ();
 				} else {
@@ -65,12 +77,58 @@ namespace GenericEngines {
 		}
 
 		private void saveButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			foreach (Engine en in Engines) {
-				Console.WriteLine ($"{en.Active}, {en.Name}");
+			if (currentFile == null) {
+				saveasButton_MouseUp (null, null);
+			} else {
+				if (ConfirmBox.Show ($"You are about to overwrite the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file. Are you sure?")) {
+					saveEnginesToFile (currentFile);
+				}
+			}
+		}
+
+		private void saveasButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
+			if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
+				Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
+			}
+			fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
+			fileDialog.FileName = "Unnamed Engine List";
+			fileDialog.DefaultExt = ".enl";
+			fileDialog.Filter = "Engine Lists|*.enl";
+
+			bool? result = fileDialog.ShowDialog ();
+
+			if (result != null && result == true) {
+				currentFile = fileDialog.FileName;
+				saveEnginesToFile (currentFile);
+			} else {
+
 			}
 		}
 
 		private void openButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open other file?")) {
+				Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+				if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
+					Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
+				}
+				fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
+				fileDialog.FileName = "";
+				fileDialog.DefaultExt = ".enl";
+				fileDialog.Filter = "Engine Lists|*.enl";
+
+				bool? result = fileDialog.ShowDialog ();
+
+				if (result != null && result == true) {
+					currentFile = fileDialog.FileName;
+					readEnginesFromFile (currentFile);
+				} else {
+
+				}
+			}
+		}
+
+		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
 
 		}
 
@@ -94,14 +152,37 @@ namespace GenericEngines {
 			isEdited = false;
 		}
 
-		private void mainDataGrid_AutoGeneratingColumn (object sender, DataGridAutoGeneratingColumnEventArgs e) {
-			if (e.PropertyName == "Mass") {
-				((DataGridBoundColumn) e.Column).Binding.StringFormat = "{0}t";
+		void saveEnginesToFile (string path) {
+			FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
+			file.SetLength (0);
+
+			byte[] serializedEngine;
+			foreach (Engine i in Engines) {
+				serializedEngine = i.Serialize ();
+				file.Write (serializedEngine, 0, serializedEngine.Length);
 			}
+
+			file.Close ();
 		}
 
-		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		void readEnginesFromFile (string path) {
+			FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
 
+			Engines.Clear ();
+			List<Engine> newEngines = new List<Engine> ();
+
+			byte[] data = new byte[file.Length];
+			file.Read (data, 0, (int) file.Length);
+
+			int offset = 0;
+
+			while (offset < data.Length) {
+				newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
+				offset += addedOffset;
+			}
+
+			Engines = newEngines;
+			file.Close ();
 		}
 	}
 }

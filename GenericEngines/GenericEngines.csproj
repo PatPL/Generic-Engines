@@ -122,5 +122,8 @@
   <ItemGroup>
     <Resource Include="export.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="saveas.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

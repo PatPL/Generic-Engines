@@ -13,29 +13,39 @@
 			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Margin="4,4,0,0" Source="add.png" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
+		<Image Grid.Column="0" Margin="4,4,0,0" Source="add.png" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
 		<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
 		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
-		<DataGrid AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="6" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444">
+		<Image Grid.Column="3" Margin="4,4,0,0" Source="saveas.png" MouseUp="saveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
+		<Image Grid.Column="4" Margin="4,4,0,0" Source="open.png" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
+		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
+		<DataGrid AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
-				<DataGridTemplateColumn Header="Active">
+				<DataGridTemplateColumn SortMemberPath="Active" Header="Active">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<CheckBox IsChecked="{Binding Path=Active, UpdateSourceTrigger=PropertyChanged}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
-				
-				<DataGridTemplateColumn Header="Engine name">
+
+				<DataGridTemplateColumn SortMemberPath="Name" Header="Engine name">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=Name}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,0,0,0"></TextBlock>
+							<TextBlock Text="{Binding Path=Name}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -45,10 +55,10 @@
 					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn Header="Mass">
+				<DataGridTemplateColumn SortMemberPath="Mass" Header="Mass">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=Mass, StringFormat={}{0}t}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+							<TextBlock Text="{Binding Path=Mass, StringFormat={}{0}t}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -58,10 +68,10 @@
 					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn Header="Vacuum Thrust">
+				<DataGridTemplateColumn SortMemberPath="Thrust" Header="Vacuum Thrust">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=Thrust, StringFormat={}{0}kN}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+							<TextBlock Text="{Binding Path=Thrust, StringFormat={}{0}kN}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -71,10 +81,10 @@
 					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn Header="Sea level Isp">
+				<DataGridTemplateColumn SortMemberPath="AtmIsp" Header="Sea level Isp">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=AtmIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+							<TextBlock Text="{Binding Path=AtmIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -84,10 +94,10 @@
 					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn Header="Vacuum Isp">
+				<DataGridTemplateColumn SortMemberPath="VacIsp" Header="Vacuum Isp">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=VacIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,0,1"></TextBlock>
+							<TextBlock Text="{Binding Path=VacIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -98,10 +108,6 @@
 				</DataGridTemplateColumn>
 			</DataGrid.Columns>
 		</DataGrid>
-		<Image Grid.Column="3" Margin="4,4,0,0" Source="open.png" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
-		<Image Grid.Column="4" Margin="4,4,0,0" Source="export.png" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
-
-
 	</Grid>
 	<Window.Resources>
 		<Style TargetType="CheckBox">
@@ -130,11 +136,20 @@
 			<Setter Property="RowHeaderWidth" Value="0"/>
 		</Style>
 		<Style TargetType="DataGridColumnHeader">
+			<Setter Property="Cursor" Value="Hand"/>
 			<Setter Property="Background" Value="#FF999999"/>
 			<Setter Property="BorderBrush" Value="#FF444444"/>
 			<Setter Property="BorderThickness" Value="0, 0, 1, 1"/>
 			<Setter Property="SnapsToDevicePixels" Value="True"/>
 			<Setter Property="Padding" Value="4, 0, 4, 0"/>
+			<Style.Triggers>
+				<Trigger Property="SortDirection" Value="Ascending">
+					<Setter Property="Background" Value="#FFFF9999"/>
+				</Trigger>
+				<Trigger Property="SortDirection" Value="Descending">
+					<Setter Property="Background" Value="#FF9999FF"/>
+				</Trigger>
+			</Style.Triggers>
 		</Style>
 		<Style TargetType="Image">
 			<Setter Property="ToolTipService.InitialShowDelay" Value="333"/>
