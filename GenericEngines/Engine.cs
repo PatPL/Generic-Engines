@@ -12,6 +12,7 @@ namespace GenericEngines {
 		public double Thrust { get; set; }
 		public double AtmIsp { get; set; }
 		public double VacIsp { get; set; }
+		public FuelRatioList PropellantRatio { get; set; }
 
 		public Engine (
 			bool _Active = false,
@@ -19,7 +20,8 @@ namespace GenericEngines {
 			double _Mass = 1.0,
 			double _Thrust = 100.0,
 			double _AtmIsp = 100.0,
-			double _VacIsp = 200.0
+			double _VacIsp = 200.0,
+			FuelRatioList _PropellantRatio = null
 		) {
 			Active = _Active;
 			Name = _Name;
@@ -27,6 +29,7 @@ namespace GenericEngines {
 			Thrust = _Thrust;
 			AtmIsp = _AtmIsp;
 			VacIsp = _VacIsp;
+			PropellantRatio = _PropellantRatio ?? new FuelRatioList () { new FuelRatioElement () };
 		}
 
 		public static byte[] Serialize (Engine e) {

@@ -129,7 +129,7 @@ namespace GenericEngines {
 		}
 
 		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
-
+			
 		}
 
 		private void mainDataGrid_Loaded (object sender, RoutedEventArgs e) {
@@ -183,6 +183,34 @@ namespace GenericEngines {
 
 			Engines = newEngines;
 			file.Close ();
+		}
+
+		private void propellantCombo_Loaded (object sender, RoutedEventArgs e) {
+			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (FuelType)).Cast<FuelType> ();
+		}
+
+		private void propellentDataGrid_Loaded (object sender, RoutedEventArgs e) {
+
+		}
+
+		private void propellentDataGrid_KeyUp (object sender, KeyEventArgs e) {
+
+		}
+
+		private void propellentDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
+
+		}
+
+		private void propellentDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
+
+		}
+
+		private void addPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
+
+		}
+
+		private void removePropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
+
 		}
 	}
 }

@@ -106,6 +106,56 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Propellants">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=PropellantRatio, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<!-- Paste grid -->
+							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Left">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="36"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="36"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<Image Grid.Column="0" Margin="4,4,0,0" Source="add.png" MouseUp="addPropellantButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
+								<Image Grid.Column="1" Margin="4,4,0,0" Source="remove.png" MouseUp="removePropellantButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill" Width="32" HorizontalAlignment="Left"/>
+								<DataGrid ItemsSource="{Binding Path=PropellantRatio}" AutoGenerateColumns="false" BeginningEdit="propellentDataGrid_BeginningEdit" CellEditEnding="propellentDataGrid_CellEditEnding" PreviewKeyUp="propellentDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="propellentDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Left" VerticalAlignment="Top">
+									<DataGrid.Columns>
+										<DataGridTemplateColumn Header="Propellant">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant}"/>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+
+										<DataGridTemplateColumn Header="Ratio">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Path=Ratio}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+											<DataGridTemplateColumn.CellEditingTemplate>
+												<DataTemplate>
+													<TextBox Text="{Binding Path=Ratio}" FontFamily="Verdana"></TextBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellEditingTemplate>
+										</DataGridTemplateColumn>
+									</DataGrid.Columns>
+								</DataGrid>
+							</Grid>
+							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>
