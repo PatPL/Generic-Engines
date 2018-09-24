@@ -36,11 +36,12 @@ namespace GenericEngines {
 			int i = 0;
 			byte[] output = new byte[
 				1 + //Boolean - Active
-				(e.Name.Length + 2) + //String + 2B length header - Name
+				(e.Name.Length + 2) + //1B * length + 2B length header - Name
 				8 + //Double - Mass
 				8 + //Double - Thrust
 				8 + //Double - AtmIsp
-				8 //Double - VacIsp
+				8 + //Double - VacIsp
+				e.PropellantRatio.Count * 10 + 2 //(2B + 8B) * count + 2B length header - PropellantRatio
 			];
 
 			//Boolean - Active
@@ -75,6 +76,19 @@ namespace GenericEngines {
 				output[i++] = b;
 			}
 
+			//(2B + 8B) * count + 2B length header - PropellantRatio
+			//Length header
+			output[i++] = (byte) (e.PropellantRatio.Count / 256);
+			output[i++] = (byte) (e.PropellantRatio.Count % 256);
+			//Data
+			foreach (FuelRatioElement f in e.PropellantRatio) {
+				output[i++] = (byte) ((int) f.Propellant / 256);
+				output[i++] = (byte) ((int) f.Propellant % 256);
+				foreach (byte b in BitConverter.GetBytes (f.Ratio)) {
+					output[i++] = b;
+				}
+			}
+
 			return output;
 		}
 
@@ -90,7 +104,6 @@ namespace GenericEngines {
 			output.Active = input[i++] == 1;
 
 			//String + 2B length header - Name
-			//String length header
 			{
 				int stringLength = 0;
 				stringLength += input[i++];
@@ -119,6 +132,27 @@ namespace GenericEngines {
 			//Double - VacIsp
 			output.VacIsp = BitConverter.ToDouble (input, i);
 			i += 8;
+
+			//(2B + 8B) * count + 2B length header - PropellantRatio
+			{
+				int dataLength = 0;
+				dataLength += input[i++];
+				dataLength *= 256;
+				dataLength += input[i++];
+
+				output.PropellantRatio.Clear (); //Constructor gives one element to this list
+
+				FuelType fuelType = 0;
+				for (int c = 0; c < dataLength; ++c) {
+					fuelType = 0;
+					fuelType += input[i++];
+					fuelType = ((FuelType) (((int) fuelType) * 256)); //c# kurwo. fuelType *= 256? pfff
+					fuelType += input[i++];
+
+					output.PropellantRatio.Add (new FuelRatioElement (fuelType, BitConverter.ToDouble (input, i)));
+					i += 8;
+				}
+			}
 
 			addedOffset = i - offset;
 			return output;

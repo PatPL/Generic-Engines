@@ -20,8 +20,12 @@ namespace GenericEngines {
 	/// </summary>
 	public partial class MainWindow : Window {
 
+		object lastMouseDownObject;
+
 		bool isEdited = false;
 		DataGrid mainDataGrid;
+		DataGrid currentFuelRatioGrid;
+		FuelRatioList currentFuelRatioList;
 
 		private string _currentFile = null;
 		string currentFile {
@@ -35,6 +39,25 @@ namespace GenericEngines {
 
 		public MainWindow () {
 			InitializeComponent ();
+		}
+
+		FuelRatioList currentFuelRatios {
+			get {
+				if (currentFuelRatioGrid != null) {
+					return (FuelRatioList) currentFuelRatioGrid.ItemsSource;
+				} else {
+					throw new NullReferenceException ("currentFuelRatioGrid is null");
+				}
+			}
+			set {
+				if (currentFuelRatioGrid != null) {
+					currentFuelRatioGrid.ItemsSource = null;
+					currentFuelRatioGrid.ItemsSource = value;
+					currentFuelRatioGrid.Items.Refresh ();
+				} else {
+					throw new NullReferenceException ("currentFuelRatioGrid is null");
+				}
+			}
 		}
 
 		List<Engine> Engines {
@@ -55,65 +78,55 @@ namespace GenericEngines {
 			}
 		}
 
-		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			mainDataGrid.CommitEdit ();
-			mainDataGrid.CancelEdit ();
+		private void registerMouseDown (object sender, MouseButtonEventArgs e) {
+			lastMouseDownObject = sender;
+		}
 
-			Engines.Add (new Engine ());
-			mainDataGrid.Items.Refresh ();
+		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				mainDataGrid.CommitEdit ();
+				mainDataGrid.CancelEdit ();
+
+				Engines.Add (new Engine ());
+				mainDataGrid.Items.Refresh ();
+			}
 		}
 
 		private void removeButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			if (mainDataGrid.SelectedIndex != -1) {
-				if (ConfirmBox.Show ($"You are about to delete\n{mainDataGrid.SelectedItems.Count} item(s). Are you sure?")) {
+			if (sender == null || lastMouseDownObject == sender) {
+				if (mainDataGrid.SelectedIndex != -1) {
+					if (ConfirmBox.Show ($"You are about to delete\n{mainDataGrid.SelectedItems.Count} item(s). Are you sure?")) {
 
-					foreach (Engine i in mainDataGrid.SelectedItems) {
-						Engines.Remove (i);
+						foreach (Engine i in mainDataGrid.SelectedItems) {
+							Engines.Remove (i);
+						}
+
+						mainDataGrid.Items.Refresh ();
 					}
-
-					mainDataGrid.Items.Refresh ();
 				}
 			}
 		}
 
 		private void saveButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			if (currentFile == null) {
-				saveasButton_MouseUp (null, null);
-			} else {
-				if (ConfirmBox.Show ($"You are about to overwrite the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file. Are you sure?")) {
-					saveEnginesToFile (currentFile);
+			if (sender == null || lastMouseDownObject == sender) {
+				if (currentFile == null) {
+					saveasButton_MouseUp (null, null);
+				} else {
+					if (ConfirmBox.Show ($"You are about to overwrite the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file. Are you sure?")) {
+						saveEnginesToFile (currentFile);
+					}
 				}
 			}
 		}
 
 		private void saveasButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
-			if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
-				Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
-			}
-			fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
-			fileDialog.FileName = "Unnamed Engine List";
-			fileDialog.DefaultExt = ".enl";
-			fileDialog.Filter = "Engine Lists|*.enl";
-
-			bool? result = fileDialog.ShowDialog ();
-
-			if (result != null && result == true) {
-				currentFile = fileDialog.FileName;
-				saveEnginesToFile (currentFile);
-			} else {
-
-			}
-		}
-
-		private void openButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open other file?")) {
-				Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+			if (sender == null || lastMouseDownObject == sender) {
+				Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
 				if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
 					Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
 				}
 				fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
-				fileDialog.FileName = "";
+				fileDialog.FileName = "Unnamed Engine List";
 				fileDialog.DefaultExt = ".enl";
 				fileDialog.Filter = "Engine Lists|*.enl";
 
@@ -121,15 +134,41 @@ namespace GenericEngines {
 
 				if (result != null && result == true) {
 					currentFile = fileDialog.FileName;
-					readEnginesFromFile (currentFile);
+					saveEnginesToFile (currentFile);
 				} else {
 
 				}
 			}
 		}
 
+		private void openButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open other file?")) {
+					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+					if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
+						Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
+					}
+					fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
+					fileDialog.FileName = "";
+					fileDialog.DefaultExt = ".enl";
+					fileDialog.Filter = "Engine Lists|*.enl";
+
+					bool? result = fileDialog.ShowDialog ();
+
+					if (result != null && result == true) {
+						currentFile = fileDialog.FileName;
+						readEnginesFromFile (currentFile);
+					} else {
+
+					}
+				}
+			}
+		}
+
 		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
-			
+			if (sender == null || lastMouseDownObject == sender) {
+				
+			}
 		}
 
 		private void mainDataGrid_Loaded (object sender, RoutedEventArgs e) {
@@ -146,6 +185,10 @@ namespace GenericEngines {
 
 		private void mainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
 			isEdited = true;
+
+			if (e.Column.Header.ToString () == "Propellants") {
+				currentFuelRatioList = ((Engine) e.Row.Item).PropellantRatio;
+			}
 		}
 
 		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
@@ -190,7 +233,9 @@ namespace GenericEngines {
 		}
 
 		private void propellentDataGrid_Loaded (object sender, RoutedEventArgs e) {
-
+			currentFuelRatioGrid = ((DataGrid) sender);
+			currentFuelRatioGrid.ItemsSource = currentFuelRatioList;
+			((Grid) currentFuelRatioGrid.Parent).UpdateLayout ();
 		}
 
 		private void propellentDataGrid_KeyUp (object sender, KeyEventArgs e) {
@@ -202,15 +247,29 @@ namespace GenericEngines {
 		}
 
 		private void propellentDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
-
+			
 		}
 
 		private void addPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				currentFuelRatioGrid.CommitEdit ();
+				currentFuelRatioGrid.CancelEdit ();
 
+				currentFuelRatios.Add (new FuelRatioElement ());
+				currentFuelRatioGrid.Items.Refresh ();
+			}
 		}
 
 		private void removePropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				if (currentFuelRatioGrid.SelectedIndex != -1) {
+					foreach (FuelRatioElement i in currentFuelRatioGrid.SelectedItems) {
+						currentFuelRatios.Remove (i);
+					}
 
+					currentFuelRatioGrid.Items.Refresh ();
+				}
+			}
 		}
 	}
 }
