@@ -167,7 +167,24 @@ namespace GenericEngines {
 
 		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				
+				if (Engines.Count > 0) {
+					Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
+					if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\")) {
+						Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\");
+					}
+					fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\";
+					fileDialog.FileName = currentFile == null ? "Unnamed Engine Configs" : System.IO.Path.GetFileNameWithoutExtension (currentFile);
+					fileDialog.DefaultExt = ".cfg";
+					fileDialog.Filter = "Engine Configs|*.cfg";
+
+					bool? result = fileDialog.ShowDialog ();
+
+					if (result != null && result == true) {
+						ExportEnginesToFile (fileDialog.FileName);
+					} else {
+
+					}
+				}
 			}
 		}
 
@@ -193,6 +210,23 @@ namespace GenericEngines {
 
 		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
 			isEdited = false;
+		}
+
+		void ExportEnginesToFile (string path) {
+			/* SaveFileDialog handles overwritting
+			if (File.Exists (path)) {
+				if (ConfirmBox.Show ($"Engine config file {path} already exists. Do you want to overwrite it?")) {
+					
+				} else {
+					return;
+				}
+			} else {
+
+			}
+			*/
+
+			File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines));
+
 		}
 
 		void saveEnginesToFile (string path) {
