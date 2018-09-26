@@ -46,32 +46,20 @@ PART
 	name = {engineID}
 	module = Part
 	author = Generic Engines
-	mesh = model.mu
+	mesh = LR-91eng.mu
 	rescaleFactor = 1
 	
 	MODEL
 	{{
-		model = RealEnginesPack/PostSovietPack/NK43
+		model = RealismOverhaul/Models/LR-91eng
         scale = 1, 1, 1
 	}}
 	scale = 1
 
-	node_stack_top = 0.0, 1.086298, 0.0, 0.0, 1.0, 0.0
-	node_stack_bottom = 0.0, -3.704896, 0.0, 0.0, -1.0, 0.0
-	node_attach = 0.0, 1.116298, 0.0, 0.0, 1.0, 0.0, 4	
+	node_stack_top = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
+	node_stack_bottom = 0.0, -1.1635, 0.0, 0.0, -1.0, 0.0, 1
+	node_attach = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
 
-fx_exhaustFlame_blue = 0.0, -2, 0.0, 0.0, 1.0, 0.0, running
-fx_exhaustFlame_yellow = 0.0, -2, 0.0, 0.0, 1.0, 0.0, running
-fx_exhaustLight_blue = 0.0, -2, 0.0, 0.0, 0.0, 1.0, running
-fx_smokeTrail_light = 0.0, -2, 0.0, 0.0, 1.0, 0.0, running
-fx_smokeTrail_light = 0.0, -2, 0.0, 0.0, 1.0, 0.0, running
-fx_exhaustSparks_flameout = 0.0, -2, 0.0, 0.0, 1.0, 0.0, flameout
-
-sound_vent_medium = engage
-sound_rocket_hard = running
-sound_vent_soft = disengage
-sound_explosion_low = flameout
-	
 	TechRequired = basicRocketry
 	entryCost = 3500
 	cost = 1000
@@ -143,7 +131,7 @@ sound_explosion_low = flameout
 //MODULE
 	{{
 	    name = ModuleGimbal
-	    gimbalTransformName = gimbal
+	    gimbalTransformName = thrustTransform
 		gimbalRangeYP = 0.7
 		gimbalRangeYN = 0.7
 		gimbalRangeXP = 0.7
@@ -180,17 +168,17 @@ sound_explosion_low = flameout
     !mesh = NULL
 	
 	//  Default: 1.0
-	//  Dimensions: 2.95 m x 5.4 m
+	//  Dimensions:
+	//  Radius: 1.0m
+	//  Height: 1.9m
+	//
     @MODEL
     {{
-        @scale = 0.6, 0.3, 0.6
+        @scale = 1.0, 1.0, 1.0
     }}
 
     @scale = 1.0
     @rescaleFactor = 1.0
-
-    @node_stack_top = 0.0, 1.085, 0.0, 0.0, 1.0, 0.0, 3
-    @node_stack_bottom = 0.0, -3.7, 0.0, 0.0, -1.0, 0.0, 3
 
     @mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
     @crashTolerance = 10
@@ -227,7 +215,7 @@ sound_explosion_low = flameout
     MODULE
     {{
         name = ModuleGimbal
-        gimbalTransformName = gimbal
+        gimbalTransformName = thrustTransform
         gimbalRange = 10.0
     }}
 	
@@ -278,6 +266,34 @@ sound_explosion_low = flameout
 	!MODULE[ModuleAlternator],*{{}}
 
 	!RESOURCE,*{{}}
+}}
+
+@PART[{engineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
+{{
+	PLUME
+    {{
+        name = Kerolox-Upper
+        transformName = thrustTransform
+        localRotation = 0,0,0
+        localPosition = 0,0,0.7
+        fixedScale = 0.3
+        energy = 1
+        speed = 1
+    }}
+
+    @MODULE[ModuleEngines*]
+    {{
+        %powerEffectName = Kerolox-Upper
+        !fxOffset = NULL
+    }}
+
+	@MODULE[ModuleEngineConfigs]
+	{{
+        @CONFIG,*
+		{{
+			%powerEffectName = Kerolox-Upper
+		}}
+	}}
 }}
 ";
 			//====
