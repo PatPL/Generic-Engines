@@ -30,7 +30,7 @@ namespace GenericEngines {
 				propellants += $@"
 PROPELLANT
 {{
-	name = {FuelName.List [((int) i.Propellant)]}
+	name = {FuelName.Name (i.Propellant)}
 	ratio = {i.Ratio}
 	DrawGauge = {firstPropellant}
 }}
