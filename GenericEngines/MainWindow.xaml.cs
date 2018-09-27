@@ -235,7 +235,10 @@ namespace GenericEngines {
 
 			byte[] serializedEngine;
 			foreach (Engine i in Engines) {
-				serializedEngine = i.Serialize ();
+
+				//serializedEngine = i.Serialize ();
+				serializedEngine = Serializer.Serialize (i);
+
 				file.Write (serializedEngine, 0, serializedEngine.Length);
 			}
 
@@ -254,7 +257,10 @@ namespace GenericEngines {
 			int offset = 0;
 
 			while (offset < data.Length) {
-				newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
+
+				//newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
+				newEngines.Add (Serializer.Deserialize (data, out int addedOffset, offset));
+
 				offset += addedOffset;
 			}
 

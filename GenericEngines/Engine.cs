@@ -44,6 +44,10 @@ namespace GenericEngines {
 			Cost = _Cost;
 		}
 
+		public static Engine New () {
+			return new Engine ();
+		}
+
 		public static byte[] Serialize (Engine e) {
 			int i = 0;
 			byte[] output = new byte[
@@ -131,7 +135,7 @@ namespace GenericEngines {
 		public byte[] Serialize () {
 			return Serialize (this);
 		}
-
+		
 		public static Engine Deserialize (byte[] input, out int addedOffset, int offset = 0) {
 			Engine output = new Engine ();
 			int i = offset;

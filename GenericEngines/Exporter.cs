@@ -261,7 +261,7 @@ PART
 
 	@MODULE[ModuleGimbal]
 	{{
-		@gimbalRange = engine.Gimbal.ToString (CultureInfo.InvariantCulture)
+		@gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
 		%useGimbalResponseSpeed = true
 		%gimbalResponseSpeed = 50
 	}}
@@ -278,8 +278,8 @@ PART
         name = Kerolox-Upper
         transformName = thrustTransform
         localRotation = 0,0,0
-        localPosition = 0,0,0.7
-        fixedScale = {(0.5 * engine.Width).ToString (CultureInfo.InvariantCulture)}
+        localPosition = 0,0,0.8
+        fixedScale = {(0.4 * engine.Width).ToString (CultureInfo.InvariantCulture)}
         energy = 1
         speed = 1
     }}
