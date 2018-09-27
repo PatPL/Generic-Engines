@@ -22,7 +22,10 @@ namespace GenericEngines {
 
 		public static string ConvertEngineToConfig (Engine engine) {
 			string output = "";
-			string engineID = engine.Name.Replace (' ', '-');
+			string engineID = $"GE-{engine.Name.Replace (' ', '-')}";
+
+			double heightScale = engine.Height / 1.9;
+			double widthScale = engine.Width / heightScale;
 
 			string propellants = "";
 			bool firstPropellant = true;
@@ -61,8 +64,8 @@ PART
 	node_attach = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
 
 	TechRequired = basicRocketry
-	entryCost = 3500
-	cost = 1000
+	entryCost = 0
+	cost = {engine.Cost}
 	category = Engine
 	subcategory = 0
 	title = NK43
@@ -174,11 +177,11 @@ PART
 	//
     @MODEL
     {{
-        @scale = 1.0, 1.0, 1.0
+        @scale = {widthScale.ToString (CultureInfo.InvariantCulture)}, 1.0, {widthScale.ToString (CultureInfo.InvariantCulture)}
     }}
 
     @scale = 1.0
-    @rescaleFactor = 1.0
+    @rescaleFactor = {heightScale.ToString (CultureInfo.InvariantCulture)}
 
     @mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
     @crashTolerance = 10
@@ -216,7 +219,7 @@ PART
     {{
         name = ModuleGimbal
         gimbalTransformName = thrustTransform
-        gimbalRange = 10.0
+        gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
     }}
 	
 	%title = {engine.Name}
@@ -258,7 +261,7 @@ PART
 
 	@MODULE[ModuleGimbal]
 	{{
-		@gimbalRange = 10
+		@gimbalRange = engine.Gimbal.ToString (CultureInfo.InvariantCulture)
 		%useGimbalResponseSpeed = true
 		%gimbalResponseSpeed = 50
 	}}
@@ -276,7 +279,7 @@ PART
         transformName = thrustTransform
         localRotation = 0,0,0
         localPosition = 0,0,0.7
-        fixedScale = 0.3
+        fixedScale = {(0.5 * engine.Width).ToString (CultureInfo.InvariantCulture)}
         energy = 1
         speed = 1
     }}

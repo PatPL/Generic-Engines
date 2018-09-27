@@ -13,6 +13,10 @@ namespace GenericEngines {
 		public double AtmIsp { get; set; }
 		public double VacIsp { get; set; }
 		public FuelRatioList PropellantRatio { get; set; }
+		public double Width { get; set; }
+		public double Height { get; set; }
+		public double Gimbal { get; set; }
+		public int Cost { get; set; }
 
 		public Engine (
 			bool _Active = false,
@@ -21,7 +25,11 @@ namespace GenericEngines {
 			double _Thrust = 100.0,
 			double _AtmIsp = 100.0,
 			double _VacIsp = 200.0,
-			FuelRatioList _PropellantRatio = null
+			FuelRatioList _PropellantRatio = null,
+			double _Width = 1.0,
+			double _Height = 1.0,
+			double _Gimbal = 5.0,
+			int _Cost = 500
 		) {
 			Active = _Active;
 			Name = _Name;
@@ -30,18 +38,26 @@ namespace GenericEngines {
 			AtmIsp = _AtmIsp;
 			VacIsp = _VacIsp;
 			PropellantRatio = _PropellantRatio ?? new FuelRatioList () { new FuelRatioElement () };
+			Width = _Width;
+			Height = _Height;
+			Gimbal = _Gimbal;
+			Cost = _Cost;
 		}
 
 		public static byte[] Serialize (Engine e) {
 			int i = 0;
 			byte[] output = new byte[
-				1 + //Boolean - Active
+				1 + //bool - Active
 				(e.Name.Length + 2) + //1B * length + 2B length header - Name
 				8 + //Double - Mass
 				8 + //Double - Thrust
 				8 + //Double - AtmIsp
 				8 + //Double - VacIsp
-				e.PropellantRatio.Count * 10 + 2 //(2B + 8B) * count + 2B length header - PropellantRatio
+				e.PropellantRatio.Count * 10 + 2 + //(2B + 8B) * count + 2B length header - PropellantRatio
+				8 + //Double - Width
+				8 + //Double - Height
+				8 + //Double - Gimbal
+				4 //int - Cost
 			];
 
 			//Boolean - Active
@@ -87,6 +103,26 @@ namespace GenericEngines {
 				foreach (byte b in BitConverter.GetBytes (f.Ratio)) {
 					output[i++] = b;
 				}
+			}
+
+			//Double - Width
+			foreach (byte b in BitConverter.GetBytes (e.Width)) {
+				output[i++] = b;
+			}
+
+			//Double - Height
+			foreach (byte b in BitConverter.GetBytes (e.Height)) {
+				output[i++] = b;
+			}
+
+			//Double - Gimbal
+			foreach (byte b in BitConverter.GetBytes (e.Gimbal)) {
+				output[i++] = b;
+			}
+
+			//int - Cost
+			foreach (byte b in BitConverter.GetBytes (e.Cost)) {
+				output[i++] = b;
 			}
 
 			return output;
@@ -153,7 +189,23 @@ namespace GenericEngines {
 					i += 8;
 				}
 			}
+			
+			//Double - Width
+			output.Width = BitConverter.ToDouble (input, i);
+			i += 8;
 
+			//Double - Height
+			output.Height = BitConverter.ToDouble (input, i);
+			i += 8;
+
+			//Double - Gimbal
+			output.Gimbal = BitConverter.ToDouble (input, i);
+			i += 8;
+
+			//int - Cost
+			output.Cost = BitConverter.ToInt32 (input, i);
+			i += 4;
+			
 			addedOffset = i - offset;
 			return output;
 		}

@@ -32,7 +32,7 @@
 		<Image Grid.Column="3" Margin="4,4,0,0" Source="saveas.png" MouseDown="registerMouseDown" MouseUp="saveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
 		<Image Grid.Column="4" Margin="4,4,0,0" Source="open.png" MouseDown="registerMouseDown" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
 		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
-		<DataGrid HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
+		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn SortMemberPath="Active" Header="Active">
 					<DataGridTemplateColumn.CellTemplate>
@@ -152,6 +152,58 @@
 								</DataGrid>
 							</Grid>
 							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="Width" Header="Width">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Width, StringFormat={}{0}m}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Width}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="Height" Header="Height">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Height, StringFormat={}{0}m}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Height}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="Gimbal" Header="Gimbal">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Gimbal, StringFormat={}{0}°}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Gimbal}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="Cost" Header="Cost">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Cost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Cost}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
