@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GenericEngines {
@@ -10,6 +11,20 @@ namespace GenericEngines {
 
 		public static bool returnValue;
 
+		public static bool Show (string message) {
+			MessageBoxResult result = MessageBox.Show (message, "Are you sure?", MessageBoxButton.YesNoCancel);
+			switch (result) {
+				case MessageBoxResult.Yes:
+				return true;
+				case MessageBoxResult.No:
+				case MessageBoxResult.Cancel:
+				case MessageBoxResult.None:
+				default:
+				return false;
+			}
+		}
+
+		/*
 		public static bool Show (string message) {
 			Random rng = new Random ();
 			int confirmValue = rng.Next (100000, 999999);
@@ -24,5 +39,6 @@ namespace GenericEngines {
 
 			return returnValue;
 		}
+		*/
 	}
 }

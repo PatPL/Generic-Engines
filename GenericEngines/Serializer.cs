@@ -101,11 +101,126 @@ namespace GenericEngines {
 				}
 
 				return output;
+			},
+			(Engine e) => {
+				
+				//Serializer v.1
+				short version = 1;
+
+				int i = 0;
+				byte[] output = new byte[
+					2 + //short - Version header
+					1 + //bool - Active
+					(e.Name.Length + 2) + //1B * length + 2B length header - Name
+					8 + //double - Mass
+					8 + //double - Thrust
+					8 + //double - AtmIsp
+					8 + //double - VacIsp
+					e.PropellantRatio.Count * 10 + 2 + //(2B + 8B) * count + 2B length header - PropellantRatio
+					8 + //double - Width
+					8 + //double - Height
+					8 + //double - Gimbal
+					4 + //int - Cost
+					8 + //double - MinThrust
+					4 + //int - Ignitions
+					1 + //bool - PressureFed
+					1 //bool - NeedsUllage
+				];
+
+				//short - Version
+				output[i++] = (byte) (version / 256);
+				output[i++] = (byte) (version % 256);
+
+				//bool - Active
+				output[i++] = (byte) (e.Active ? 1 : 0);
+
+				//String + 2B length header - Name
+				//String length header
+				output[i++] = (byte) (e.Name.Length / 256);
+				output[i++] = (byte) (e.Name.Length % 256);
+				//String data
+				foreach (char c in e.Name) {
+					output[i++] = Convert.ToByte (c);
+				}
+
+				//double - Mass
+				foreach (byte b in BitConverter.GetBytes (e.Mass)) {
+					output[i++] = b;
+				}
+
+				//double - Thrust
+				foreach (byte b in BitConverter.GetBytes (e.Thrust)) {
+					output[i++] = b;
+				}
+
+				//double - AtmIsp
+				foreach (byte b in BitConverter.GetBytes (e.AtmIsp)) {
+					output[i++] = b;
+				}
+
+				//double - VacIsp
+				foreach (byte b in BitConverter.GetBytes (e.VacIsp)) {
+					output[i++] = b;
+				}
+
+				//(2B + 8B) * count + 2B length header - PropellantRatio
+				//Length header
+				output[i++] = (byte) (e.PropellantRatio.Count / 256);
+				output[i++] = (byte) (e.PropellantRatio.Count % 256);
+				//Data
+				foreach (FuelRatioElement f in e.PropellantRatio) {
+					output[i++] = (byte) ((int) f.Propellant / 256);
+					output[i++] = (byte) ((int) f.Propellant % 256);
+					foreach (byte b in BitConverter.GetBytes (f.Ratio)) {
+						output[i++] = b;
+					}
+				}
+
+				//double - Width
+				foreach (byte b in BitConverter.GetBytes (e.Width)) {
+					output[i++] = b;
+				}
+
+				//double - Height
+				foreach (byte b in BitConverter.GetBytes (e.Height)) {
+					output[i++] = b;
+				}
+
+				//double - Gimbal
+				foreach (byte b in BitConverter.GetBytes (e.Gimbal)) {
+					output[i++] = b;
+				}
+
+				//int - Cost
+				foreach (byte b in BitConverter.GetBytes (e.Cost)) {
+					output[i++] = b;
+				}
+
+				//double - MinThrust
+				foreach (byte b in BitConverter.GetBytes (e.MinThrust)) {
+					output[i++] = b;
+				}
+
+				//int - Ignitions
+				foreach (byte b in BitConverter.GetBytes (e.Ignitions)) {
+					output[i++] = b;
+				}
+
+				//bool - PressureFed
+				output[i++] = (byte) (e.PressureFed ? 1 : 0);
+
+				//bool - NeedsUllage
+				output[i++] = (byte) (e.NeedsUllage ? 1 : 0);
+
+				return output;
 			}
 		};
 
 		private static readonly DeserializerFunc<Engine, byte[], int, int>[] deserializers = {
 			(byte[] input, out int addedOffset, int offset) => {
+				
+				//Deserializer v.0
+				
 				Engine output = Engine.New ();
 				int i = offset;
 
@@ -128,19 +243,19 @@ namespace GenericEngines {
 
 				}
 
-				//Double - Mass
+				//double - Mass
 				output.Mass = BitConverter.ToDouble (input, i);
 				i += 8;
 
-				//Double - Thrust
+				//double - Thrust
 				output.Thrust = BitConverter.ToDouble (input, i);
 				i += 8;
 
-				//Double - AtmIsp
+				//double - AtmIsp
 				output.AtmIsp = BitConverter.ToDouble (input, i);
 				i += 8;
 
-				//Double - VacIsp
+				//double - VacIsp
 				output.VacIsp = BitConverter.ToDouble (input, i);
 				i += 8;
 
@@ -165,21 +280,117 @@ namespace GenericEngines {
 					}
 				}
 			
-				//Double - Width
+				//double - Width
 				output.Width = BitConverter.ToDouble (input, i);
 				i += 8;
 
-				//Double - Height
+				//double - Height
 				output.Height = BitConverter.ToDouble (input, i);
 				i += 8;
 
-				//Double - Gimbal
+				//double - Gimbal
 				output.Gimbal = BitConverter.ToDouble (input, i);
 				i += 8;
 
 				//int - Cost
 				output.Cost = BitConverter.ToInt32 (input, i);
 				i += 4;
+
+				addedOffset = i - offset;
+				return output;
+			},
+			(byte[] input, out int addedOffset, int offset) => {
+				
+				//Deserializer v.1
+				
+				Engine output = Engine.New ();
+				int i = offset;
+
+				i += 2; //short - Version header
+
+				//bool - Active
+				output.Active = input[i++] == 1;
+
+				//String + 2B length header - Name
+				{
+					int stringLength = 0;
+					stringLength += input[i++];
+					stringLength *= 256;
+					stringLength += input[i++];
+
+					output.Name = "";
+					for (int c = 0; c < stringLength; ++c) {
+						output.Name += Convert.ToChar (input[i++]);
+					}
+
+				}
+
+				//double - Mass
+				output.Mass = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - Thrust
+				output.Thrust = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - AtmIsp
+				output.AtmIsp = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - VacIsp
+				output.VacIsp = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//(2B + 8B) * count + 2B length header - PropellantRatio
+				{
+					int dataLength = 0;
+					dataLength += input[i++];
+					dataLength *= 256;
+					dataLength += input[i++];
+
+					output.PropellantRatio.Clear (); //Constructor gives one element to this list
+
+					FuelType fuelType = 0;
+					for (int c = 0; c < dataLength; ++c) {
+						fuelType = 0;
+						fuelType += input[i++];
+						fuelType = ((FuelType) (((int) fuelType) * 256)); //c# kurwo. fuelType *= 256? pfff
+						fuelType += input[i++];
+
+						output.PropellantRatio.Add (new FuelRatioElement (fuelType, BitConverter.ToDouble (input, i)));
+						i += 8;
+					}
+				}
+			
+				//double - Width
+				output.Width = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - Height
+				output.Height = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - Gimbal
+				output.Gimbal = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//int - Cost
+				output.Cost = BitConverter.ToInt32 (input, i);
+				i += 4;
+
+				//double - MinThrust
+				output.MinThrust = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//int - Ignitions
+				output.Ignitions = BitConverter.ToInt32 (input, i);
+				i += 4;
+
+				//bool - PressureFed
+				output.PressureFed = input[i++] == 1;
+
+				//bool - NeedsUllage
+				output.NeedsUllage = input[i++] == 1;
 
 				addedOffset = i - offset;
 				return output;

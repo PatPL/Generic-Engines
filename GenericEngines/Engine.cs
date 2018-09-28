@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 
 namespace GenericEngines {
 	public class Engine {
-		public bool Active { get; set; }
-		public string Name { get; set; }
-		public double Mass { get; set; }
-		public double Thrust { get; set; }
-		public double AtmIsp { get; set; }
-		public double VacIsp { get; set; }
-		public FuelRatioList PropellantRatio { get; set; }
-		public double Width { get; set; }
-		public double Height { get; set; }
-		public double Gimbal { get; set; }
-		public int Cost { get; set; }
+		// Serializer versions
+		public bool Active { get; set; } //0
+		public string Name { get; set; } //0
+		public double Mass { get; set; } //0
+		public double Thrust { get; set; } //0
+		public double AtmIsp { get; set; } //0
+		public double VacIsp { get; set; } //0
+		public FuelRatioList PropellantRatio { get; set; } //0
+		public double Width { get; set; } //0
+		public double Height { get; set; } //0
+		public double Gimbal { get; set; } //0
+		public int Cost { get; set; } //0
+		public double MinThrust { get; set; } //1
+		public int Ignitions { get; set; } //1
+		public bool PressureFed { get; set; } //1
+		public bool NeedsUllage { get; set; } //1
 
 		public Engine (
 			bool _Active = false,
@@ -29,7 +34,11 @@ namespace GenericEngines {
 			double _Width = 1.0,
 			double _Height = 1.0,
 			double _Gimbal = 5.0,
-			int _Cost = 500
+			int _Cost = 500,
+			double _MinThrust = 80.0,
+			int _Ignitions = 1,
+			bool _PressureFed = false,
+			bool _NeedsUllage = true
 		) {
 			Active = _Active;
 			Name = _Name;
@@ -42,6 +51,10 @@ namespace GenericEngines {
 			Height = _Height;
 			Gimbal = _Gimbal;
 			Cost = _Cost;
+			MinThrust = _MinThrust;
+			Ignitions = _Ignitions;
+			PressureFed = _PressureFed;
+			NeedsUllage = _NeedsUllage;
 		}
 
 		public static Engine New () {

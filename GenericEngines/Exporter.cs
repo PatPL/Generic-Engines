@@ -26,6 +26,8 @@ namespace GenericEngines {
 
 			double heightScale = engine.Height / 1.9;
 			double widthScale = engine.Width / heightScale;
+			double minThrustPercent = Math.Max (Math.Min (engine.MinThrust, 100), 0) / 100;
+			int ignitions = engine.Ignitions < 0 ? 0 : engine.Ignitions;
 
 			string propellants = "";
 			bool firstPropellant = true;
@@ -34,7 +36,7 @@ namespace GenericEngines {
 PROPELLANT
 {{
 	name = {FuelName.Name (i.Propellant)}
-	ratio = {i.Ratio}
+	ratio = {i.Ratio.ToString (CultureInfo.InvariantCulture)}
 	DrawGauge = {firstPropellant}
 }}
 ";
@@ -199,7 +201,7 @@ PART
 
     @MODULE[ModuleEngines*]
     {{
-        @minThrust = {(engine.Thrust * 0.66).ToString (CultureInfo.InvariantCulture)}
+        @minThrust = {(engine.Thrust * minThrustPercent).ToString (CultureInfo.InvariantCulture)}
         @maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
         @heatProduction = 180
         @useThrustCurve = False
@@ -237,7 +239,7 @@ PART
 			name = {engineID}
 			description = Generic Engine | {engine.Name}
 			maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
-			minThrust = {(engine.Thrust * 0.66).ToString (CultureInfo.InvariantCulture)}
+			minThrust = {(engine.Thrust * minThrustPercent).ToString (CultureInfo.InvariantCulture)}
 			heatProduction = 100
 			massMult = 1
 
@@ -249,8 +251,9 @@ PART
 				key = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
 			}}
 
-			ullage = True
-			ignitions = 5
+			ullage = {engine.NeedsUllage}
+			pressureFed = {engine.PressureFed}
+			ignitions = {ignitions}
 			IGNITOR_RESOURCE
 			{{
 				name = ElectricCharge

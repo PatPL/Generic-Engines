@@ -203,7 +203,7 @@ namespace GenericEngines {
 		private void mainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
 			isEdited = true;
 
-			if (e.Column.Header.ToString () == "Propellants") {
+			if (e.Column.Header != null && e.Column.Header.ToString () == "Propellants") {
 				currentFuelRatioList = ((Engine) e.Row.Item).PropellantRatio;
 			}
 		}

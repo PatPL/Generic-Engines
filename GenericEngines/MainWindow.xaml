@@ -34,15 +34,20 @@
 		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
 		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
-				<DataGridTemplateColumn SortMemberPath="Active" Header="Active">
+				<DataGridTemplateColumn SortMemberPath="Active" Width="1">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<CheckBox IsChecked="{Binding Path=Active, UpdateSourceTrigger=PropertyChanged}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Active" ToolTip="Active" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Name" Header="Engine name">
+				<DataGridTemplateColumn SortMemberPath="Name">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Name}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -50,12 +55,17 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Name}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Engine name" ToolTip="Engine name" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Mass" Header="Mass">
+				<DataGridTemplateColumn SortMemberPath="Mass">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Mass, StringFormat={}{0}t}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -63,12 +73,17 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Mass}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Mass, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Mass" ToolTip="Mass" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Thrust" Header="Vacuum Thrust">
+				<DataGridTemplateColumn SortMemberPath="Thrust">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Thrust, StringFormat={}{0}kN}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -76,12 +91,35 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Thrust}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Thrust, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Vacuum Thrust" ToolTip="Vacuum Thrust" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="AtmIsp" Header="Sea level Isp">
+				<DataGridTemplateColumn SortMemberPath="MinThrust">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=MinThrust, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=MinThrust, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Minimum Thrust" ToolTip="Minimum Thrust" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="AtmIsp">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=AtmIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -89,9 +127,14 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=AtmIsp}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=AtmIsp, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Sea level Isp" ToolTip="Sea level Isp" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="VacIsp" Header="Vacuum Isp">
@@ -102,9 +145,40 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=VacIsp}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=VacIsp, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Vacuum Isp" ToolTip="Vacuum Isp" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="PressureFed" Width="1">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding Path=PressureFed, UpdateSourceTrigger=PropertyChanged}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Pressure Fed" ToolTip="Pressure Fed" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="NeedsUllage" Width="1">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding Path=NeedsUllage, UpdateSourceTrigger=PropertyChanged}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Ullage" ToolTip="Ullage" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn Header="Propellants">
@@ -144,7 +218,7 @@
 											</DataGridTemplateColumn.CellTemplate>
 											<DataGridTemplateColumn.CellEditingTemplate>
 												<DataTemplate>
-													<TextBox Text="{Binding Path=Ratio}" FontFamily="Verdana"></TextBox>
+													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellEditingTemplate>
 										</DataGridTemplateColumn>
@@ -154,9 +228,32 @@
 							<!-- /Paste -->
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Propellants" ToolTip="Propellants" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Width" Header="Width">
+				<DataGridTemplateColumn SortMemberPath="Ignitions">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=Ignitions, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=Ignitions, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Ignitions" ToolTip="Ignitions" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="Width">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Width, StringFormat={}{0}m}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -164,12 +261,17 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Width}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Width" ToolTip="Width" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Height" Header="Height">
+				<DataGridTemplateColumn SortMemberPath="Height">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Height, StringFormat={}{0}m}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -177,12 +279,17 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Height}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Height" ToolTip="Height" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Gimbal" Header="Gimbal">
+				<DataGridTemplateColumn SortMemberPath="Gimbal">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Gimbal, StringFormat={}{0}°}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -190,12 +297,17 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Gimbal}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Gimbal, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Gimbal" ToolTip="Gimbal" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Cost" Header="Cost">
+				<DataGridTemplateColumn SortMemberPath="Cost">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Cost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -203,9 +315,14 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Cost}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Cost" ToolTip="Cost" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 			</DataGrid.Columns>
 		</DataGrid>
