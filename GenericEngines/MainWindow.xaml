@@ -55,7 +55,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Name, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -73,7 +73,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Mass, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Mass, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -91,7 +91,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Thrust, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Thrust, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -109,7 +109,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=MinThrust, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=MinThrust, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -127,7 +127,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=AtmIsp, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=AtmIsp, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -145,7 +145,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=VacIsp, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=VacIsp, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -218,7 +218,7 @@
 											</DataGridTemplateColumn.CellTemplate>
 											<DataGridTemplateColumn.CellEditingTemplate>
 												<DataTemplate>
-													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellEditingTemplate>
 										</DataGridTemplateColumn>
@@ -243,7 +243,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Ignitions, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Ignitions, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -261,7 +261,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Width, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -279,7 +279,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Height, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -297,7 +297,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Gimbal, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Gimbal, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -315,7 +315,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Cost, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=Cost, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
