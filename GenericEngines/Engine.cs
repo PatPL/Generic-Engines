@@ -22,6 +22,7 @@ namespace GenericEngines {
 		public int Ignitions { get; set; } //1
 		public bool PressureFed { get; set; } //1
 		public bool NeedsUllage { get; set; } //1
+		public bool FuelVolumeRatios { get; set; } //2
 
 		public Engine (
 			bool _Active = false,
@@ -38,7 +39,8 @@ namespace GenericEngines {
 			double _MinThrust = 80.0,
 			int _Ignitions = 1,
 			bool _PressureFed = false,
-			bool _NeedsUllage = true
+			bool _NeedsUllage = true,
+			bool _FuelVolumeRatios = false
 		) {
 			Active = _Active;
 			Name = _Name;
@@ -55,6 +57,7 @@ namespace GenericEngines {
 			Ignitions = _Ignitions;
 			PressureFed = _PressureFed;
 			NeedsUllage = _NeedsUllage;
+			FuelVolumeRatios = _FuelVolumeRatios;
 		}
 
 		public static Engine New () {

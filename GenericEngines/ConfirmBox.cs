@@ -12,6 +12,14 @@ namespace GenericEngines {
 		public static bool returnValue;
 
 		public static bool Show (string message) {
+			if (Settings.GetBool (Setting.AdvConfirmBox)) {
+				return ShowAdvanced (message);
+			} else {
+				return ShowSimple (message);
+			}
+		}
+
+		private static bool ShowSimple (string message) {
 			MessageBoxResult result = MessageBox.Show (message, "Are you sure?", MessageBoxButton.YesNoCancel);
 			switch (result) {
 				case MessageBoxResult.Yes:
@@ -23,9 +31,8 @@ namespace GenericEngines {
 				return false;
 			}
 		}
-
-		/*
-		public static bool Show (string message) {
+		
+		private static bool ShowAdvanced (string message) {
 			Random rng = new Random ();
 			int confirmValue = rng.Next (100000, 999999);
 
@@ -39,6 +46,6 @@ namespace GenericEngines {
 
 			return returnValue;
 		}
-		*/
+		
 	}
 }

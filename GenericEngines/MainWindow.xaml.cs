@@ -97,10 +97,13 @@ namespace GenericEngines {
 				if (mainDataGrid.SelectedIndex != -1) {
 					if (ConfirmBox.Show ($"You are about to delete\n{mainDataGrid.SelectedItems.Count} item(s). Are you sure?")) {
 
+						mainDataGrid.CommitEdit ();
+						mainDataGrid.CancelEdit ();
+
 						foreach (Engine i in mainDataGrid.SelectedItems) {
 							Engines.Remove (i);
 						}
-
+						
 						mainDataGrid.Items.Refresh ();
 					}
 				}
@@ -185,6 +188,12 @@ namespace GenericEngines {
 
 					}
 				}
+			}
+		}
+
+		private void settingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				new SettingsWindow ().ShowDialog ();
 			}
 		}
 

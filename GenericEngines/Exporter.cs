@@ -29,9 +29,41 @@ namespace GenericEngines {
 			double minThrustPercent = Math.Max (Math.Min (engine.MinThrust, 100), 0) / 100;
 			int ignitions = engine.Ignitions < 0 ? 0 : engine.Ignitions;
 
+			FuelRatioList fuelRatios = new FuelRatioList ();
+			if (!engine.FuelVolumeRatios) {
+				bool isElectric = false;
+
+				foreach (FuelRatioElement i in engine.PropellantRatio) {
+					if (i.Propellant == FuelType.ElectricCharge) {
+						isElectric = true;
+					} else {
+						fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelDensity.Get[(int) i.Propellant]));
+					}
+				}
+
+				if (isElectric) {
+
+					double normalFuelRatios = 0.0;
+
+					foreach (FuelRatioElement i in engine.PropellantRatio) {
+						if (i.Propellant == FuelType.ElectricCharge) {
+
+						} else {
+							normalFuelRatios += i.Ratio;
+						}
+					}
+
+					fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, engine.PropellantRatio.Find (x => x.Propellant == FuelType.ElectricCharge).Ratio * normalFuelRatios));
+				}
+			} else {
+				
+			}
+
+			
+
 			string propellants = "";
 			bool firstPropellant = true;
-			foreach (FuelRatioElement i in engine.PropellantRatio) {
+			foreach (FuelRatioElement i in fuelRatios) {
 				propellants += $@"
 PROPELLANT
 {{
