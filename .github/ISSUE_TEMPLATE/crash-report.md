@@ -13,4 +13,4 @@ If possible, try to recreate the crash and explain the steps necessary to reprod
 **Screenshots**
 If possible, upload the crashError.log file. It should be located in the same directory as the program.
 
-Thank you for Your support!
+Thank you!
