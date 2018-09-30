@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="600" Width="800" UseLayoutRounding="True">
+        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True">
 	<Window.Resources>
 		<Style TargetType="CheckBox">
 			<Setter Property="HorizontalAlignment" Value="Center"/>
@@ -160,7 +160,8 @@
 		<Image Grid.Column="2" Margin="4,4,0,0" Source="save.png" MouseDown="registerMouseDown" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
 		<Image Grid.Column="3" Margin="4,4,0,0" Source="saveas.png" MouseDown="registerMouseDown" MouseUp="saveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
 		<Image Grid.Column="4" Margin="4,4,0,0" Source="open.png" MouseDown="registerMouseDown" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
-		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
+		<Image Grid.Column="5" Margin="4,4,0,0" Source="append.png" MouseDown="registerMouseDown" MouseUp="appendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+		<Image Grid.Column="6" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
 		<Image Grid.Column="12" Margin="0,4,4,0" Source="settings.png" MouseDown="registerMouseDown" MouseUp="settingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
 		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>

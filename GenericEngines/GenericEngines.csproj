@@ -191,5 +191,8 @@
   <ItemGroup>
     <Resource Include="steam.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="append.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -430,3 +430,38 @@ System.ArgumentException: Wartość jest spoza oczekiwanego zakresu.
    w System.Windows.Application.Run(Window window)
    w System.Windows.Application.Run()
    w GenericEngines.App.Main()
+==========
+2018-09-30 20:06:57
+System.ArgumentNullException: Ścieżka nie może być zerowa.
+Nazwa parametru: path
+   w System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   w System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   w GenericEngines.MainWindow.readEnginesFromFile(String path, Boolean append) w C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\MainWindow.xaml.cs:wiersz 260
+   w GenericEngines.MainWindow.appendButton_MouseUp(Object sender, MouseButtonEventArgs e) w C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\MainWindow.xaml.cs:wiersz 342
+   w System.Windows.Input.MouseButtonEventArgs.InvokeEventHandler(Delegate genericHandler, Object genericTarget)
+   w System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   w System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   w System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   w System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   w System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   w System.Windows.UIElement.RaiseEvent(RoutedEventArgs args, Boolean trusted)
+   w System.Windows.Input.InputManager.ProcessStagingArea()
+   w System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   w System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   w System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   w System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   w System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   w MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   w MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   w System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   w System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   w System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   w MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   w MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   w System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   w System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   w System.Windows.Application.RunDispatcher(Object ignore)
+   w System.Windows.Application.RunInternal(Window window)
+   w System.Windows.Application.Run(Window window)
+   w System.Windows.Application.Run()
+   w GenericEngines.App.Main()

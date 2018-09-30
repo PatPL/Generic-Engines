@@ -31,7 +31,8 @@ namespace GenericEngines {
 		string currentFile {
 			get {
 				return _currentFile;
-			} set {
+			}
+			set {
 				_currentFile = value;
 				Title = $"Generic Engines | {_currentFile}";
 			}
@@ -67,7 +68,8 @@ namespace GenericEngines {
 				} else {
 					throw new NullReferenceException ("mainDataGrid is null");
 				}
-			} set {
+			}
+			set {
 				if (mainDataGrid != null) {
 					mainDataGrid.ItemsSource = null;
 					mainDataGrid.ItemsSource = value;
@@ -103,7 +105,7 @@ namespace GenericEngines {
 						foreach (Engine i in mainDataGrid.SelectedItems) {
 							Engines.Remove (i);
 						}
-						
+
 						mainDataGrid.Items.Refresh ();
 					}
 				}
@@ -254,11 +256,13 @@ namespace GenericEngines {
 			file.Close ();
 		}
 
-		void readEnginesFromFile (string path) {
+		void readEnginesFromFile (string path, bool append = false) {
 			FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
 
-			Engines.Clear ();
-			List<Engine> newEngines = new List<Engine> ();
+			if (!append) {
+				Engines.Clear ();
+			}
+			List<Engine> newEngines = (append ? Engines : new List<Engine> ());
 
 			byte[] data = new byte[file.Length];
 			file.Read (data, 0, (int) file.Length);
@@ -296,7 +300,7 @@ namespace GenericEngines {
 		}
 
 		private void propellentDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
-			
+
 		}
 
 		private void addPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
@@ -318,6 +322,35 @@ namespace GenericEngines {
 
 					currentFuelRatioGrid.Items.Refresh ();
 				}
+			}
+		}
+
+		private void appendButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+				if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
+					Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
+				}
+				fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
+				fileDialog.FileName = "";
+				fileDialog.DefaultExt = ".enl";
+				fileDialog.Filter = "Engine Lists|*.enl";
+
+				bool? result = fileDialog.ShowDialog ();
+
+				if (result != null && result == true) {
+					readEnginesFromFile (fileDialog.FileName, true);
+				} else {
+
+				}
+			}
+		}
+
+		private void mainWindow_Closing (object sender, System.ComponentModel.CancelEventArgs e) {
+			if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to close Generic Engines?")) {
+				
+			} else {
+				e.Cancel = true;
 			}
 		}
 	}
