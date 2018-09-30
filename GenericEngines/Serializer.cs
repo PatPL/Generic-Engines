@@ -239,7 +239,7 @@ namespace GenericEngines {
 					1 + //bool - NeedsUllage
 					1 //bool - FuelVolumeRatios
 				];
-
+				
 				//short - Version
 				output[i++] = (byte) (version / 256);
 				output[i++] = (byte) (version % 256);

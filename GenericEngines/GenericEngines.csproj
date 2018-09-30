@@ -55,6 +55,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -182,6 +183,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="chooseDirectory24.png" />
+    <Resource Include="chooseDirectory32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="steam.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

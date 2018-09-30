@@ -66,8 +66,6 @@ namespace GenericEngines {
 			while (!file.EndOfStream) {
 				currentLine = file.ReadLine ();
 
-				currentLine = Regex.Replace (currentLine, @"\s+", "");
-
 				if (currentLine[0] == '#') {
 					continue;
 				}
@@ -89,18 +87,22 @@ namespace GenericEngines {
 			string output = "";
 
 			foreach (KeyValuePair<string, string> i in settings) {
-				output += $"{i.Key}: {i.Value}{Environment.NewLine}";
+				output += $"{i.Key}:{i.Value}{Environment.NewLine}";
 			}
 
 			File.WriteAllText (settingsPath, output);
 		}
 
 		private static readonly Dictionary<string, string> defaultSettings = new Dictionary<string, string> {
-			{ "AdvConfirmBox", "False" }
+			{ Setting.AdvConfirmBox, "False" },
+			{ Setting.DefaultSaveDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\" },
+			{ Setting.DefaultExportDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\" }
 		};
 	}
 
 	public static class Setting {
 		public static readonly string AdvConfirmBox = "AdvConfirmBox";
+		public static readonly string DefaultSaveDirectory = "DefaultSaveDirectory";
+		public static readonly string DefaultExportDirectory = "DefaultExportDirectory";
 	}
 }

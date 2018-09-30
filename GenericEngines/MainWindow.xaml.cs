@@ -125,10 +125,10 @@ namespace GenericEngines {
 		private void saveasButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
-				if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
-					Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
+				if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
+					Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
 				}
-				fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
+				fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
 				fileDialog.FileName = "Unnamed Engine List";
 				fileDialog.DefaultExt = ".enl";
 				fileDialog.Filter = "Engine Lists|*.enl";
@@ -148,10 +148,10 @@ namespace GenericEngines {
 			if (sender == null || lastMouseDownObject == sender) {
 				if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open other file?")) {
 					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
-					if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\")) {
-						Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\");
+					if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
+						Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
 					}
-					fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\";
+					fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
 					fileDialog.FileName = "";
 					fileDialog.DefaultExt = ".enl";
 					fileDialog.Filter = "Engine Lists|*.enl";
@@ -172,10 +172,10 @@ namespace GenericEngines {
 			if (sender == null || lastMouseDownObject == sender) {
 				if (Engines.Count > 0) {
 					Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
-					if (!Directory.Exists ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\")) {
-						Directory.CreateDirectory ($"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\");
+					if (!Directory.Exists (Settings.Get (Setting.DefaultExportDirectory))) {
+						Directory.CreateDirectory (Settings.Get (Setting.DefaultExportDirectory));
 					}
-					fileDialog.InitialDirectory = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\";
+					fileDialog.InitialDirectory = Settings.Get (Setting.DefaultExportDirectory);
 					fileDialog.FileName = currentFile == null ? "Unnamed Engine Configs" : System.IO.Path.GetFileNameWithoutExtension (currentFile);
 					fileDialog.DefaultExt = ".cfg";
 					fileDialog.Filter = "Engine Configs|*.cfg";
