@@ -1,6 +1,6 @@
 ---
 name: Crash report
-about: Create a report to help us improve
+about: Did Generic Engines crash?
 
 ---
 
