@@ -193,6 +193,16 @@ namespace GenericEngines {
 			}
 		}
 
+		private void newButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open empty file?")) {
+					currentFile = null;
+
+					Engines = new List<Engine> ();
+				}
+			}
+		}
+
 		private void settingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				new SettingsWindow ().ShowDialog ();
@@ -348,7 +358,7 @@ namespace GenericEngines {
 
 		private void mainWindow_Closing (object sender, System.ComponentModel.CancelEventArgs e) {
 			if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to close Generic Engines?")) {
-				
+
 			} else {
 				e.Cancel = true;
 			}
