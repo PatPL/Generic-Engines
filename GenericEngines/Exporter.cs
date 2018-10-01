@@ -31,9 +31,9 @@ namespace GenericEngines {
 			double minThrustPercent = Math.Max (Math.Min (engine.MinThrust, 100), 0) / 100;
 			int ignitions = engine.Ignitions < 0 ? 0 : engine.Ignitions;
 
+			bool isElectric = false;
 			FuelRatioList fuelRatios = new FuelRatioList ();
 			if (!engine.FuelVolumeRatios) {
-				bool isElectric = false;
 
 				foreach (FuelRatioElement i in engine.PropellantRatio) {
 					if (i.Propellant == FuelType.ElectricCharge) {
@@ -43,35 +43,45 @@ namespace GenericEngines {
 					}
 				}
 
-				if (isElectric) {
-
-					double normalFuelRatios = 0.0;// Will be used to calculate propellant flow rate
-					double averageDensity = 0.0;// t/l
-					double electricRatio = engine.PropellantRatio.Find (s => s.Propellant == FuelType.ElectricCharge).Ratio;// kW
-
-					foreach (FuelRatioElement i in fuelRatios) {
-						normalFuelRatios += i.Ratio;
-						averageDensity += i.Ratio * FuelDensity.Get[(int) i.Propellant];
-					}
-
-					averageDensity /= normalFuelRatios; // t/l
-
-					double x = engine.VacIsp; // s
-					x *= 9.8066; // N*s/kg
-					x = 1 / x; // kg/N*s -> t/kN*s
-					x /= averageDensity; // l/kN*s
-					x *= engine.Thrust; // l/s
-					//normalFuelRatios    = x units/s
-					//actualElectricRatio = y units/s (kW)
-					electricRatio = electricRatio * normalFuelRatios / x; //result
-
-					fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, electricRatio));
-				}
-			} else {
 				
+			} else {
+
+				foreach (FuelRatioElement i in engine.PropellantRatio) {
+					if (i.Propellant == FuelType.ElectricCharge) {
+						isElectric = true;
+					} else {
+						fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio));
+					}
+				}
+
 			}
 
-			
+			if (isElectric) {
+
+				double normalFuelRatios = 0.0;// Will be used to calculate propellant flow rate
+				double averageDensity = 0.0;// t/l
+				double electricRatio = engine.PropellantRatio.Find (s => s.Propellant == FuelType.ElectricCharge).Ratio;// kW
+
+				foreach (FuelRatioElement i in fuelRatios) {
+					normalFuelRatios += i.Ratio;
+					averageDensity += i.Ratio * FuelDensity.Get[(int) i.Propellant];
+				}
+
+				averageDensity /= normalFuelRatios; // t/l
+
+				double x = engine.VacIsp; // s
+				x *= 9.8066; // N*s/kg
+				x = 1 / x; // kg/N*s -> t/kN*s
+				x /= averageDensity; // l/kN*s
+				x *= engine.Thrust; // l/s
+									//normalFuelRatios    = x units/s
+									//actualElectricRatio = y units/s (kW)
+				electricRatio = electricRatio * normalFuelRatios / x; //result
+
+				fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, electricRatio));
+			}
+
+
 
 			string propellants = "";
 			bool firstPropellant = true;
