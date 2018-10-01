@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,41 +24,68 @@ namespace GenericEngines {
 		public bool PressureFed { get; set; } //1
 		public bool NeedsUllage { get; set; } //1
 		public bool FuelVolumeRatios { get; set; } //2
+		public bool EnableTestFlight { get; set; } //3
+		public int RatedBurnTime { get; set; } //3
+		public double StartReliability0 { get; set; } //3
+		public double StartReliability10k { get; set; } //3
+		public double CycleReliability0 { get; set; } //3
+		public double CycleReliability10k { get; set; } //3
 
-		public Engine (
-			bool _Active = false,
-			string _Name = "New Engine",
-			double _Mass = 1.0,
-			double _Thrust = 100.0,
-			double _AtmIsp = 100.0,
-			double _VacIsp = 200.0,
-			FuelRatioList _PropellantRatio = null,
-			double _Width = 1.0,
-			double _Height = 1.0,
-			double _Gimbal = 5.0,
-			int _Cost = 500,
-			double _MinThrust = 80.0,
-			int _Ignitions = 1,
-			bool _PressureFed = false,
-			bool _NeedsUllage = true,
-			bool _FuelVolumeRatios = false
-		) {
-			Active = _Active;
-			Name = _Name;
-			Mass = _Mass;
-			Thrust = _Thrust;
-			AtmIsp = _AtmIsp;
-			VacIsp = _VacIsp;
-			PropellantRatio = _PropellantRatio ?? new FuelRatioList () { new FuelRatioElement () };
-			Width = _Width;
-			Height = _Height;
-			Gimbal = _Gimbal;
-			Cost = _Cost;
-			MinThrust = _MinThrust;
-			Ignitions = _Ignitions;
-			PressureFed = _PressureFed;
-			NeedsUllage = _NeedsUllage;
-			FuelVolumeRatios = _FuelVolumeRatios;
+		public bool TestFlightConfigNotDefault {
+			get {
+				Engine comparison = new Engine ();
+				return
+					EnableTestFlight != comparison.EnableTestFlight ||
+					RatedBurnTime != comparison.RatedBurnTime ||
+					StartReliability0 != comparison.StartReliability0 ||
+					StartReliability10k != comparison.StartReliability10k ||
+					CycleReliability0 != comparison.CycleReliability0 ||
+					CycleReliability10k != comparison.CycleReliability10k
+				;
+			}
+		}
+
+		public string TestFlightStatus {
+			get {
+				if (EnableTestFlight) {
+					return $"Enabled | {RatedBurnTime}s | {CycleReliability10k}%";
+				} else if (TestFlightConfigNotDefault) {
+					return "Disabled, but configured";
+				} else {
+					return "Disabled";
+				}
+			}
+		}
+
+		public string Dimensions {
+			get {
+				return $"{Width.ToString (CultureInfo.InvariantCulture)}m x {Height.ToString (CultureInfo.InvariantCulture)}m";
+			}
+		}
+
+		public Engine () {
+			Active = false;
+			Name = "New Engine";
+			Mass = 1.0;
+			Thrust = 1000.0;
+			AtmIsp = 250.0;
+			VacIsp = 300.0;
+			PropellantRatio = new FuelRatioList () { new FuelRatioElement () };
+			Width = 1.0;
+			Height = 2.0;
+			Gimbal = 6.0;
+			Cost = 1000;
+			MinThrust = 90.0;
+			Ignitions = 1;
+			PressureFed = false;
+			NeedsUllage = true;
+			FuelVolumeRatios = false;
+			EnableTestFlight = false;
+			RatedBurnTime = 180;
+			StartReliability0 = 92.0;
+			StartReliability10k = 96.0;
+			CycleReliability0 = 90.0;
+			CycleReliability10k = 98.0;
 		}
 
 		public static Engine New () {

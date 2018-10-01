@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace GenericEngines {
 	public static class Exporter {
@@ -23,6 +24,7 @@ namespace GenericEngines {
 		public static string ConvertEngineToConfig (Engine engine) {
 			string output = "";
 			string engineID = $"GE-{engine.Name.Replace (' ', '-')}";
+			engineID = Regex.Replace (engineID, "[<>,+*=]", "");
 
 			double heightScale = engine.Height / 1.9;
 			double widthScale = engine.Width / heightScale;
@@ -76,6 +78,24 @@ PROPELLANT
 				firstPropellant = false;
 			}
 
+			string testflight = "";
+
+			if (engine.EnableTestFlight) {
+				testflight = $@"
+@PART[*]:HAS[@MODULE[ModuleEngineConfigs]:HAS[@CONFIG[{engineID}]],!MODULE[TestFlightInterop]]:BEFORE[zTestFlight]
+{{
+	TESTFLIGHT
+	{{
+		name = {engineID}
+		ratedBurnTime = {engine.RatedBurnTime}
+		ignitionReliabilityStart = {(engine.StartReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
+		ignitionReliabilityEnd = {(engine.StartReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
+		cycleReliabilityStart = {(engine.CycleReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
+		cycleReliabilityEnd = {(engine.CycleReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
+	}}
+}}
+";
+			}
 			//====
 output = $@"
 PART
@@ -333,6 +353,9 @@ PART
 		}}
 	}}
 }}
+
+{testflight}
+
 ";
 			//====
 
