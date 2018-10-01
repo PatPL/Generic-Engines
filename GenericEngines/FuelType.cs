@@ -54,7 +54,7 @@ namespace GenericEngines {
 	}
 
 	public static class FuelDensity {
-		public static readonly double[] Get = new double[] {
+		public static readonly double[] Get = new double[] { // I believe it's in t/l
 			0.0, //ElectricCharge
 			0.001141, //LqdOxygen
 			0.00082, //Kerosene

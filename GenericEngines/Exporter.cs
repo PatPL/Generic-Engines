@@ -39,23 +39,33 @@ namespace GenericEngines {
 					if (i.Propellant == FuelType.ElectricCharge) {
 						isElectric = true;
 					} else {
-						fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelDensity.Get[(int) i.Propellant]));
+						fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelDensity.Get[(int) i.Propellant] / 1000));
 					}
 				}
 
 				if (isElectric) {
 
-					double normalFuelRatios = 0.0;
+					double normalFuelRatios = 0.0;// Will be used to calculate propellant flow rate
+					double averageDensity = 0.0;// t/l
+					double electricRatio = engine.PropellantRatio.Find (s => s.Propellant == FuelType.ElectricCharge).Ratio;// kW
 
-					foreach (FuelRatioElement i in engine.PropellantRatio) {
-						if (i.Propellant == FuelType.ElectricCharge) {
-
-						} else {
-							normalFuelRatios += i.Ratio;
-						}
+					foreach (FuelRatioElement i in fuelRatios) {
+						normalFuelRatios += i.Ratio;
+						averageDensity += i.Ratio * FuelDensity.Get[(int) i.Propellant];
 					}
 
-					fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, engine.PropellantRatio.Find (x => x.Propellant == FuelType.ElectricCharge).Ratio * normalFuelRatios));
+					averageDensity /= normalFuelRatios; // t/l
+
+					double x = engine.VacIsp; // s
+					x *= 9.8066; // N*s/kg
+					x = 1 / x; // kg/N*s -> t/kN*s
+					x /= averageDensity; // l/kN*s
+					x *= engine.Thrust; // l/s
+					//normalFuelRatios    = x units/s
+					//actualElectricRatio = y units/s (kW)
+					electricRatio = electricRatio * normalFuelRatios / x; //result
+
+					fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, electricRatio));
 				}
 			} else {
 				
