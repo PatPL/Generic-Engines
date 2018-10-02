@@ -1183,6 +1183,10 @@ namespace GenericEngines {
 				return output;
 			}
 		};
+
+		public static int Version () {
+			return serializers.Count () - 1;
+		}
 		
 		public static byte[] Serialize (Engine e, short? version = null) {
 			version = version ?? (short) (serializers.Length - 1);

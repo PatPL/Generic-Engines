@@ -74,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppInfo.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="FuelRatioList.cs" />
     <Compile Include="Properties\FuelRatioElement.cs" />
@@ -85,6 +89,10 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConfirmWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -196,6 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="help.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

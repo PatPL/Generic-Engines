@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("choosedirectory24.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("choosedirectory32.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("help.png")]
 
 

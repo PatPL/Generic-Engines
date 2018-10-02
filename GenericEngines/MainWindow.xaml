@@ -163,6 +163,7 @@
 		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
 		<Image Grid.Column="6" Margin="4,4,0,0" Source="add.png" MouseDown="registerMouseDown" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
 		<Image Grid.Column="7" Margin="4,4,0,0" Source="remove.png" MouseDown="registerMouseDown" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
+		<Image Grid.Column="11" Margin="0,4,4,0" Source="help.png" MouseDown="registerMouseDown" MouseUp="helpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
 		<Image Grid.Column="12" Margin="0,4,4,0" Source="settings.png" MouseDown="registerMouseDown" MouseUp="settingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
 		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>

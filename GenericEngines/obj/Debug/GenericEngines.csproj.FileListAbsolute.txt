@@ -55,3 +55,5 @@ C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEn
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.pdb
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.baml
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\About.g.cs
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\About.baml

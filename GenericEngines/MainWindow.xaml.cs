@@ -203,6 +203,12 @@ namespace GenericEngines {
 			}
 		}
 
+		private void helpButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				new About ().ShowDialog ();
+			}
+		}
+
 		private void settingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				new SettingsWindow ().ShowDialog ();
