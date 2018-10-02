@@ -488,6 +488,171 @@ namespace GenericEngines {
 				}
 
 				return output;
+			},
+			(Engine e) => {
+				
+				//Serializer v.4
+				//Now with more Little Endian
+				short version = 4;
+
+				int i = 0;
+				byte[] output = new byte[
+					2 + //short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
+					1 + //bool - Active
+					(e.Name.Length + 2) + //1B * length + 2B length header - Name
+					8 + //double - Mass
+					8 + //double - Thrust
+					8 + //double - AtmIsp
+					8 + //double - VacIsp
+					e.PropellantRatio.Count * 10 + 2 + //(2B + 8B) * count + 2B length header - PropellantRatio
+					8 + //double - Width
+					8 + //double - Height
+					8 + //double - Gimbal
+					4 + //int - Cost
+					8 + //double - MinThrust
+					4 + //int - Ignitions
+					1 + //bool - PressureFed
+					1 + //bool - NeedsUllage
+					1 + //bool - FuelVolumeRatios
+					1 + //bool - TestFlightConfigNotDefault
+					(e.TestFlightConfigNotDefault ? 1 : 0) * ( //Include all properties inside brackets only if any Test Flight properties were changed
+					1 + //bool - EnableTestFlight
+					4 + //int - RatedBurnTime
+					8 + //double - StartReliability0
+					8 + //double - StartReliability10k
+					8 + //double - CycleReliability0
+					8)+ //double - CycleReliability10k
+					8 //double - AlternatorPower
+				];
+
+				//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
+				output[i++] = (byte) (version / 256);
+				output[i++] = (byte) (version % 256);
+
+				//bool - Active
+				output[i++] = (byte) (e.Active? 1 : 0);
+
+				//String + 2B length header - Name
+				//String length header
+				output[i++] = (byte) (e.Name.Length % 256);
+				output[i++] = (byte) (e.Name.Length / 256);
+				//String data
+				foreach (char c in e.Name) {
+					output[i++] = Convert.ToByte(c);
+				}
+
+				//double - Mass
+				foreach (byte b in BitConverter.GetBytes(e.Mass)) {
+					output[i++] = b;
+				}
+
+				//double - Thrust
+				foreach (byte b in BitConverter.GetBytes(e.Thrust)) {
+					output[i++] = b;
+				}
+
+				//double - AtmIsp
+				foreach (byte b in BitConverter.GetBytes(e.AtmIsp)) {
+					output[i++] = b;
+				}
+
+				//double - VacIsp
+				foreach (byte b in BitConverter.GetBytes(e.VacIsp)) {
+					output[i++] = b;
+				}
+
+				//(2B + 8B) * count + 2B length header - PropellantRatio
+				//Length header
+				output[i++] = (byte) (e.PropellantRatio.Count % 256);
+				output[i++] = (byte) (e.PropellantRatio.Count / 256);
+				//Data
+				foreach (FuelRatioElement f in e.PropellantRatio) {
+					output[i++] = (byte) ((int) f.Propellant % 256);
+					output[i++] = (byte) ((int) f.Propellant / 256);
+					foreach (byte b in BitConverter.GetBytes(f.Ratio)) {
+						output[i++] = b;
+					}
+				}
+
+				//double - Width
+				foreach (byte b in BitConverter.GetBytes(e.Width)) {
+					output[i++] = b;
+				}
+
+				//double - Height
+				foreach (byte b in BitConverter.GetBytes(e.Height)) {
+					output[i++] = b;
+				}
+
+				//double - Gimbal
+				foreach (byte b in BitConverter.GetBytes(e.Gimbal)) {
+					output[i++] = b;
+				}
+
+				//int - Cost
+				foreach (byte b in BitConverter.GetBytes(e.Cost)) {
+					output[i++] = b;
+				}
+
+				//double - MinThrust
+				foreach (byte b in BitConverter.GetBytes(e.MinThrust)) {
+					output[i++] = b;
+				}
+
+				//int - Ignitions
+				foreach (byte b in BitConverter.GetBytes(e.Ignitions)) {
+					output[i++] = b;
+				}
+
+				//bool - PressureFed
+				output[i++] = (byte) (e.PressureFed? 1 : 0);
+
+				//bool - NeedsUllage
+				output[i++] = (byte) (e.NeedsUllage? 1 : 0);
+
+				//bool - FuelVolumeRatios
+				output[i++] = (byte) (e.FuelVolumeRatios? 1 : 0);
+
+				//bool - TestFlightConfigNotDefault
+				output[i++] = (byte) (e.TestFlightConfigNotDefault? 1 : 0);
+
+				//Include all properties inside brackets only if any Test Flight properties were changed
+				if (e.TestFlightConfigNotDefault) {
+					//bool - EnableTestFlight
+					output[i++] = (byte) (e.EnableTestFlight? 1 : 0);
+
+					//int - RatedBurnTime
+					foreach (byte b in BitConverter.GetBytes(e.RatedBurnTime)) {
+						output[i++] = b;
+					}
+
+					//double - StartReliability0
+					foreach (byte b in BitConverter.GetBytes(e.StartReliability0)) {
+						output[i++] = b;
+					}
+
+					//double - StartReliability10k
+					foreach (byte b in BitConverter.GetBytes(e.StartReliability10k)) {
+						output[i++] = b;
+					}
+
+					//double - CycleReliability0
+					foreach (byte b in BitConverter.GetBytes(e.CycleReliability0)) {
+						output[i++] = b;
+					}
+
+					//double - CycleReliability10k
+					foreach (byte b in BitConverter.GetBytes(e.CycleReliability10k)) {
+						output[i++] = b;
+					}
+				}
+
+				//double - AlternatorPower
+				foreach (byte b in BitConverter.GetBytes(e.AlternatorPower)) {
+					output[i++] = b;
+				}
+
+				return output;
 			}
 		};
 
@@ -887,6 +1052,132 @@ namespace GenericEngines {
 					output.CycleReliability10k = BitConverter.ToDouble (input, i);
 					i += 8;
 				}
+
+				addedOffset = i - offset;
+				return output;
+			},
+			(byte[] input, out int addedOffset, int offset) => {
+				
+				//Deserializer v.4
+				//Lil' Endian
+				Engine output = Engine.New ();
+				int i = offset;
+
+				i += 2; //short - Version header
+
+				//bool - Active
+				output.Active = input[i++] == 1;
+
+				//String + 2B length header - Name
+				{
+					int stringLength = 0;
+					stringLength += input[i++];
+					stringLength += input[i++] * 256;
+
+					output.Name = "";
+					for (int c = 0; c < stringLength; ++c) {
+						output.Name += Convert.ToChar (input[i++]);
+					}
+
+				}
+
+				//double - Mass
+				output.Mass = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - Thrust
+				output.Thrust = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - AtmIsp
+				output.AtmIsp = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - VacIsp
+				output.VacIsp = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//(2B + 8B) * count + 2B length header - PropellantRatio
+				{
+					int dataLength = 0;
+					dataLength += input[i++];
+					dataLength += input[i++] * 256;
+
+					output.PropellantRatio.Clear (); //Constructor gives one element to this list
+
+					FuelType fuelType = 0;
+					for (int c = 0; c < dataLength; ++c) {
+						fuelType = 0;
+						fuelType += input[i++];
+						fuelType += input[i++] * 256;
+
+						output.PropellantRatio.Add (new FuelRatioElement (fuelType, BitConverter.ToDouble (input, i)));
+						i += 8;
+					}
+				}
+			
+				//double - Width
+				output.Width = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - Height
+				output.Height = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//double - Gimbal
+				output.Gimbal = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//int - Cost
+				output.Cost = BitConverter.ToInt32 (input, i);
+				i += 4;
+
+				//double - MinThrust
+				output.MinThrust = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//int - Ignitions
+				output.Ignitions = BitConverter.ToInt32 (input, i);
+				i += 4;
+
+				//bool - PressureFed
+				output.PressureFed = input[i++] == 1;
+
+				//bool - NeedsUllage
+				output.NeedsUllage = input[i++] == 1;
+
+				//bool - FuelVolumeRatios
+				output.FuelVolumeRatios = input[i++] == 1;
+				
+				//bool - TestFlightConfigNotDefault
+				if (input[i++] == 1) {
+					//bool - EnableTestFlight
+					output.EnableTestFlight = input[i++] == 1;
+					
+					//int - RatedBurnTime
+					output.RatedBurnTime = BitConverter.ToInt32 (input, i);
+					i += 4;
+
+					//double - StartReliability0
+					output.StartReliability0 = BitConverter.ToDouble (input, i);
+					i += 8;
+
+					//double - StartReliability10k
+					output.StartReliability10k = BitConverter.ToDouble (input, i);
+					i += 8;
+
+					//double - CycleReliability0
+					output.CycleReliability0 = BitConverter.ToDouble (input, i);
+					i += 8;
+
+					//double - CycleReliability10k
+					output.CycleReliability10k = BitConverter.ToDouble (input, i);
+					i += 8;
+				}
+
+				//double - AlternatorPower
+				output.AlternatorPower = BitConverter.ToDouble (input, i);
+				i += 8;
 
 				addedOffset = i - offset;
 				return output;

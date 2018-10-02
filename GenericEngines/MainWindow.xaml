@@ -370,6 +370,24 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
+				<DataGridTemplateColumn SortMemberPath="AlternatorPower">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=AlternatorPower, StringFormat={}{0}kW}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=AlternatorPower, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Alternator" ToolTip="Alternator" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn SortMemberPath="Ignitions">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>

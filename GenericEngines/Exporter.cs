@@ -116,6 +116,21 @@ PROPELLANT
 }}
 ";
 			}
+
+			string alternator = "";
+			if (engine.AlternatorPower > 0) {
+				alternator = $@"
+MODULE
+{{
+	name = ModuleAlternator
+	RESOURCE
+	{{
+		name = ElectricCharge
+		rate = {engine.AlternatorPower.ToString (CultureInfo.InvariantCulture)}
+	}}
+}}
+";
+			}
 			//====
 output = $@"
 PART
@@ -216,16 +231,9 @@ PART
  	    gimbalResponseSpeed = 15
  	    useGimbalResponseSpeed = true
     }}
+
+	{alternator}
 	
-	MODULE
-	{{
-		name = ModuleAlternator
-		RESOURCE
-		{{
-			name = ElectricCharge
-			rate = 2.0
-		}}
-	}}
 	MODULE
 	{{
 		name = ModuleSurfaceFX
@@ -340,8 +348,6 @@ PART
 		%useGimbalResponseSpeed = true
 		%gimbalResponseSpeed = 50
 	}}
-
-	!MODULE[ModuleAlternator],*{{}}
 
 	!RESOURCE,*{{}}
 }}

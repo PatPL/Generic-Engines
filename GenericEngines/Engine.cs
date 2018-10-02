@@ -30,6 +30,7 @@ namespace GenericEngines {
 		public double StartReliability10k { get; set; } //3
 		public double CycleReliability0 { get; set; } //3
 		public double CycleReliability10k { get; set; } //3
+		public double AlternatorPower { get; set; } //4
 
 		public bool TestFlightConfigNotDefault {
 			get {
