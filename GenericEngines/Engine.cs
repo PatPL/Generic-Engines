@@ -31,6 +31,13 @@ namespace GenericEngines {
 		public double CycleReliability0 { get; set; } //3
 		public double CycleReliability10k { get; set; } //3
 		public double AlternatorPower { get; set; } //4
+		public bool AdvancedGimbal { get; set; } //5
+		public double GimbalNX { get; set; } //5
+		public double GimbalPX { get; set; } //5
+		public double GimbalNY { get; set; } //5
+		public double GimbalPY { get; set; } //5
+
+		// Serializer
 
 		public bool TestFlightConfigNotDefault {
 			get {
@@ -46,10 +53,35 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool GimbalConfigNotDefault {
+			get {
+				Engine comparison = new Engine ();
+				return
+					AdvancedGimbal != comparison.AdvancedGimbal ||
+					GimbalNX != comparison.GimbalNX ||
+					GimbalPX != comparison.GimbalPX ||
+					GimbalNY != comparison.GimbalNY ||
+					GimbalPY != comparison.GimbalPY
+				;
+			}
+		}
+
+		// Labels
+
+		public string GimbalStatus {
+			get {
+				if (AdvancedGimbal) {
+					return $"X:{GimbalNX.ToString (CultureInfo.InvariantCulture)}°:{GimbalPX.ToString (CultureInfo.InvariantCulture)}°, Y:{GimbalNY.ToString (CultureInfo.InvariantCulture)}°:{GimbalPY.ToString (CultureInfo.InvariantCulture)}°";
+				} else {
+					return $"{Gimbal.ToString (CultureInfo.InvariantCulture)}°";
+				}
+			}
+		}
+
 		public string TestFlightStatus {
 			get {
 				if (EnableTestFlight) {
-					return $"Enabled | {RatedBurnTime}s | {CycleReliability10k}%";
+					return $"Enabled | {RatedBurnTime}s | {CycleReliability10k.ToString (CultureInfo.InvariantCulture)}%";
 				} else if (TestFlightConfigNotDefault) {
 					return "Disabled, but configured";
 				} else {
@@ -87,6 +119,12 @@ namespace GenericEngines {
 			StartReliability10k = 96.0;
 			CycleReliability0 = 90.0;
 			CycleReliability10k = 98.0;
+			AlternatorPower = 0.0;
+			AdvancedGimbal = false;
+			GimbalNX = 30.0;
+			GimbalPX = 30.0;
+			GimbalNY = 0.0;
+			GimbalPY = 0.0;
 		}
 
 		public static Engine New () {

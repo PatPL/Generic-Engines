@@ -57,3 +57,4 @@ C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\SettingsW
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.baml
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\About.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\About.baml
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GeneratedInternalTypeHelper.g.cs

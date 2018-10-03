@@ -53,6 +53,10 @@ namespace GenericEngines {
 
 			settings = new Dictionary<string, string> ();
 
+			if(!Directory.Exists (Path.GetDirectoryName (settingsPath))) {
+				Directory.CreateDirectory (Path.GetDirectoryName (settingsPath));
+			}
+
 			StreamReader file;
 			if (!File.Exists (settingsPath)) {
 				file = new StreamReader (File.Create (settingsPath));

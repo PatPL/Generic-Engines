@@ -131,6 +131,33 @@ MODULE
 }}
 ";
 			}
+
+			string gimbal = "";
+			if (engine.AdvancedGimbal) {
+				gimbal = $@"
+MODULE
+	{{
+	    name = ModuleGimbal
+	    gimbalTransformName = thrustTransform
+		gimbalRangeYP = {engine.GimbalPY.ToString (CultureInfo.InvariantCulture)}
+		gimbalRangeYN = {engine.GimbalNY.ToString (CultureInfo.InvariantCulture)}
+		gimbalRangeXP = {engine.GimbalPX.ToString (CultureInfo.InvariantCulture)}
+		gimbalRangeXN = {engine.GimbalNX.ToString (CultureInfo.InvariantCulture)}
+ 	    useGimbalResponseSpeed = false
+    }}
+";
+			} else {
+				gimbal = $@"
+MODULE
+    {{
+        name = ModuleGimbal
+        gimbalTransformName = thrustTransform
+		useGimbalResponseSpeed = false
+        gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
+    }}
+";
+			}
+
 			//====
 output = $@"
 PART
@@ -220,17 +247,7 @@ PART
 		dependOnThrottle = True
 	}}
 
-//MODULE
-	{{
-	    name = ModuleGimbal
-	    gimbalTransformName = thrustTransform
-		gimbalRangeYP = 0.7
-		gimbalRangeYN = 0.7
-		gimbalRangeXP = 0.7
-		gimbalRangeXN = 0.7
- 	    gimbalResponseSpeed = 15
- 	    useGimbalResponseSpeed = true
-    }}
+	{gimbal}
 
 	{alternator}
 	
@@ -295,13 +312,6 @@ PART
         }}
 
         !thrustCurve,*{{}}
-    }}
-
-    MODULE
-    {{
-        name = ModuleGimbal
-        gimbalTransformName = thrustTransform
-        gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
     }}
 	
 	%title = {engine.Name}
