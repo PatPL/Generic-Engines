@@ -395,6 +395,7 @@ PART
 ";
 			//====
 
+			output = output.Compact ();
 			return output;
 		}
 
