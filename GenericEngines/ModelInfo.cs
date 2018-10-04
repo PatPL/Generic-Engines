@@ -19,9 +19,9 @@ namespace GenericEngines {
 	public static class ModelList {
 
 		private static readonly List<ModelInfo> models = new List<ModelInfo> () {
-			new ModelInfo {
-				OriginalHeight = 1.9,
-				OriginalWidth = 1.0,
+			new ModelInfo { //Model.LR91
+				OriginalHeight = 1.885,
+				OriginalWidth = 0.97,
 				NodeStackTop = "0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1",
 				NodeStackBottom = "0.0, -1.1635, 0.0, 0.0, -1.0, 0.0, 1",
 				NodeStackAttach = "0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1",

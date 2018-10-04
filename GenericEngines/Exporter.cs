@@ -22,41 +22,25 @@ namespace GenericEngines {
 		}
 
 		public static string ConvertEngineToConfig (Engine engine) {
-			string output = "";
-
-			double heightScale = engine.Height / 1.9;
-			double widthScale = engine.Width / heightScale;
-			//====
-			output = $@"
+			string output = $@"
 				PART
 				{{
 					name = {engine.EngineID}
 					module = Part
 					author = Generic Engines
-					mesh = LR-91eng.mu
-					rescaleFactor = 1
-	
-					MODEL
-					{{
-						model = RealismOverhaul/Models/LR-91eng
-						scale = 1, 1, 1
-					}}
-					scale = 1
-
-					node_stack_top = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
-					node_stack_bottom = 0.0, -1.1635, 0.0, 0.0, -1.0, 0.0, 1
-					node_attach = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
+					
+					{engine.ModelConfig}
 
 					TechRequired = basicRocketry
 					entryCost = 0
 					cost = {engine.Cost}
 					category = Engine
 					subcategory = 0
-					title = NK43
-					manufacturer = Generic inc.
-					description = NK43 engine for 2nd stage moon rocket N1
+					title = {engine.Name}
+					manufacturer = Generic Engines
+					description = Generic Engine | {engine.Name}
 					attachRules = 1,1,1,0,0
-					mass = 2.375
+					mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
 					heatConductivity = 0.06
 					skinInternalConductionMult = 4.0
 					emissiveConstant = 0.8
@@ -64,7 +48,7 @@ namespace GenericEngines {
 					maximum_drag = 0.2
 					minimum_drag = 0.2
 					angularDrag = 2
-					crashTolerance = 7
+					crashTolerance = 12
 					maxTemp = 2200 // = 3600
 					bulkheadProfiles = size1
 					tags = REP
@@ -134,24 +118,7 @@ namespace GenericEngines {
 				{{
 
 					% RSSROConfig = True
-
-					!mesh = NULL
-	
-					//  Default: 1.0
-					//  Dimensions:
-					//  Radius: 1.0m
-					//  Height: 1.9m
-					//
-					@MODEL
-					{{
-						@scale = {widthScale.ToString (CultureInfo.InvariantCulture)}, 1.0, {widthScale.ToString (CultureInfo.InvariantCulture)}
-					}}
-
-					@scale = 1.0
-					@rescaleFactor = {heightScale.ToString (CultureInfo.InvariantCulture)}
-
-					@mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
-					@crashTolerance = 10
+					
 					%breakingForce = 250
 					%breakingTorque = 250
 					@maxTemp = 573.15
@@ -161,7 +128,6 @@ namespace GenericEngines {
 					%stagingIcon = LIQUID_ENGINE
 					@bulkheadProfiles = srf, size3
 					@tags = Generic Engine
-
 					%engineType = {engine.EngineID}
 
 					@MODULE[ModuleEngines*]
@@ -181,10 +147,6 @@ namespace GenericEngines {
 
 						!thrustCurve,*{{}}
 					}}
-	
-					%title = {engine.Name}
-					%manufacturer = Generic Engines
-					%description = Generic Engine | {engine.Name}
 
 					MODULE
 					{{

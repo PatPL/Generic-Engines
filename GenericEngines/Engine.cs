@@ -41,6 +41,39 @@ namespace GenericEngines {
 
 		// Exporter
 
+		public string ModelConfig {
+			get {
+				string model = "";
+
+				ModelInfo modelInfo = GetModelInfo;
+
+				double heightScale = Height / modelInfo.OriginalHeight;
+				double widthScale = Width / heightScale / modelInfo.OriginalWidth;
+
+				model = $@"
+					MODEL
+					{{
+						model = {GetModelInfo.ModelPath}
+						scale = {widthScale.ToString (CultureInfo.InvariantCulture)}, 1, {widthScale.ToString (CultureInfo.InvariantCulture)}
+					}}
+					scale = 1
+					rescaleFactor = {heightScale.ToString (CultureInfo.InvariantCulture)}
+
+					node_stack_top = {modelInfo.NodeStackTop}
+					node_stack_bottom = {modelInfo.NodeStackBottom}
+					node_attach = {modelInfo.NodeStackAttach}
+				";
+
+				return model;
+			}
+		}
+
+		public ModelInfo GetModelInfo {
+			get {
+				return ModelList.Get (ModelID);
+			}
+		}
+
 		public string EngineID {
 			get {
 				string output = $"GE-{Name.Replace (' ', '-')}";
@@ -107,13 +140,13 @@ namespace GenericEngines {
 				bool firstPropellant = true;
 				foreach (FuelRatioElement i in fuelRatios) {
 					propellants += $@"
-PROPELLANT
-{{
-	name = {FuelName.Name (i.Propellant)}
-	ratio = {i.Ratio.ToString (CultureInfo.InvariantCulture)}
-	DrawGauge = {firstPropellant}
-}}
-";
+						PROPELLANT
+						{{
+							name = {FuelName.Name (i.Propellant)}
+							ratio = {i.Ratio.ToString (CultureInfo.InvariantCulture)}
+							DrawGauge = {firstPropellant}
+						}}
+					";
 
 					firstPropellant = false;
 				}
