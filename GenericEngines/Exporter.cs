@@ -182,13 +182,6 @@ namespace GenericEngines {
 						}}
 					}}
 
-					@MODULE[ModuleGimbal]
-					{{
-						@gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
-						%useGimbalResponseSpeed = true
-						%gimbalResponseSpeed = 50
-					}}
-
 					!RESOURCE,*{{}}
 				}}
 
