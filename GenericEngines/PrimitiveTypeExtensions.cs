@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace GenericEngines {
 	public static class PrimitiveTypeExtensions {
-		
+
 		public static string Compact (this string input) {
 			string output = input;
 
@@ -15,13 +15,17 @@ namespace GenericEngines {
 			output = "";
 
 			foreach (string i in lines) {
-				output += $"{i.Trim (new char[] { ' ', '\t', '\r' })}\n"; //Removes leading and trailing whitespace
+				string tmp = i.Trim (new char[] { ' ', '\t', '\r' });
+
+				if (tmp != "") {
+					output += $"{tmp}\n";
+				}
+
+
 			}
 
-			output = Regex.Replace (output, "\n\n", "\n"); //Removes empty lines
-
 			return output;
+
 		}
-		
 	}
 }

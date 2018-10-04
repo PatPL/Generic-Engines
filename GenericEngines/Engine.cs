@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace GenericEngines {
 	public class Engine {
@@ -36,6 +37,182 @@ namespace GenericEngines {
 		public double GimbalPX { get; set; } //5
 		public double GimbalNY { get; set; } //5
 		public double GimbalPY { get; set; } //5
+		public Model ModelID { get; set; } //-
+
+		// Exporter
+
+		public string EngineID {
+			get {
+				string output = $"GE-{Name.Replace (' ', '-')}";
+				output = Regex.Replace (output, "[<>,+*=]", "");
+
+				return output;
+			}
+		}
+
+		public string PropellantConfig { 
+			get {
+				bool isElectric = false;
+				FuelRatioList fuelRatios = new FuelRatioList ();
+				if (!FuelVolumeRatios) {
+
+					foreach (FuelRatioElement i in PropellantRatio) {
+						if (i.Propellant == FuelType.ElectricCharge) {
+							isElectric = true;
+						} else {
+							fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelDensity.Get[(int) i.Propellant] / 1000));
+						}
+					}
+
+				} else {
+
+					foreach (FuelRatioElement i in PropellantRatio) {
+						if (i.Propellant == FuelType.ElectricCharge) {
+							isElectric = true;
+						} else {
+							fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio));
+						}
+					}
+
+				}
+
+				if (isElectric) {
+
+					double normalFuelRatios = 0.0;// Will be used to calculate propellant flow rate
+					double averageDensity = 0.0;// t/l
+					double electricRatio = PropellantRatio.Find (s => s.Propellant == FuelType.ElectricCharge).Ratio;// kW
+
+					foreach (FuelRatioElement i in fuelRatios) {
+						normalFuelRatios += i.Ratio;
+						averageDensity += i.Ratio * FuelDensity.Get[(int) i.Propellant];
+					}
+
+					averageDensity /= normalFuelRatios; // t/l
+
+					double x = VacIsp; // s
+					x *= 9.8066; // N*s/kg
+					x = 1 / x; // kg/N*s -> t/kN*s
+					x /= averageDensity; // l/kN*s
+					x *= Thrust; // l/s
+										//normalFuelRatios    = x units/s
+										//actualElectricRatio = y units/s (kW)
+					electricRatio = electricRatio * normalFuelRatios / x; //result
+
+					fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, electricRatio));
+				}
+
+
+
+				string propellants = "";
+				bool firstPropellant = true;
+				foreach (FuelRatioElement i in fuelRatios) {
+					propellants += $@"
+PROPELLANT
+{{
+	name = {FuelName.Name (i.Propellant)}
+	ratio = {i.Ratio.ToString (CultureInfo.InvariantCulture)}
+	DrawGauge = {firstPropellant}
+}}
+";
+
+					firstPropellant = false;
+				}
+
+				return propellants;
+			}
+		}
+
+		public string GimbalConfig {
+			get {
+				string gimbal = "";
+
+				if (AdvancedGimbal) {
+					gimbal = $@"
+						MODULE
+						{{
+							name = ModuleGimbal
+							gimbalTransformName = thrustTransform
+							gimbalRangeYP = {GimbalPY.ToString (CultureInfo.InvariantCulture)}
+							gimbalRangeYN = {GimbalNY.ToString (CultureInfo.InvariantCulture)}
+							gimbalRangeXP = {GimbalPX.ToString (CultureInfo.InvariantCulture)}
+							gimbalRangeXN = {GimbalNX.ToString (CultureInfo.InvariantCulture)}
+ 							useGimbalResponseSpeed = false
+						}}
+					";
+				} else {
+					gimbal = $@"
+						MODULE
+						{{
+							name = ModuleGimbal
+							gimbalTransformName = thrustTransform
+							useGimbalResponseSpeed = false
+							gimbalRange = {Gimbal.ToString (CultureInfo.InvariantCulture)}
+						}}
+					";
+				}
+
+				return gimbal;
+			}
+		}
+
+		public string TestFlightConfig {
+			get {
+				string testflight = "";
+
+				if (EnableTestFlight) {
+					testflight = $@"
+						@PART[*]:HAS[@MODULE[ModuleEngineConfigs]:HAS[@CONFIG[{EngineID}]],!MODULE[TestFlightInterop]]:BEFORE[zTestFlight]
+						{{
+							TESTFLIGHT
+							{{
+								name = {EngineID}
+								ratedBurnTime = {RatedBurnTime}
+								ignitionReliabilityStart = {(StartReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
+								ignitionReliabilityEnd = {(StartReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
+								cycleReliabilityStart = {(CycleReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
+								cycleReliabilityEnd = {(CycleReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
+							}}
+						}}
+					";
+				}
+
+				return testflight;
+			}
+		}
+
+		public string AlternatorConfig {
+			get {
+				string alternator = "";
+
+				if (AlternatorPower > 0) {
+					alternator = $@"
+						MODULE
+						{{
+							name = ModuleAlternator
+							RESOURCE
+							{{
+								name = ElectricCharge
+								rate = {AlternatorPower.ToString (CultureInfo.InvariantCulture)}
+							}}
+						}}
+					";
+				}
+
+				return alternator;
+			}
+		}
+
+		public double MinThrustPercent {
+			get {
+				return (Math.Max (Math.Min (MinThrust, 100), 0) / 100);
+			}
+		}
+
+		public int IgnitionsCount {
+			get {
+				return Ignitions < 0 ? 0 : Ignitions;
+			}
+		}
 
 		// Serializer
 
@@ -125,6 +302,7 @@ namespace GenericEngines {
 			GimbalPX = 30.0;
 			GimbalNY = 0.0;
 			GimbalPY = 0.0;
+			ModelID = Model.LR91;
 		}
 
 		public static Engine New () {
