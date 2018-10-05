@@ -157,7 +157,7 @@
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Margin="4,4,0,0" Source="new.png" MouseDown="registerMouseDown" MouseUp="newButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
+		<Image Grid.Column="0" Margin="4,4,0,0" Source="new.png" MouseDown="registerMouseDown" MouseUp="newButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
 		<Image Grid.Column="1" Margin="4,4,0,0" Source="open.png" MouseDown="registerMouseDown" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
 		<Image Grid.Column="2" Margin="4,4,0,0" Source="append.png" MouseDown="registerMouseDown" MouseUp="appendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 		<Image Grid.Column="3" Margin="4,4,0,0" Source="save.png" MouseDown="registerMouseDown" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
