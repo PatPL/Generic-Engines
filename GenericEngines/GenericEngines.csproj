@@ -81,6 +81,7 @@
     <Compile Include="Exporter.cs" />
     <Compile Include="FuelRatioList.cs" />
     <Compile Include="ModelInfo.cs" />
+    <Compile Include="PlumeInfo.cs" />
     <Compile Include="PrimitiveTypeExtensions.cs" />
     <Compile Include="Properties\FuelRatioElement.cs" />
     <Compile Include="Properties\TestWindow.xaml.cs">
