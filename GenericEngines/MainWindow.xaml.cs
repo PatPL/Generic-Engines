@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Globalization;
 
 namespace GenericEngines {
 	/// <summary>
@@ -240,20 +241,7 @@ namespace GenericEngines {
 		}
 
 		void ExportEnginesToFile (string path) {
-			/* SaveFileDialog handles overwritting
-			if (File.Exists (path)) {
-				if (ConfirmBox.Show ($"Engine config file {path} already exists. Do you want to overwrite it?")) {
-					
-				} else {
-					return;
-				}
-			} else {
-
-			}
-			*/
-
 			File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines));
-
 		}
 
 		void saveEnginesToFile (string path) {

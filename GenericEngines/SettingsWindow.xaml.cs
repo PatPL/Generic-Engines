@@ -47,6 +47,15 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool DisplayInfoBoxPanel {
+			get {
+				return bool.Parse (Settings.Get ("DisplayInfoBoxPanel"));
+			}
+			set {
+				Settings.Set ("DisplayInfoBoxPanel", value.ToString ());
+			}
+		}
+
 		// /Settings
 
 		object lastMouseDownObject;

@@ -22,379 +22,202 @@ namespace GenericEngines {
 		}
 
 		public static string ConvertEngineToConfig (Engine engine) {
-			string output = "";
-			string engineID = $"GE-{engine.Name.Replace (' ', '-')}";
-			engineID = Regex.Replace (engineID, "[<>,+*=]", "");
+			string output = $@"
+				PART
+				{{
+					name = {engine.EngineID}
+					module = Part
+					author = Generic Engines
+					
+					{engine.ModelConfig}
 
-			double heightScale = engine.Height / 1.9;
-			double widthScale = engine.Width / heightScale;
-			double minThrustPercent = Math.Max (Math.Min (engine.MinThrust, 100), 0) / 100;
-			int ignitions = engine.Ignitions < 0 ? 0 : engine.Ignitions;
-
-			bool isElectric = false;
-			FuelRatioList fuelRatios = new FuelRatioList ();
-			if (!engine.FuelVolumeRatios) {
-
-				foreach (FuelRatioElement i in engine.PropellantRatio) {
-					if (i.Propellant == FuelType.ElectricCharge) {
-						isElectric = true;
-					} else {
-						fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelDensity.Get[(int) i.Propellant] / 1000));
-					}
-				}
-
-				
-			} else {
-
-				foreach (FuelRatioElement i in engine.PropellantRatio) {
-					if (i.Propellant == FuelType.ElectricCharge) {
-						isElectric = true;
-					} else {
-						fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio));
-					}
-				}
-
-			}
-
-			if (isElectric) {
-
-				double normalFuelRatios = 0.0;// Will be used to calculate propellant flow rate
-				double averageDensity = 0.0;// t/l
-				double electricRatio = engine.PropellantRatio.Find (s => s.Propellant == FuelType.ElectricCharge).Ratio;// kW
-
-				foreach (FuelRatioElement i in fuelRatios) {
-					normalFuelRatios += i.Ratio;
-					averageDensity += i.Ratio * FuelDensity.Get[(int) i.Propellant];
-				}
-
-				averageDensity /= normalFuelRatios; // t/l
-
-				double x = engine.VacIsp; // s
-				x *= 9.8066; // N*s/kg
-				x = 1 / x; // kg/N*s -> t/kN*s
-				x /= averageDensity; // l/kN*s
-				x *= engine.Thrust; // l/s
-									//normalFuelRatios    = x units/s
-									//actualElectricRatio = y units/s (kW)
-				electricRatio = electricRatio * normalFuelRatios / x; //result
-
-				fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, electricRatio));
-			}
-
-
-
-			string propellants = "";
-			bool firstPropellant = true;
-			foreach (FuelRatioElement i in fuelRatios) {
-				propellants += $@"
-PROPELLANT
-{{
-	name = {FuelName.Name (i.Propellant)}
-	ratio = {i.Ratio.ToString (CultureInfo.InvariantCulture)}
-	DrawGauge = {firstPropellant}
-}}
-";
-
-				firstPropellant = false;
-			}
-
-			string testflight = "";
-
-			if (engine.EnableTestFlight) {
-				testflight = $@"
-@PART[*]:HAS[@MODULE[ModuleEngineConfigs]:HAS[@CONFIG[{engineID}]],!MODULE[TestFlightInterop]]:BEFORE[zTestFlight]
-{{
-	TESTFLIGHT
-	{{
-		name = {engineID}
-		ratedBurnTime = {engine.RatedBurnTime}
-		ignitionReliabilityStart = {(engine.StartReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
-		ignitionReliabilityEnd = {(engine.StartReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
-		cycleReliabilityStart = {(engine.CycleReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
-		cycleReliabilityEnd = {(engine.CycleReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
-	}}
-}}
-";
-			}
-
-			string alternator = "";
-			if (engine.AlternatorPower > 0) {
-				alternator = $@"
-MODULE
-{{
-	name = ModuleAlternator
-	RESOURCE
-	{{
-		name = ElectricCharge
-		rate = {engine.AlternatorPower.ToString (CultureInfo.InvariantCulture)}
-	}}
-}}
-";
-			}
-
-			string gimbal = "";
-			if (engine.AdvancedGimbal) {
-				gimbal = $@"
-MODULE
-	{{
-	    name = ModuleGimbal
-	    gimbalTransformName = thrustTransform
-		gimbalRangeYP = {engine.GimbalPY.ToString (CultureInfo.InvariantCulture)}
-		gimbalRangeYN = {engine.GimbalNY.ToString (CultureInfo.InvariantCulture)}
-		gimbalRangeXP = {engine.GimbalPX.ToString (CultureInfo.InvariantCulture)}
-		gimbalRangeXN = {engine.GimbalNX.ToString (CultureInfo.InvariantCulture)}
- 	    useGimbalResponseSpeed = false
-    }}
-";
-			} else {
-				gimbal = $@"
-MODULE
-    {{
-        name = ModuleGimbal
-        gimbalTransformName = thrustTransform
-		useGimbalResponseSpeed = false
-        gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
-    }}
-";
-			}
-
-			//====
-output = $@"
-PART
-{{
-	name = {engineID}
-	module = Part
-	author = Generic Engines
-	mesh = LR-91eng.mu
-	rescaleFactor = 1
+					TechRequired = basicRocketry
+					entryCost = 0
+					cost = {engine.Cost}
+					category = Engine
+					subcategory = 0
+					title = {engine.Name}
+					manufacturer = Generic Engines
+					description = Generic Engine | {engine.Name}
+					attachRules = 1,1,1,0,0
+					mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
+					heatConductivity = 0.06
+					skinInternalConductionMult = 4.0
+					emissiveConstant = 0.8
+					dragModelType = default
+					maximum_drag = 0.2
+					minimum_drag = 0.2
+					angularDrag = 2
+					crashTolerance = 12
+					maxTemp = 2200 // = 3600
+					bulkheadProfiles = size1
+					tags = REP
 	
-	MODEL
-	{{
-		model = RealismOverhaul/Models/LR-91eng
-        scale = 1, 1, 1
-	}}
-	scale = 1
-
-	node_stack_top = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
-	node_stack_bottom = 0.0, -1.1635, 0.0, 0.0, -1.0, 0.0, 1
-	node_attach = 0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1
-
-	TechRequired = basicRocketry
-	entryCost = 0
-	cost = {engine.Cost}
-	category = Engine
-	subcategory = 0
-	title = NK43
-	manufacturer = Generic inc.
-	description = NK43 engine for 2nd stage moon rocket N1
-	attachRules = 1,1,1,0,0
-	mass = 2.375
-	heatConductivity = 0.06
-	skinInternalConductionMult = 4.0
-	emissiveConstant = 0.8
-	dragModelType = default
-	maximum_drag = 0.2
-	minimum_drag = 0.2
-	angularDrag = 2
-	crashTolerance = 7
-	maxTemp = 2200 // = 3600
-	bulkheadProfiles = size1
-	tags = REP
-	
-	MODULE
-	{{
-		name = ModuleJettison
-		jettisonName = 430
-		bottomNodeName = bottom
-		isFairing = True
-		jettisonedObjectMass = 0.1
-		jettisonForce = 5
-		jettisonDirection = 0 0 1
-	}}
+					MODULE
+					{{
+						name = ModuleJettison
+						jettisonName = 430
+						bottomNodeName = bottom
+						isFairing = True
+						jettisonedObjectMass = 0.1
+						jettisonForce = 5
+						jettisonDirection = 0 0 1
+					}}
 		
-	MODULE
-	{{
-		name = ModuleEngines
-		thrustVectorTransformName = thrustTransform
-		exhaustDamage = True
-		ignitionThreshold = 0.1
-		minThrust = 0
-		maxThrust = 610
-		heatProduction = 200
-		fxOffset = 0, 0, 0.974338
-		EngineType = LiquidFuel
-		useThrustCurve = true 
-		exhaustDamageDistanceOffset = 0.79
+					MODULE
+					{{
+						name = ModuleEngines
+						thrustVectorTransformName = thrustTransform
+						exhaustDamage = True
+						ignitionThreshold = 0.1
+						minThrust = 0
+						maxThrust = 610
+						heatProduction = 200
+						fxOffset = 0, 0, 0.974338
+						EngineType = LiquidFuel
+						useThrustCurve = true 
+						exhaustDamageDistanceOffset = 0.79
 		
-		atmosphereCurve
-		{{
-			key = 0 345
-			key = 1 204
-			key = 6 0.001
-		}}
-		thrustCurve
-		{{
-			key = 1 1
-			key = 0 0
-		}}
-	}}
-	MODULE
-	{{
-		name = FXModuleAnimateThrottle
-		animationName = NK43
-		responseSpeed = 0.0009
-		dependOnEngineState = True
-		dependOnThrottle = True
-	}}
+						atmosphereCurve
+						{{
+							key = 0 345
+							key = 1 204
+							key = 6 0.001
+						}}
+						thrustCurve
+						{{
+							key = 1 1
+							key = 0 0
+						}}
+					}}
+					MODULE
+					{{
+						name = FXModuleAnimateThrottle
+						animationName = NK43
+						responseSpeed = 0.0009
+						dependOnEngineState = True
+						dependOnThrottle = True
+					}}
 
-	{gimbal}
+					{engine.GimbalConfig}
 
-	{alternator}
+					{engine.AlternatorConfig}
 	
-	MODULE
-	{{
-		name = ModuleSurfaceFX
-		thrustProviderModuleIndex = 0
-		fxMax = 0.5
-		maxDistance = 30
-		falloff = 1.7
-		thrustTransformName = thrustTransform
-	}}
-}}
+					MODULE
+					{{
+						name = ModuleSurfaceFX
+						thrustProviderModuleIndex = 0
+						fxMax = 0.5
+						maxDistance = 30
+						falloff = 1.7
+						thrustTransformName = thrustTransform
+					}}
+				}}
 
-@PART[{engineID}]:FOR[RealismOverhaul]
-{{
+				@PART[{engine.EngineID}]:FOR[RealismOverhaul]
+				{{
 
-	% RSSROConfig = True
+					% RSSROConfig = True
+					
+					%breakingForce = 250
+					%breakingTorque = 250
+					@maxTemp = 573.15
+					%skinMaxTemp = 673.15
+					%stageOffset = 1
+					%childStageOffset = 1
+					%stagingIcon = LIQUID_ENGINE
+					@bulkheadProfiles = srf, size3
+					@tags = Generic Engine
+					%engineType = {engine.EngineID}
 
-    !mesh = NULL
-	
-	//  Default: 1.0
-	//  Dimensions:
-	//  Radius: 1.0m
-	//  Height: 1.9m
-	//
-    @MODEL
-    {{
-        @scale = {widthScale.ToString (CultureInfo.InvariantCulture)}, 1.0, {widthScale.ToString (CultureInfo.InvariantCulture)}
-    }}
+					@MODULE[ModuleEngines*]
+					{{
+						@minThrust = {(engine.Thrust * engine.MinThrustPercent).ToString (CultureInfo.InvariantCulture)}
+						@maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
+						@heatProduction = 180
+						@useThrustCurve = False
 
-    @scale = 1.0
-    @rescaleFactor = {heightScale.ToString (CultureInfo.InvariantCulture)}
+						{engine.PropellantConfig}
 
-    @mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
-    @crashTolerance = 10
-    %breakingForce = 250
-    %breakingTorque = 250
-    @maxTemp = 573.15
-    %skinMaxTemp = 673.15
-    %stageOffset = 1
-    %childStageOffset = 1
-    %stagingIcon = LIQUID_ENGINE
-    @bulkheadProfiles = srf, size3
-    @tags = Generic Engine
+						@atmosphereCurve
+						{{
+							@key,0 = 0 {engine.VacIsp.ToString (CultureInfo.InvariantCulture)}
+							@key,1 = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
+						}}
 
-    %engineType = {engineID}
+						!thrustCurve,*{{}}
+					}}
 
-    @MODULE[ModuleEngines*]
-    {{
-        @minThrust = {(engine.Thrust * minThrustPercent).ToString (CultureInfo.InvariantCulture)}
-        @maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
-        @heatProduction = 180
-        @useThrustCurve = False
+					MODULE
+					{{
+						name = ModuleEngineConfigs
+						configuration = {engine.EngineID}
+						modded = false
+						origMass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
+						CONFIG
+						{{
+							name = {engine.EngineID}
+							description = Generic Engine | {engine.Name}
+							maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
+							minThrust = {(engine.Thrust * engine.MinThrustPercent).ToString (CultureInfo.InvariantCulture)}
+							heatProduction = 100
+							massMult = 1
 
-		{propellants}
+							{engine.PropellantConfig}
 
-        @atmosphereCurve
-        {{
-            @key,0 = 0 {engine.VacIsp.ToString (CultureInfo.InvariantCulture)}
-            @key,1 = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
-        }}
+							atmosphereCurve
+							{{
+								key = 0 {engine.VacIsp.ToString (CultureInfo.InvariantCulture)}
+								key = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
+							}}
 
-        !thrustCurve,*{{}}
-    }}
-	
-	%title = {engine.Name}
-	%manufacturer = Generic Engines
-	%description = Generic Engine | {engine.Name}
+							ullage = {engine.NeedsUllage}
+							pressureFed = {engine.PressureFed}
+							ignitions = {engine.IgnitionsCount}
+							IGNITOR_RESOURCE
+							{{
+								name = ElectricCharge
+								amount = 1
+							}}
+						}}
+					}}
 
-	MODULE
-	{{
-		name = ModuleEngineConfigs
-		configuration = {engineID}
-		modded = false
-		origMass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
-		CONFIG
-		{{
-			name = {engineID}
-			description = Generic Engine | {engine.Name}
-			maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
-			minThrust = {(engine.Thrust * minThrustPercent).ToString (CultureInfo.InvariantCulture)}
-			heatProduction = 100
-			massMult = 1
+					!RESOURCE,*{{}}
+				}}
 
-			{propellants}
+				@PART[{engine.EngineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
+				{{
+					PLUME
+					{{
+						name = Kerolox-Upper
+						transformName = thrustTransform
+						localRotation = 0,0,0
+						localPosition = 0,0,0.8
+						fixedScale = {(0.4 * engine.Width).ToString (CultureInfo.InvariantCulture)}
+						energy = 1
+						speed = 1
+					}}
 
-			atmosphereCurve
-			{{
-				key = 0 {engine.VacIsp.ToString (CultureInfo.InvariantCulture)}
-				key = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
-			}}
+					@MODULE[ModuleEngines*]
+					{{
+						%powerEffectName = Kerolox-Upper
+						!fxOffset = NULL
+					}}
 
-			ullage = {engine.NeedsUllage}
-			pressureFed = {engine.PressureFed}
-			ignitions = {ignitions}
-			IGNITOR_RESOURCE
-			{{
-				name = ElectricCharge
-				amount = 1
-			}}
-		}}
-	}}
+					@MODULE[ModuleEngineConfigs]
+					{{
+						@CONFIG,*
+						{{
+							%powerEffectName = Kerolox-Upper
+						}}
+					}}
+				}}
 
-	@MODULE[ModuleGimbal]
-	{{
-		@gimbalRange = {engine.Gimbal.ToString (CultureInfo.InvariantCulture)}
-		%useGimbalResponseSpeed = true
-		%gimbalResponseSpeed = 50
-	}}
-
-	!RESOURCE,*{{}}
-}}
-
-@PART[{engineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
-{{
-	PLUME
-    {{
-        name = Kerolox-Upper
-        transformName = thrustTransform
-        localRotation = 0,0,0
-        localPosition = 0,0,0.8
-        fixedScale = {(0.4 * engine.Width).ToString (CultureInfo.InvariantCulture)}
-        energy = 1
-        speed = 1
-    }}
-
-    @MODULE[ModuleEngines*]
-    {{
-        %powerEffectName = Kerolox-Upper
-        !fxOffset = NULL
-    }}
-
-	@MODULE[ModuleEngineConfigs]
-	{{
-        @CONFIG,*
-		{{
-			%powerEffectName = Kerolox-Upper
-		}}
-	}}
-}}
-
-{testflight}
-
-";
+				{engine.TestFlightConfig}
+			";
 			//====
 
+			output = output.Compact ();
 			return output;
 		}
 
