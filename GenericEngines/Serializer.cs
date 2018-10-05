@@ -236,8 +236,13 @@ namespace GenericEngines {
 				//String + 2B length header - Name
 				{
 					int stringLength = 0;
-					stringLength += input[i++];
-					stringLength += input[i++] * 256;
+					if (version >= 3) {
+						stringLength += input[i++];
+						stringLength += input[i++] * 256;
+					} else {
+						stringLength += input[i++] * 256;
+						stringLength += input[i++];
+					}
 
 					output.Name = "";
 					for (int c = 0; c < stringLength; ++c) {
@@ -265,16 +270,26 @@ namespace GenericEngines {
 				//(2B + 8B) * count + 2B length header - PropellantRatio
 				{
 					int dataLength = 0;
-					dataLength += input[i++];
-					dataLength += input[i++] * 256;
+					if (version >= 3) {
+						dataLength += input[i++];
+						dataLength += input[i++] * 256;
+					} else {
+						dataLength += input[i++] * 256;
+						dataLength += input[i++];
+					}
 
 					output.PropellantRatio.Clear (); //Constructor gives one element to this list
 
 					FuelType fuelType = 0;
 					for (int c = 0; c < dataLength; ++c) {
 						fuelType = 0;
-						fuelType += input[i++];
-						fuelType += input[i++] * 256;
+						if (version >= 3) {
+							fuelType += input[i++];
+							fuelType += input[i++] * 256;
+						} else {
+							fuelType += input[i++] * 256;
+							fuelType += input[i++];
+						}
 
 						output.PropellantRatio.Add (new FuelRatioElement (fuelType, BitConverter.ToDouble (input, i)));
 						i += 8;
