@@ -157,7 +157,7 @@
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Grid.Column="0" Margin="4,4,0,0" Source="new.png" MouseDown="registerMouseDown" MouseUp="newButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
+		<Image Margin="4,4,0,0" Source="new.png" MouseDown="registerMouseDown" MouseUp="newButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
 		<Image Grid.Column="1" Margin="4,4,0,0" Source="open.png" MouseDown="registerMouseDown" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
 		<Image Grid.Column="2" Margin="4,4,0,0" Source="append.png" MouseDown="registerMouseDown" MouseUp="appendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 		<Image Grid.Column="3" Margin="4,4,0,0" Source="save.png" MouseDown="registerMouseDown" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
@@ -236,25 +236,25 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="MinThrust">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Path=MinThrust, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-					<DataGridTemplateColumn.CellEditingTemplate>
-						<DataTemplate>
-							<TextBox Text="{Binding Path=MinThrust, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellEditingTemplate>
-					<DataGridTemplateColumn.HeaderTemplate>
-						<DataTemplate>
-							<TextBlock Text="Minimum Thrust" ToolTip="Minimum Thrust" FontFamily="Verdana"></TextBlock>
-						</DataTemplate>
-					</DataGridTemplateColumn.HeaderTemplate>
-				</DataGridTemplateColumn>
+                <DataGridTemplateColumn SortMemberPath="MinThrust">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=MinThrust, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Path=MinThrust, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Minimum Thrust" ToolTip="Minimum Thrust" FontFamily="Verdana"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="AtmIsp">
+                <DataGridTemplateColumn SortMemberPath="AtmIsp">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=AtmIsp, StringFormat={}{0}s}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
