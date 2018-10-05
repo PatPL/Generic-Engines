@@ -150,7 +150,6 @@
 			<ColumnDefinition Width="*" MinWidth="4"/>
 			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="36"/>
