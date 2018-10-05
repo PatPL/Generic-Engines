@@ -407,6 +407,38 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
+				<!-- Visuals -->
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=VisualStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="1*"/>
+									<RowDefinition Height="1*"/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="46"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Text="Model" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
+								<TextBlock Text="Plume" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
+								<ComboBox Loaded="modelCombo_Loaded" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto"></ComboBox>
+								<ComboBox Loaded="plumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Visuals" ToolTip="Visuals" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+				
 				<DataGridTemplateColumn SortMemberPath="Width">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
@@ -440,7 +472,7 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-
+				
 				<DataGridTemplateColumn SortMemberPath="Gimbal">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
@@ -484,7 +516,7 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-
+				
 				<DataGridTemplateColumn SortMemberPath="Cost">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
@@ -502,7 +534,8 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-
+				
+				<!-- Test Flight -->
 				<DataGridTemplateColumn>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
@@ -557,7 +590,7 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-				<!-- Test Flight -->
+				
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>

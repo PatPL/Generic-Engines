@@ -13,11 +13,9 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 5;
+		private readonly static short SerializerVersion = 6;
 		private static byte[] LatestSerializer (Engine e) {
-
-			//Serializer v.5
-			//Now with more Little Endian
+			
 			short version = SerializerVersion;
 
 			int i = 0;
@@ -54,7 +52,9 @@ namespace GenericEngines {
 				8 + //double - GimbalNX
 				8 + //double - GimbalPX
 				8 + //double - GimbalNY
-				8) //double - GimbalPY
+				8)+ //double - GimbalPY
+				2 + //short - ModelID
+				2 //short - PlumeID
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -213,13 +213,19 @@ namespace GenericEngines {
 				}
 			}
 
+			//short - ModelID
+			output[i++] = (byte) (((short) e.ModelID) % 256);
+			output[i++] = (byte) (((short) e.ModelID) / 256);
+
+			//short - PlumeID
+			output[i++] = (byte) (((short) e.PlumeID) % 256);
+			output[i++] = (byte) (((short) e.PlumeID) / 256);
+
 			return output;
 		}
 
 		private static Engine UltimateDeserializer (byte[] input, out int addedOffset, int offset) {
-
-			//Deserializer v.5
-			//Lil' Endian
+			
 			Engine output = Engine.New ();
 			int i = offset;
 
@@ -390,6 +396,16 @@ namespace GenericEngines {
 					output.GimbalPY = BitConverter.ToDouble (input, i);
 					i += 8;
 				}
+			}
+
+			if (version >= 6) {
+				//short - ModelID
+				output.ModelID += input[i++];
+				output.ModelID += input[i++] * 256;
+
+				//short - PlumeID
+				output.PlumeID += input[i++];
+				output.PlumeID += input[i++] * 256;
 			}
 
 			addedOffset = i - offset;

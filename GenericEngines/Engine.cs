@@ -38,6 +38,7 @@ namespace GenericEngines {
 		public double GimbalNY { get; set; } //5
 		public double GimbalPY { get; set; } //5
 		public Model ModelID { get; set; } //-
+		public Plume PlumeID { get; set; } //-
 
 		// Exporter
 
@@ -68,9 +69,56 @@ namespace GenericEngines {
 			}
 		}
 
+		public string PlumeConfig {
+			get {
+				string plume = "";
+
+				PlumeInfo plumeInfo = GetPlumeInfo;
+				ModelInfo modelInfo = GetModelInfo;
+
+				plume = $@"
+					@PART[{EngineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
+					{{
+						PLUME
+						{{
+							name = {plumeInfo.PlumeID}
+							transformName = {modelInfo.ThrustTransformName}
+							localRotation = 0,0,0
+							localPosition = 0,0,{(modelInfo.PlumePosition + plumeInfo.PositionOffset).ToString (CultureInfo.InvariantCulture)}
+							fixedScale = {(plumeInfo.Scale * Width).ToString (CultureInfo.InvariantCulture)}
+							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).ToString (CultureInfo.InvariantCulture)}
+							speed = 1
+						}}
+
+						@MODULE[ModuleEngines*]
+						{{
+							%powerEffectName = {plumeInfo.PlumeID}
+							!fxOffset = NULL
+						}}
+
+						@MODULE[ModuleEngineConfigs]
+						{{
+							@CONFIG,*
+							{{
+								%powerEffectName = {plumeInfo.PlumeID}
+							}}
+						}}
+					}}
+				";
+
+				return plume;
+			}
+		}
+
 		public ModelInfo GetModelInfo {
 			get {
 				return ModelList.Get (ModelID);
+			}
+		}
+
+		public PlumeInfo GetPlumeInfo {
+			get {
+				return PlumeList.Get (PlumeID);
 			}
 		}
 
@@ -277,6 +325,12 @@ namespace GenericEngines {
 		}
 
 		// Labels
+
+		public string VisualStatus {
+			get {
+				return ModelList.GetName (ModelID);
+			}
+		}
 
 		public string GimbalStatus {
 			get {

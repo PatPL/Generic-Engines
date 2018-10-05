@@ -200,6 +200,17 @@ namespace GenericEngines {
 					currentFile = null;
 
 					Engines = new List<Engine> ();
+
+					/*
+					List<Engine> newEngines = new List<Engine> ();
+					for (int i = 0; i < 28; ++i) {
+						newEngines.Add (new Engine {
+							Name = $"Plume test {((Plume) i).ToString ()}",
+							PlumeID = (Plume) i
+						});
+					}
+					Engines = newEngines;
+					*/
 				}
 			}
 		}
@@ -356,6 +367,14 @@ namespace GenericEngines {
 			} else {
 				e.Cancel = true;
 			}
+		}
+
+		private void modelCombo_Loaded (object sender, RoutedEventArgs e) {
+			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Model)).Cast<Model> ();
+		}
+
+		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
+			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
 		}
 	}
 }

@@ -185,33 +185,7 @@ namespace GenericEngines {
 					!RESOURCE,*{{}}
 				}}
 
-				@PART[{engine.EngineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
-				{{
-					PLUME
-					{{
-						name = Kerolox-Upper
-						transformName = thrustTransform
-						localRotation = 0,0,0
-						localPosition = 0,0,0.8
-						fixedScale = {(0.4 * engine.Width).ToString (CultureInfo.InvariantCulture)}
-						energy = 1
-						speed = 1
-					}}
-
-					@MODULE[ModuleEngines*]
-					{{
-						%powerEffectName = Kerolox-Upper
-						!fxOffset = NULL
-					}}
-
-					@MODULE[ModuleEngineConfigs]
-					{{
-						@CONFIG,*
-						{{
-							%powerEffectName = Kerolox-Upper
-						}}
-					}}
-				}}
+				{engine.PlumeConfig}
 
 				{engine.TestFlightConfig}
 			";
