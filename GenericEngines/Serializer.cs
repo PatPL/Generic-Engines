@@ -8,7 +8,7 @@ namespace GenericEngines {
 	public static class Serializer {
 		delegate A SerializerFunc<A, B> (B b);
 		delegate A DeserializerFunc<A, B, C, D> (B b, out C c, D d);
-
+		
 		public static int Version () {
 			return SerializerVersion;
 		}

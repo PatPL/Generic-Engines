@@ -50,12 +50,12 @@ namespace GenericEngines {
 			}, new PlumeInfo {
 				PlumeID = "Alcolox-Lower-A6",
 				Scale = 0.6,
-				PositionOffset = 0.7,
+				PositionOffset = 0.75,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ammonialox",
 				Scale = 0.7,
-				PositionOffset = 0.8,
+				PositionOffset = 0.85,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hydrogen-NTR",
@@ -95,7 +95,7 @@ namespace GenericEngines {
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-OMS-White",
 				Scale = 0.6,
-				PositionOffset = 0.0,
+				PositionOffset = -0.1,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-Vernier",
@@ -155,7 +155,7 @@ namespace GenericEngines {
 			}, new PlumeInfo {
 				PlumeID = "Turbojet",
 				Scale = 1.2,
-				PositionOffset = -0.2,
+				PositionOffset = -0.25,
 				EnergyMultiplier = 1.0
 			}
 		};
