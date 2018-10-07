@@ -37,8 +37,8 @@ namespace GenericEngines {
 		public double GimbalPX { get; set; } //5
 		public double GimbalNY { get; set; } //5
 		public double GimbalPY { get; set; } //5
-		public Model ModelID { get; set; } //-
-		public Plume PlumeID { get; set; } //-
+		public Model ModelID { get; set; } //6
+		public Plume PlumeID { get; set; } //6
 
 		// Exporter
 
@@ -79,6 +79,124 @@ namespace GenericEngines {
 				plume = $@"
 					@PART[{EngineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
 					{{
+						@MODULE[ModuleEngines*]
+						{{
+							%powerEffectName = GE{plumeInfo.PlumeID}
+							!fxOffset = NULL
+						}}
+
+						@MODULE[ModuleEngineConfigs]
+						{{
+							@CONFIG,*
+							{{
+								%powerEffectName = GE{plumeInfo.PlumeID}
+							}}
+						}}
+					}}
+					
+					@PART[{EngineID}]:AFTER[zRealPlume]:NEEDS[SmokeScreen]
+					{{
+						%EFFECTS
+						{{
+							%GE{plumeInfo.PlumeID}
+							{{
+								MODEL_MULTI_SHURIKEN_PERSIST
+								{{
+									transformName = {modelInfo.ThrustTransformName}
+									localRotation = 0,0,0
+									localPosition = 0,0,{(modelInfo.PlumePosition + (plumeInfo.PositionOffset * plumeInfo.Scale * Width / modelInfo.OriginalWidth)).ToString (CultureInfo.InvariantCulture)}
+									fixedScale = {(plumeInfo.Scale * Width / modelInfo.OriginalWidth).ToString (CultureInfo.InvariantCulture)}
+									energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).ToString (CultureInfo.InvariantCulture)}
+									speed = 1
+									emissionMult = 1
+									name = plume
+									modelName = RealPlume/MP_Nazari_FX/flamenuke
+									fixedEmissions = false
+									sizeClamp = 50
+									randomInitalVelocityOffsetMaxRadius = 0
+									logGrow
+									{{
+									  density = 1.0 2
+									  density = 0.1 20
+									  density = 0.0 2
+									}}
+									logGrowScale
+									{{
+									  density = 1.0 0.0
+									  density = 0.8 1.5
+									  density = 0.46 2
+									  density = 0.2 2
+									  density = 0.1 3
+									  density = 0.0 5
+									}}
+									linGrow
+									{{
+									  density = 1.0 2
+									  density = 0.1 30
+									  density = 0.0 45
+									}}
+									grow
+									{{
+									  density = 1.0 - 0.99
+									  density = 0.8 0.0
+									  density = 0.2 0.3
+									  density = 0.0 1
+									}}
+									speed
+									{{
+									  density = 1.0 0.75
+									  density = 0.46 1.0
+									  density = 0.2 1.3
+									  density = 0.05 1.5
+									  density = 0.0 1.6
+									}}
+									emission
+									{{
+									  density = 1.0 1.5
+									  density = 0.8 1
+									  density = 0.2 0.4
+									  density = 0.1 0.35
+									  density = 0.05 0.3
+									  density = 0.0 0.3
+									  power = 1 1
+									  power = 0.01 0.2
+									  power = 0 0
+									}}
+									energy
+									{{
+									  density = 1.0 1.5
+									  density = 0.3 1.3
+									  density = 0.05 0.8
+									  density = 0.0 0.75
+									}}
+									size
+									{{
+									  density = 1.0 1.2
+									  density = 0.8 0.85
+									  density = 0.2 0.75
+									  density = 0.0 0.75
+									}}
+								}}
+								AUDIO
+								{{
+									channel = Ship
+									clip = RealPlume/KW_Sounds/sound_altloop
+									volume = 0.0 0.0
+									volume = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).ToString (CultureInfo.InvariantCulture)}
+									@volume,1 ^= :^:1.0 :
+									pitch = 0.0 1.0
+									pitch = 1.0 1.0
+									loop = true
+								}}
+							}}
+						}}
+					}}
+				";
+
+				/*
+				plume = $@"
+					@PART[{EngineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
+					{{
 						PLUME
 						{{
 							name = {plumeInfo.PlumeID}
@@ -105,6 +223,7 @@ namespace GenericEngines {
 						}}
 					}}
 				";
+				*/
 
 				return plume;
 			}
@@ -125,7 +244,7 @@ namespace GenericEngines {
 		public string EngineID {
 			get {
 				string output = $"GE-{Name.Replace (' ', '-')}";
-				output = Regex.Replace (output, "[<>,+*=]", "");
+				output = Regex.Replace (output, "[<>,+*=_]", "-");
 
 				return output;
 			}

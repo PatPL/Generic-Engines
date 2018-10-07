@@ -60,7 +60,7 @@ namespace GenericEngines {
 			}, new PlumeInfo {
 				PlumeID = "Hydrogen-NTR",
 				Scale = 0.8,
-				PositionOffset = -0.6,
+				PositionOffset = -0.8,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hydrolox-Lower",
@@ -100,7 +100,7 @@ namespace GenericEngines {
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-Vernier",
 				Scale = 4.0,
-				PositionOffset = 0.8,
+				PositionOffset = 0.9,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Argon-Gridded",

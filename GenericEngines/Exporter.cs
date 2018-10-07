@@ -90,14 +90,6 @@ namespace GenericEngines {
 							key = 0 0
 						}}
 					}}
-					MODULE
-					{{
-						name = FXModuleAnimateThrottle
-						animationName = NK43
-						responseSpeed = 0.0009
-						dependOnEngineState = True
-						dependOnThrottle = True
-					}}
 
 					{engine.GimbalConfig}
 
