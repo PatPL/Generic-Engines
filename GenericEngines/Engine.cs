@@ -84,7 +84,7 @@ namespace GenericEngines {
 							name = {plumeInfo.PlumeID}
 							transformName = {modelInfo.ThrustTransformName}
 							localRotation = 0,0,0
-							localPosition = 0,0,{(modelInfo.PlumePosition + (plumeInfo.PositionOffset * (plumeInfo.Scale * Width / modelInfo.OriginalWidth)) + plumeInfo.FinalOffset).ToString (CultureInfo.InvariantCulture)}
+							localPosition = 0,0,{(modelInfo.PlumePosition + plumeInfo.PositionOffset + plumeInfo.FinalOffset).ToString (CultureInfo.InvariantCulture)}
 							fixedScale = {(plumeInfo.Scale * Width / modelInfo.OriginalWidth).ToString (CultureInfo.InvariantCulture)}
 							flareScale = 0
 							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).ToString (CultureInfo.InvariantCulture)}

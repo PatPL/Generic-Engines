@@ -205,7 +205,10 @@ namespace GenericEngines {
 					List<Engine> newEngines = new List<Engine> ();
 					for (int i = 0; i < 28; ++i) {
 						newEngines.Add (new Engine {
+							Active = true,
 							Name = $"Plume test {((Plume) i).ToString ()}",
+							Width = 0.4,
+							Height = 1.4,
 							PlumeID = (Plume) i
 						});
 					}
@@ -253,6 +256,10 @@ namespace GenericEngines {
 
 		void ExportEnginesToFile (string path) {
 			File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines));
+
+			string pathDirectory = new FileInfo (path).Directory.FullName;
+
+			File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
 		}
 
 		void saveEnginesToFile (string path) {

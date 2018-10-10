@@ -52,10 +52,10 @@ namespace GenericEngines {
 					maxTemp = 2200 // = 3600
 					bulkheadProfiles = size1
 					tags = REP
-					
+
 					MODULE
 					{{
-						name = EngineObjectDumper
+						name = GenericEnginesPlumeScaleFixer
 					}}
 
 					MODULE

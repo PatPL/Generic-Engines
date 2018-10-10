@@ -59,5 +59,15 @@ namespace GenericEngines.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Byte[].
+        /// </summary>
+        internal static byte[] GenericEnginesPlumeScaleFixer {
+            get {
+                object obj = ResourceManager.GetObject("GenericEnginesPlumeScaleFixer", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
