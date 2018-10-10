@@ -357,11 +357,13 @@ namespace GenericEngines {
 				fileDialog.FileName = "";
 				fileDialog.DefaultExt = ".enl";
 				fileDialog.Filter = "Engine Lists|*.enl";
+				fileDialog.Multiselect = true;
 
 				bool? result = fileDialog.ShowDialog ();
 
 				if (result != null && result == true) {
-					readEnginesFromFile (fileDialog.FileName, true);
+					foreach (string i in fileDialog.FileNames)
+					readEnginesFromFile (i, true);
 				} else {
 
 				}
