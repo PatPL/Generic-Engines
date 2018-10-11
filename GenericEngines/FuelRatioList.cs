@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
-	public class FuelRatioList :List<FuelRatioElement> {
+	public class FuelRatioList : List<FuelRatioElement> {
 
 		public override string ToString () {
 			string output = "";
@@ -14,9 +14,9 @@ namespace GenericEngines {
 
 			foreach (FuelRatioElement i in base.ToArray ()) {
 				if (i.Propellant != FuelType.ElectricCharge) {
-					output += $"{i.Ratio.ToString (CultureInfo.InvariantCulture)}:";
+					output += $"{i.Ratio.Str ()}:";
 				} else {
-					electricSuffix = $" | Electric: {i.Ratio.ToString (CultureInfo.InvariantCulture)}kW";
+					electricSuffix = $" | Electric: {i.Ratio.Str ()}kW";
 				}
 			}
 

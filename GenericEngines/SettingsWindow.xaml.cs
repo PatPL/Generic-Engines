@@ -56,6 +56,15 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool MoreEngineInfo {
+			get {
+				return bool.Parse (Settings.Get ("MoreEngineInfo"));
+			}
+			set {
+				Settings.Set ("MoreEngineInfo", value.ToString ());
+			}
+		}
+
 		// /Settings
 
 		object lastMouseDownObject;

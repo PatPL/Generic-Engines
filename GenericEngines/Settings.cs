@@ -100,7 +100,8 @@ namespace GenericEngines {
 		private static readonly Dictionary<string, string> defaultSettings = new Dictionary<string, string> {
 			{ Setting.AdvConfirmBox, "False" },
 			{ Setting.DefaultSaveDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\" },
-			{ Setting.DefaultExportDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\" }
+			{ Setting.DefaultExportDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\" },
+			{ Setting.MoreEngineInfo, "False" }
 		};
 	}
 
@@ -108,5 +109,6 @@ namespace GenericEngines {
 		public static readonly string AdvConfirmBox = "AdvConfirmBox";
 		public static readonly string DefaultSaveDirectory = "DefaultSaveDirectory";
 		public static readonly string DefaultExportDirectory = "DefaultExportDirectory";
+		public static readonly string MoreEngineInfo = "MoreEngineInfo";
 	}
 }

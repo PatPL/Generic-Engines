@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace GenericEngines {
 	/// <summary>
@@ -72,12 +73,38 @@ namespace GenericEngines {
 			}
 			set {
 				if (mainDataGrid != null) {
+
+					ICollectionView view = CollectionViewSource.GetDefaultView (mainDataGrid.ItemsSource);
+					if (view != null) {
+						view.SortDescriptions.Clear ();
+						foreach (DataGridColumn column in mainDataGrid.Columns) {
+							column.SortDirection = null;
+						}
+					}
+
 					mainDataGrid.ItemsSource = null;
 					mainDataGrid.ItemsSource = value;
-					mainDataGrid.Items.Refresh ();
+					RefreshEngines ();
 				} else {
 					throw new NullReferenceException ("mainDataGrid is null");
 				}
+			}
+		}
+
+		private void RefreshEngines () {
+			if (mainDataGrid != null) {
+
+				ICollectionView view = CollectionViewSource.GetDefaultView (mainDataGrid.ItemsSource);
+				if (view != null) {
+					view.SortDescriptions.Clear ();
+					foreach (DataGridColumn column in mainDataGrid.Columns) {
+						column.SortDirection = null;
+					}
+				}
+
+				mainDataGrid.Items.Refresh ();
+			} else {
+				throw new NullReferenceException ("mainDataGrid is null");
 			}
 		}
 
@@ -91,7 +118,7 @@ namespace GenericEngines {
 				mainDataGrid.CancelEdit ();
 
 				Engines.Add (new Engine ());
-				mainDataGrid.Items.Refresh ();
+				RefreshEngines ();
 			}
 		}
 
@@ -107,7 +134,7 @@ namespace GenericEngines {
 							Engines.Remove (i);
 						}
 
-						mainDataGrid.Items.Refresh ();
+						RefreshEngines ();
 					}
 				}
 			}
@@ -227,13 +254,16 @@ namespace GenericEngines {
 		private void settingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				new SettingsWindow ().ShowDialog ();
+				foreach (Engine i in Engines) {
+					i.NotifyEveryProperty ();
+				}
 			}
 		}
 
 		private void mainDataGrid_Loaded (object sender, RoutedEventArgs e) {
 			mainDataGrid = ((DataGrid) sender);
 			mainDataGrid.ItemsSource = new List<Engine> ();
-			mainDataGrid.Items.Refresh ();
+			RefreshEngines ();
 		}
 
 		private void mainDataGrid_KeyUp (object sender, KeyEventArgs e) {

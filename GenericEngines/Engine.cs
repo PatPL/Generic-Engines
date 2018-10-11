@@ -5,16 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace GenericEngines {
-	public class Engine {
+	public class Engine : INotifyPropertyChanged {
+		private double _atmIsp;
+		private double _vacIsp;
+		private double _thrust;
+
 		// Serializer versions
 		public bool Active { get; set; } //0
 		public string Name { get; set; } //0
 		public double Mass { get; set; } //0
-		public double Thrust { get; set; } //0
-		public double AtmIsp { get; set; } //0
-		public double VacIsp { get; set; } //0
+		public double Thrust { get => _thrust; set { _thrust = value; NotifyPropertyChanged ("MinimumThrustStatus"); NotifyPropertyChanged ("MassStatus"); } } //0
+		public double AtmIsp { get => _atmIsp; set { _atmIsp = value; NotifyPropertyChanged ("ThrustStatus"); } } //0
+		public double VacIsp { get => _vacIsp; set { _vacIsp = value; NotifyPropertyChanged ("ThrustStatus"); } } //0
 		public FuelRatioList PropellantRatio { get; set; } //0
 		public double Width { get; set; } //0
 		public double Height { get; set; } //0
@@ -56,10 +62,10 @@ namespace GenericEngines {
 					{{
 						model = {modelInfo.ModelPath}
 						{modelInfo.TextureDefinitions}
-						scale = {widthScale.ToString (CultureInfo.InvariantCulture)}, 1, {widthScale.ToString (CultureInfo.InvariantCulture)}
+						scale = {widthScale.Str ()}, 1, {widthScale.Str ()}
 					}}
 					scale = 1
-					rescaleFactor = {heightScale.ToString (CultureInfo.InvariantCulture)}
+					rescaleFactor = {heightScale.Str ()}
 
 					node_stack_top = {modelInfo.NodeStackTop}
 					node_stack_bottom = {modelInfo.NodeStackBottom}
@@ -85,10 +91,10 @@ namespace GenericEngines {
 							name = {plumeInfo.PlumeID}
 							transformName = {modelInfo.ThrustTransformName}
 							localRotation = 0,0,0
-							localPosition = 0,0,{(modelInfo.PlumePosition + plumeInfo.PositionOffset + plumeInfo.FinalOffset).ToString (CultureInfo.InvariantCulture)}
-							fixedScale = {(modelInfo.PlumeSizeMultiplier * plumeInfo.Scale * Width / modelInfo.OriginalWidth).ToString (CultureInfo.InvariantCulture)}
+							localPosition = 0,0,{(modelInfo.PlumePosition + plumeInfo.PositionOffset + plumeInfo.FinalOffset).Str ()}
+							fixedScale = {(modelInfo.PlumeSizeMultiplier * plumeInfo.Scale * Width / modelInfo.OriginalWidth).Str ()}
 							flareScale = 0
-							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).ToString (CultureInfo.InvariantCulture)}
+							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).Str ()}
 							speed = 1
 						}}
 
@@ -107,7 +113,7 @@ namespace GenericEngines {
 						}}
 					}}
 				";
-				
+
 
 				return plume;
 			}
@@ -134,7 +140,7 @@ namespace GenericEngines {
 			}
 		}
 
-		public string PropellantConfig { 
+		public string PropellantConfig {
 			get {
 				bool isElectric = false;
 				FuelRatioList fuelRatios = new FuelRatioList ();
@@ -178,8 +184,8 @@ namespace GenericEngines {
 					x = 1 / x; // kg/N*s -> t/kN*s
 					x /= averageDensity; // l/kN*s
 					x *= Thrust; // l/s
-										//normalFuelRatios    = x units/s
-										//actualElectricRatio = y units/s (kW)
+								 //normalFuelRatios    = x units/s
+								 //actualElectricRatio = y units/s (kW)
 					electricRatio = electricRatio * normalFuelRatios / x; //result
 
 					fuelRatios.Add (new FuelRatioElement (FuelType.ElectricCharge, electricRatio));
@@ -194,7 +200,7 @@ namespace GenericEngines {
 						PROPELLANT
 						{{
 							name = {FuelName.Name (i.Propellant)}
-							ratio = {i.Ratio.ToString (CultureInfo.InvariantCulture)}
+							ratio = {i.Ratio.Str ()}
 							DrawGauge = {firstPropellant}
 						}}
 					";
@@ -216,10 +222,10 @@ namespace GenericEngines {
 						{{
 							name = ModuleGimbal
 							gimbalTransformName = thrustTransform
-							gimbalRangeYP = {GimbalPY.ToString (CultureInfo.InvariantCulture)}
-							gimbalRangeYN = {GimbalNY.ToString (CultureInfo.InvariantCulture)}
-							gimbalRangeXP = {GimbalPX.ToString (CultureInfo.InvariantCulture)}
-							gimbalRangeXN = {GimbalNX.ToString (CultureInfo.InvariantCulture)}
+							gimbalRangeYP = {GimbalPY.Str ()}
+							gimbalRangeYN = {GimbalNY.Str ()}
+							gimbalRangeXP = {GimbalPX.Str ()}
+							gimbalRangeXN = {GimbalNX.Str ()}
  							useGimbalResponseSpeed = false
 						}}
 					";
@@ -230,7 +236,7 @@ namespace GenericEngines {
 							name = ModuleGimbal
 							gimbalTransformName = thrustTransform
 							useGimbalResponseSpeed = false
-							gimbalRange = {Gimbal.ToString (CultureInfo.InvariantCulture)}
+							gimbalRange = {Gimbal.Str ()}
 						}}
 					";
 				}
@@ -251,10 +257,10 @@ namespace GenericEngines {
 							{{
 								name = {EngineID}
 								ratedBurnTime = {RatedBurnTime}
-								ignitionReliabilityStart = {(StartReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
-								ignitionReliabilityEnd = {(StartReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
-								cycleReliabilityStart = {(CycleReliability0 / 100).ToString (CultureInfo.InvariantCulture)}
-								cycleReliabilityEnd = {(CycleReliability10k / 100).ToString (CultureInfo.InvariantCulture)}
+								ignitionReliabilityStart = {(StartReliability0 / 100).Str ()}
+								ignitionReliabilityEnd = {(StartReliability10k / 100).Str ()}
+								cycleReliabilityStart = {(CycleReliability0 / 100).Str ()}
+								cycleReliabilityEnd = {(CycleReliability10k / 100).Str ()}
 							}}
 						}}
 					";
@@ -276,7 +282,7 @@ namespace GenericEngines {
 							RESOURCE
 							{{
 								name = ElectricCharge
-								rate = {AlternatorPower.ToString (CultureInfo.InvariantCulture)}
+								rate = {AlternatorPower.Str ()}
 							}}
 						}}
 					";
@@ -329,18 +335,54 @@ namespace GenericEngines {
 
 		// Labels
 
+		public string MassStatus {
+			get {
+				if (Settings.GetBool (Setting.MoreEngineInfo)) {
+					return $"{Mass.Str ()}t (TWR: {(Thrust / 9.80665 / Mass).Str (3)})";
+				} else {
+					return $"{Mass.Str ()}t";
+				}
+			}
+		}
+		
+		public string IgnitionsStatus {
+			get {
+				return Ignitions <= 0 ? "Infinite" : Ignitions.ToString ();
+			}
+		}
+		
+		public string ThrustStatus {
+			get {
+				if (Settings.GetBool (Setting.MoreEngineInfo)) {
+					return $"{Thrust.Str ()}kN (SL: {(Thrust * AtmIsp / VacIsp).Str (3)}kN)";
+				} else {
+					return $"{Thrust.Str ()}kN";
+				}
+			}
+		}
+
+		public string MinimumThrustStatus {
+			get {
+				if (Settings.GetBool (Setting.MoreEngineInfo)) {
+					return $"{MinThrust}% (Vac: {(Thrust * MinThrust / 100).Str (3)}kN)";
+				} else {
+					return $"{MinThrust}%";
+				}
+			}
+		}
+
 		public string VisualStatus {
 			get {
-				return ModelList.GetName (ModelID);
+				return $"{ModelList.GetName (ModelID)}, {PlumeList.GetName (PlumeID)}";
 			}
 		}
 
 		public string GimbalStatus {
 			get {
 				if (AdvancedGimbal) {
-					return $"X:{GimbalNX.ToString (CultureInfo.InvariantCulture)}°:{GimbalPX.ToString (CultureInfo.InvariantCulture)}°, Y:{GimbalNY.ToString (CultureInfo.InvariantCulture)}°:{GimbalPY.ToString (CultureInfo.InvariantCulture)}°";
+					return $"X:{GimbalNX.Str ()}°:{GimbalPX.Str ()}°, Y:{GimbalNY.Str ()}°:{GimbalPY.Str ()}°";
 				} else {
-					return $"{Gimbal.ToString (CultureInfo.InvariantCulture)}°";
+					return $"{Gimbal.Str ()}°";
 				}
 			}
 		}
@@ -348,7 +390,7 @@ namespace GenericEngines {
 		public string TestFlightStatus {
 			get {
 				if (EnableTestFlight) {
-					return $"Enabled | {RatedBurnTime}s | {CycleReliability10k.ToString (CultureInfo.InvariantCulture)}%";
+					return $"Enabled | {StartReliability0.Str ()}% - {StartReliability10k.Str ()}% | MTBF: {(int) Math.Round ((1 / (1 - (CycleReliability0 / 100))) * RatedBurnTime)}s - {(int) Math.Round ((1 / (1 - (CycleReliability10k / 100))) * RatedBurnTime)}s";
 				} else if (TestFlightConfigNotDefault) {
 					return "Disabled, but configured";
 				} else {
@@ -359,7 +401,7 @@ namespace GenericEngines {
 
 		public string Dimensions {
 			get {
-				return $"{Width.ToString (CultureInfo.InvariantCulture)}m x {Height.ToString (CultureInfo.InvariantCulture)}m";
+				return $"{Width.Str ()}m x {Height.Str ()}m";
 			}
 		}
 
@@ -393,6 +435,18 @@ namespace GenericEngines {
 			GimbalNY = 0.0;
 			GimbalPY = 0.0;
 			ModelID = Model.LR91;
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public void NotifyPropertyChanged (string name) {
+			PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
+		}
+
+		public void NotifyEveryProperty () {
+			foreach (PropertyInfo i in typeof (Engine).GetProperties ()) {
+				NotifyPropertyChanged (i.Name);
+			}
 		}
 
 		public static Engine New () {
