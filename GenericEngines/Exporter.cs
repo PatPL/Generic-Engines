@@ -61,7 +61,7 @@ namespace GenericEngines {
 					MODULE
 					{{
 						name = ModuleJettison
-						jettisonName = 430
+						jettisonName = Cylinder_002
 						bottomNodeName = bottom
 						isFairing = True
 						jettisonedObjectMass = 0.1

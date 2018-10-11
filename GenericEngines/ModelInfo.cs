@@ -15,6 +15,7 @@ namespace GenericEngines {
 		public string NodeStackBottom;
 		public string NodeStackAttach;
 		public string ModelPath;
+		public string TextureDefinitions;
 		public string ThrustTransformName;
 		
 	}
@@ -31,6 +32,22 @@ namespace GenericEngines {
 				NodeStackBottom = "0.0, -1.1635, 0.0, 0.0, -1.0, 0.0, 1",
 				NodeStackAttach = "0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1",
 				ModelPath = "RealismOverhaul/Models/LR-91eng",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform"
+			}, new ModelInfo { //Model.AJ10
+				OriginalHeight = 0.66,
+				OriginalWidth = 0.285,
+				PlumeSizeMultiplier = 0.295,
+				PlumePosition = -0.09,
+				NodeStackTop = "0.0, 0.33, 0.0, 0.0, 1.0, 0.0, 1",
+				NodeStackBottom = "0.0, -0.33, 0.0, 0.0, -1.0, 0.0, 1",
+				NodeStackAttach = "0.0, 0.33, 0.0, 0.0, 1.0, 0.0, 1",
+				ModelPath = "SXT/Parts/Rocketry/Engine/Vanguard/model",
+				TextureDefinitions = @"
+					texture = fairing , Squad/Parts/Engine/liquidEngineLV-T45/model002
+					texture = model000 , Squad/Parts/Engine/liquidEngineLV-T45/model000
+					texture = model001 , Squad/Parts/Engine/liquidEngineLV-T45/model001
+				",
 				ThrustTransformName = "thrustTransform"
 			}
 		};
@@ -49,6 +66,7 @@ namespace GenericEngines {
 	}
 
 	public enum Model {
-		LR91
+		LR91,
+		AJ10
 	}
 }

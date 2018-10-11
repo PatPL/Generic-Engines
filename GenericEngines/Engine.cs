@@ -54,7 +54,8 @@ namespace GenericEngines {
 				model = $@"
 					MODEL
 					{{
-						model = {GetModelInfo.ModelPath}
+						model = {modelInfo.ModelPath}
+						{modelInfo.TextureDefinitions}
 						scale = {widthScale.ToString (CultureInfo.InvariantCulture)}, 1, {widthScale.ToString (CultureInfo.InvariantCulture)}
 					}}
 					scale = 1
@@ -85,7 +86,7 @@ namespace GenericEngines {
 							transformName = {modelInfo.ThrustTransformName}
 							localRotation = 0,0,0
 							localPosition = 0,0,{(modelInfo.PlumePosition + plumeInfo.PositionOffset + plumeInfo.FinalOffset).ToString (CultureInfo.InvariantCulture)}
-							fixedScale = {(plumeInfo.Scale * Width / modelInfo.OriginalWidth).ToString (CultureInfo.InvariantCulture)}
+							fixedScale = {(modelInfo.PlumeSizeMultiplier * plumeInfo.Scale * Width / modelInfo.OriginalWidth).ToString (CultureInfo.InvariantCulture)}
 							flareScale = 0
 							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).ToString (CultureInfo.InvariantCulture)}
 							speed = 1
