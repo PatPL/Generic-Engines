@@ -58,16 +58,7 @@ namespace GenericEngines {
 						name = GenericEnginesPlumeScaleFixer
 					}}
 
-					MODULE
-					{{
-						name = ModuleJettison
-						jettisonName = Cylinder_002
-						bottomNodeName = bottom
-						isFairing = True
-						jettisonedObjectMass = 0.1
-						jettisonForce = 5
-						jettisonDirection = 0 0 1
-					}}
+					{engine.HiddenObjectsConfig}
 		
 					MODULE
 					{{

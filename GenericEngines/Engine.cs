@@ -67,9 +67,11 @@ namespace GenericEngines {
 					scale = 1
 					rescaleFactor = {heightScale.Str ()}
 
-					node_stack_top = {modelInfo.NodeStackTop}
-					node_stack_bottom = {modelInfo.NodeStackBottom}
-					node_attach = {modelInfo.NodeStackAttach}
+					node_stack_top = 0.0, {modelInfo.NodeStackTop.Str ()}, 0.0, 0.0, 1.0, 0.0, 1
+					node_stack_bottom = 0.0, {modelInfo.NodeStackBottom.Str ()}, 0.0, 0.0, -1.0, 0.0, 1
+					node_stack_hide = 0.0, {(modelInfo.NodeStackBottom + 0.001).Str ()}, 0.0, 0.0, 0.0, 1.0, 0
+					{/* Hopefully no one will try to attach things sideways */""}
+					node_attach = 0.0, {modelInfo.NodeStackTop.Str ()}, 0.0, 0.0, 1.0, 0.0, 1
 				";
 
 				return model;
@@ -118,16 +120,27 @@ namespace GenericEngines {
 				return plume;
 			}
 		}
-
-		public ModelInfo GetModelInfo {
+		
+		public string HiddenObjectsConfig {
 			get {
-				return ModelList.Get (ModelID);
-			}
-		}
+				string output = "";
+				ModelInfo modelInfo = GetModelInfo;
 
-		public PlumeInfo GetPlumeInfo {
-			get {
-				return PlumeList.Get (PlumeID);
+				if (modelInfo.HiddenMuObjects != null) {
+					foreach (string i in modelInfo.HiddenMuObjects) {
+						output += $@"
+							MODULE
+							{{
+								name = ModuleJettison
+								jettisonName = {i}
+								bottomNodeName = hide
+								isFairing = True
+							}}
+						";
+					}
+				}
+
+				return output;
 			}
 		}
 
@@ -301,6 +314,18 @@ namespace GenericEngines {
 		public int IgnitionsCount {
 			get {
 				return Ignitions < 0 ? 0 : Ignitions;
+			}
+		}
+
+		public ModelInfo GetModelInfo {
+			get {
+				return ModelList.Get (ModelID);
+			}
+		}
+
+		public PlumeInfo GetPlumeInfo {
+			get {
+				return PlumeList.Get (PlumeID);
 			}
 		}
 

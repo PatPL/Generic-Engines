@@ -74,13 +74,8 @@ namespace GenericEngines {
 			set {
 				if (mainDataGrid != null) {
 
-					ICollectionView view = CollectionViewSource.GetDefaultView (mainDataGrid.ItemsSource);
-					if (view != null) {
-						view.SortDescriptions.Clear ();
-						foreach (DataGridColumn column in mainDataGrid.Columns) {
-							column.SortDirection = null;
-						}
-					}
+					mainDataGrid.CommitEdit ();
+					mainDataGrid.CancelEdit ();
 
 					mainDataGrid.ItemsSource = null;
 					mainDataGrid.ItemsSource = value;
@@ -93,6 +88,9 @@ namespace GenericEngines {
 
 		private void RefreshEngines () {
 			if (mainDataGrid != null) {
+
+				mainDataGrid.CommitEdit ();
+				mainDataGrid.CancelEdit ();
 
 				ICollectionView view = CollectionViewSource.GetDefaultView (mainDataGrid.ItemsSource);
 				if (view != null) {

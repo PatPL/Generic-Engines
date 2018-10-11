@@ -11,12 +11,12 @@ namespace GenericEngines {
 		public double OriginalWidth;
 		public double PlumeSizeMultiplier;
 		public double PlumePosition;
-		public string NodeStackTop;
-		public string NodeStackBottom;
-		public string NodeStackAttach;
+		public double NodeStackTop;
+		public double NodeStackBottom;
 		public string ModelPath;
 		public string TextureDefinitions;
 		public string ThrustTransformName;
+		public string[] HiddenMuObjects;
 		
 	}
 
@@ -28,27 +28,29 @@ namespace GenericEngines {
 				OriginalWidth = 0.97,
 				PlumeSizeMultiplier = 1.0,
 				PlumePosition = 0.8,
-				NodeStackTop = "0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1",
-				NodeStackBottom = "0.0, -1.1635, 0.0, 0.0, -1.0, 0.0, 1",
-				NodeStackAttach = "0.0, 0.7215, 0.0, 0.0, 1.0, 0.0, 1",
+				NodeStackTop = 0.7215,
+				NodeStackBottom = -1.1635,
 				ModelPath = "RealismOverhaul/Models/LR-91eng",
 				TextureDefinitions = "",
-				ThrustTransformName = "thrustTransform"
+				ThrustTransformName = "thrustTransform",
+				HiddenMuObjects = null
 			}, new ModelInfo { //Model.AJ10
-				OriginalHeight = 0.66,
+				OriginalHeight = 0.654,
 				OriginalWidth = 0.285,
 				PlumeSizeMultiplier = 0.295,
 				PlumePosition = -0.09,
-				NodeStackTop = "0.0, 0.33, 0.0, 0.0, 1.0, 0.0, 1",
-				NodeStackBottom = "0.0, -0.33, 0.0, 0.0, -1.0, 0.0, 1",
-				NodeStackAttach = "0.0, 0.33, 0.0, 0.0, 1.0, 0.0, 1",
+				NodeStackTop = 0.33,
+				NodeStackBottom = -0.324,
 				ModelPath = "SXT/Parts/Rocketry/Engine/Vanguard/model",
 				TextureDefinitions = @"
 					texture = fairing , Squad/Parts/Engine/liquidEngineLV-T45/model002
 					texture = model000 , Squad/Parts/Engine/liquidEngineLV-T45/model000
 					texture = model001 , Squad/Parts/Engine/liquidEngineLV-T45/model001
 				",
-				ThrustTransformName = "thrustTransform"
+				ThrustTransformName = "thrustTransform",
+				HiddenMuObjects = new string[] {
+					"Cylinder_002"
+				}
 			}
 		};
 
