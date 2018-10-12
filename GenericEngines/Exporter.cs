@@ -9,12 +9,14 @@ using System.Text.RegularExpressions;
 namespace GenericEngines {
 	public static class Exporter {
 
-		public static string ConvertEngineListToConfig (List<Engine> engines) {
+		public static string ConvertEngineListToConfig (List<Engine> engines, out int activeEngineCount) {
 			string output = "";
 
+			activeEngineCount = 0;
 			foreach (Engine i in engines) {
 				if (i.Active) {
 					output += ConvertEngineToConfig (i);
+					++activeEngineCount;
 				}
 			}
 

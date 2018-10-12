@@ -283,52 +283,68 @@ namespace GenericEngines {
 		}
 
 		void ExportEnginesToFile (string path) {
-			File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines));
+			try {
+				File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out int exportedEnginesCount));
 
-			string pathDirectory = new FileInfo (path).Directory.FullName;
+				string pathDirectory = new FileInfo (path).Directory.FullName;
 
-			File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
+				File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
+				MessageBox.Show ($"{exportedEnginesCount} engines succesfully exported to {path}", "Success");
+			} catch (Exception e) {
+				App.SaveExceptionToFile (e);
+				MessageBox.Show ($"Something went wrong while exporting engines to {path}. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+			}
 		}
 
 		void saveEnginesToFile (string path) {
-			FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
-			file.SetLength (0);
+			try {
+				FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
+				file.SetLength (0);
 
-			byte[] serializedEngine;
-			foreach (Engine i in Engines) {
+				byte[] serializedEngine;
+				foreach (Engine i in Engines) {
 
-				//serializedEngine = i.Serialize ();
-				serializedEngine = Serializer.Serialize (i);
+					//serializedEngine = i.Serialize ();
+					serializedEngine = Serializer.Serialize (i);
 
-				file.Write (serializedEngine, 0, serializedEngine.Length);
+					file.Write (serializedEngine, 0, serializedEngine.Length);
+				}
+
+				file.Close ();
+				MessageBox.Show ($"{Engines.Count} engines succesfully saved to {path}", "Success");
+			} catch (Exception e) {
+				App.SaveExceptionToFile (e);
+				MessageBox.Show ($"Something went wrong while saving engines to {path}. Try to choose different location. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 			}
-
-			file.Close ();
 		}
 
 		void readEnginesFromFile (string path, bool append = false) {
-			FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
+			try {
+				FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
 
-			if (!append) {
-				Engines.Clear ();
+				if (!append) {
+					Engines.Clear ();
+				}
+				List<Engine> newEngines = (append ? Engines : new List<Engine> ());
+
+				byte[] data = new byte[file.Length];
+				file.Read (data, 0, (int) file.Length);
+
+				int offset = 0;
+
+				while (offset < data.Length) {
+					//newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
+					newEngines.Add (Serializer.Deserialize (data, out int addedOffset, offset));
+
+					offset += addedOffset;
+				}
+				file.Close ();
+
+				Engines = newEngines;
+			} catch (Exception e) {
+				App.SaveExceptionToFile (e);
+				MessageBox.Show ($"Something went wrong while reading engines from {path}. Your .enl file might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 			}
-			List<Engine> newEngines = (append ? Engines : new List<Engine> ());
-
-			byte[] data = new byte[file.Length];
-			file.Read (data, 0, (int) file.Length);
-
-			int offset = 0;
-
-			while (offset < data.Length) {
-
-				//newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
-				newEngines.Add (Serializer.Deserialize (data, out int addedOffset, offset));
-
-				offset += addedOffset;
-			}
-
-			Engines = newEngines;
-			file.Close ();
 		}
 
 		private void propellantCombo_Loaded (object sender, RoutedEventArgs e) {
