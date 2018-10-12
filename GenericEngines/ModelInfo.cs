@@ -16,6 +16,7 @@ namespace GenericEngines {
 		public string ModelPath;
 		public string TextureDefinitions;
 		public string ThrustTransformName;
+		public string GimbalTransformName;
 		public string[] HiddenMuObjects;
 		
 	}
@@ -33,6 +34,7 @@ namespace GenericEngines {
 				ModelPath = "RealismOverhaul/Models/LR-91eng",
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
 				HiddenMuObjects = null
 			}, new ModelInfo { //Model.AJ10
 				OriginalHeight = 0.654,
@@ -48,8 +50,23 @@ namespace GenericEngines {
 					texture = model001 , Squad/Parts/Engine/liquidEngineLV-T45/model001
 				",
 				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
 				HiddenMuObjects = new string[] {
 					"Cylinder_002"
+				}
+			}, new ModelInfo { //Model.RS25
+				OriginalHeight = 1.5,
+				OriginalWidth = 0.865,
+				PlumeSizeMultiplier = 0.85,
+				PlumePosition = -0.8,
+				NodeStackTop = -0.025,
+				NodeStackBottom = -1.525,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/KS-25",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Nozzle",
+				HiddenMuObjects = new string[] {
+					"Size2A"
 				}
 			}
 		};
@@ -69,6 +86,7 @@ namespace GenericEngines {
 
 	public enum Model {
 		LR91,
-		AJ10
+		AJ10,
+		RS25
 	}
 }

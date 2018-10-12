@@ -234,7 +234,7 @@ namespace GenericEngines {
 						MODULE
 						{{
 							name = ModuleGimbal
-							gimbalTransformName = thrustTransform
+							gimbalTransformName = {GetModelInfo.GimbalTransformName}
 							gimbalRangeYP = {GimbalPY.Str ()}
 							gimbalRangeYN = {GimbalNY.Str ()}
 							gimbalRangeXP = {GimbalPX.Str ()}
@@ -247,7 +247,7 @@ namespace GenericEngines {
 						MODULE
 						{{
 							name = ModuleGimbal
-							gimbalTransformName = thrustTransform
+							gimbalTransformName = {GetModelInfo.GimbalTransformName}
 							useGimbalResponseSpeed = false
 							gimbalRange = {Gimbal.Str ()}
 						}}
