@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,14 @@ namespace GenericEngines {
 
 			return output;
 
+		}
+
+		public static string Str (this double input, int accuracy = -1) {
+			if (accuracy < 0) {
+				return input.ToString (CultureInfo.InvariantCulture);
+			} else {
+				return (((long) Math.Round (input * Math.Pow (10, accuracy))) / Math.Pow (10, accuracy)).ToString (CultureInfo.InvariantCulture);
+			}
 		}
 	}
 }

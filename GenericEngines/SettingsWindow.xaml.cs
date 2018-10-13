@@ -56,6 +56,15 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool MoreEngineInfo {
+			get {
+				return bool.Parse (Settings.Get ("MoreEngineInfo"));
+			}
+			set {
+				Settings.Set ("MoreEngineInfo", value.ToString ());
+			}
+		}
+
 		// /Settings
 
 		object lastMouseDownObject;
@@ -97,9 +106,10 @@ namespace GenericEngines {
 
 		private void steamDirectory_MouseUp (object sender, MouseButtonEventArgs e) {
 
-			string x86PFDir = $"{Environment.GetFolderPath (Environment.SpecialFolder.ProgramFilesX86)}\\Steam\\steamapps\\common\\Kerbal Space Program\\GameData\\GenericEngines\\";
+			string x86PFDir = $"{Environment.GetFolderPath (Environment.SpecialFolder.ProgramFilesX86)}\\Steam\\steamapps\\common\\Kerbal Space Program\\GameData\\";
 			
 			if (Directory.Exists (x86PFDir)) {
+				x86PFDir += "GenericEngines\\";
 				DefaultExportDirectory = x86PFDir;
 				DefaultExportDirectoryTextBox.Text = x86PFDir;
 				MessageBox.Show ($"Default engine config export set to: {x86PFDir}");

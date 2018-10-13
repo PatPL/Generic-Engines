@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace GenericEngines {
 	/// <summary>
@@ -72,12 +73,36 @@ namespace GenericEngines {
 			}
 			set {
 				if (mainDataGrid != null) {
+
+					mainDataGrid.CommitEdit ();
+					mainDataGrid.CancelEdit ();
+
 					mainDataGrid.ItemsSource = null;
 					mainDataGrid.ItemsSource = value;
-					mainDataGrid.Items.Refresh ();
+					RefreshEngines ();
 				} else {
 					throw new NullReferenceException ("mainDataGrid is null");
 				}
+			}
+		}
+
+		private void RefreshEngines () {
+			if (mainDataGrid != null) {
+				
+				mainDataGrid.CommitEdit ();
+				mainDataGrid.CancelEdit ();
+
+				ICollectionView view = CollectionViewSource.GetDefaultView (mainDataGrid.ItemsSource);
+				if (view != null) {
+					view.SortDescriptions.Clear ();
+					foreach (DataGridColumn column in mainDataGrid.Columns) {
+						column.SortDirection = null;
+					}
+				}
+
+				mainDataGrid.Items.Refresh ();
+			} else {
+				throw new NullReferenceException ("mainDataGrid is null");
 			}
 		}
 
@@ -91,7 +116,7 @@ namespace GenericEngines {
 				mainDataGrid.CancelEdit ();
 
 				Engines.Add (new Engine ());
-				mainDataGrid.Items.Refresh ();
+				RefreshEngines ();
 			}
 		}
 
@@ -107,7 +132,7 @@ namespace GenericEngines {
 							Engines.Remove (i);
 						}
 
-						mainDataGrid.Items.Refresh ();
+						RefreshEngines ();
 					}
 				}
 			}
@@ -205,7 +230,11 @@ namespace GenericEngines {
 					List<Engine> newEngines = new List<Engine> ();
 					for (int i = 0; i < 28; ++i) {
 						newEngines.Add (new Engine {
+							Active = true,
 							Name = $"Plume test {((Plume) i).ToString ()}",
+							Width = 0.4,
+							Height = 1.4,
+							ModelID = Model.Thruster,
 							PlumeID = (Plume) i
 						});
 					}
@@ -224,13 +253,16 @@ namespace GenericEngines {
 		private void settingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				new SettingsWindow ().ShowDialog ();
+				foreach (Engine i in Engines) {
+					i.NotifyEveryProperty ();
+				}
 			}
 		}
 
 		private void mainDataGrid_Loaded (object sender, RoutedEventArgs e) {
 			mainDataGrid = ((DataGrid) sender);
 			mainDataGrid.ItemsSource = new List<Engine> ();
-			mainDataGrid.Items.Refresh ();
+			RefreshEngines ();
 		}
 
 		private void mainDataGrid_KeyUp (object sender, KeyEventArgs e) {
@@ -252,48 +284,68 @@ namespace GenericEngines {
 		}
 
 		void ExportEnginesToFile (string path) {
-			File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines));
+			try {
+				File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out int exportedEnginesCount));
+
+				string pathDirectory = new FileInfo (path).Directory.FullName;
+
+				File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
+				MessageBox.Show ($"{exportedEnginesCount} engines succesfully exported to {path}", "Success");
+			} catch (Exception e) {
+				App.SaveExceptionToFile (e);
+				MessageBox.Show ($"Something went wrong while exporting engines to {path}. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+			}
 		}
 
 		void saveEnginesToFile (string path) {
-			FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
-			file.SetLength (0);
+			try {
+				FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
+				file.SetLength (0);
 
-			byte[] serializedEngine;
-			foreach (Engine i in Engines) {
+				byte[] serializedEngine;
+				foreach (Engine i in Engines) {
 
-				//serializedEngine = i.Serialize ();
-				serializedEngine = Serializer.Serialize (i);
+					//serializedEngine = i.Serialize ();
+					serializedEngine = Serializer.Serialize (i);
 
-				file.Write (serializedEngine, 0, serializedEngine.Length);
+					file.Write (serializedEngine, 0, serializedEngine.Length);
+				}
+
+				file.Close ();
+				MessageBox.Show ($"{Engines.Count} engines succesfully saved to {path}", "Success");
+			} catch (Exception e) {
+				App.SaveExceptionToFile (e);
+				MessageBox.Show ($"Something went wrong while saving engines to {path}. Try to choose different location. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 			}
-
-			file.Close ();
 		}
 
 		void readEnginesFromFile (string path, bool append = false) {
-			FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
+			try {
+				FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
 
-			if (!append) {
-				Engines.Clear ();
+				if (!append) {
+					Engines.Clear ();
+				}
+				List<Engine> newEngines = (append ? Engines : new List<Engine> ());
+
+				byte[] data = new byte[file.Length];
+				file.Read (data, 0, (int) file.Length);
+
+				int offset = 0;
+
+				while (offset < data.Length) {
+					//newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
+					newEngines.Add (Serializer.Deserialize (data, out int addedOffset, offset));
+
+					offset += addedOffset;
+				}
+				file.Close ();
+
+				Engines = newEngines;
+			} catch (Exception e) {
+				App.SaveExceptionToFile (e);
+				MessageBox.Show ($"Something went wrong while reading engines from {path}. Your .enl file might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 			}
-			List<Engine> newEngines = (append ? Engines : new List<Engine> ());
-
-			byte[] data = new byte[file.Length];
-			file.Read (data, 0, (int) file.Length);
-
-			int offset = 0;
-
-			while (offset < data.Length) {
-
-				//newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
-				newEngines.Add (Serializer.Deserialize (data, out int addedOffset, offset));
-
-				offset += addedOffset;
-			}
-
-			Engines = newEngines;
-			file.Close ();
 		}
 
 		private void propellantCombo_Loaded (object sender, RoutedEventArgs e) {
@@ -342,21 +394,32 @@ namespace GenericEngines {
 
 		private void appendButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
-				if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
-					Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
-				}
-				fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
-				fileDialog.FileName = "";
-				fileDialog.DefaultExt = ".enl";
-				fileDialog.Filter = "Engine Lists|*.enl";
+				try {
+					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+					if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
+						Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
+					}
+					fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
+					fileDialog.FileName = "";
+					fileDialog.DefaultExt = ".enl";
+					fileDialog.Filter = "Engine Lists|*.enl";
+					fileDialog.Multiselect = true;
 
-				bool? result = fileDialog.ShowDialog ();
+					bool? result = fileDialog.ShowDialog ();
 
-				if (result != null && result == true) {
-					readEnginesFromFile (fileDialog.FileName, true);
-				} else {
+					if (result != null && result == true) {
+						foreach (string i in fileDialog.FileNames) {
+							readEnginesFromFile (i, true);
+						}
+					} else {
 
+					}
+
+					MessageBox.Show ($"Engines succesfully appended to {currentFile}", "Success");
+				} catch (Exception ex) {
+					// readEnginesFromFile handles file errors one by one
+					App.SaveExceptionToFile (ex);
+					MessageBox.Show ($"Something went wrong while appending engines. One or more of the .enl files might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 				}
 			}
 		}

@@ -9,12 +9,14 @@ using System.Text.RegularExpressions;
 namespace GenericEngines {
 	public static class Exporter {
 
-		public static string ConvertEngineListToConfig (List<Engine> engines) {
+		public static string ConvertEngineListToConfig (List<Engine> engines, out int activeEngineCount) {
 			string output = "";
 
+			activeEngineCount = 0;
 			foreach (Engine i in engines) {
 				if (i.Active) {
 					output += ConvertEngineToConfig (i);
+					++activeEngineCount;
 				}
 			}
 
@@ -40,7 +42,7 @@ namespace GenericEngines {
 					manufacturer = Generic Engines
 					description = Generic Engine | {engine.Name}
 					attachRules = 1,1,1,0,0
-					mass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
+					mass = {engine.Mass.Str ()}
 					heatConductivity = 0.06
 					skinInternalConductionMult = 4.0
 					emissiveConstant = 0.8
@@ -52,17 +54,13 @@ namespace GenericEngines {
 					maxTemp = 2200 // = 3600
 					bulkheadProfiles = size1
 					tags = REP
-	
+
 					MODULE
 					{{
-						name = ModuleJettison
-						jettisonName = 430
-						bottomNodeName = bottom
-						isFairing = True
-						jettisonedObjectMass = 0.1
-						jettisonForce = 5
-						jettisonDirection = 0 0 1
+						name = GenericEnginesPlumeScaleFixer
 					}}
+
+					{engine.HiddenObjectsConfig}
 		
 					MODULE
 					{{
@@ -89,14 +87,6 @@ namespace GenericEngines {
 							key = 1 1
 							key = 0 0
 						}}
-					}}
-					MODULE
-					{{
-						name = FXModuleAnimateThrottle
-						animationName = NK43
-						responseSpeed = 0.0009
-						dependOnEngineState = True
-						dependOnThrottle = True
 					}}
 
 					{engine.GimbalConfig}
@@ -132,8 +122,8 @@ namespace GenericEngines {
 
 					@MODULE[ModuleEngines*]
 					{{
-						@minThrust = {(engine.Thrust * engine.MinThrustPercent).ToString (CultureInfo.InvariantCulture)}
-						@maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
+						@minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
+						@maxThrust = {engine.Thrust.Str ()}
 						@heatProduction = 180
 						@useThrustCurve = False
 
@@ -141,8 +131,8 @@ namespace GenericEngines {
 
 						@atmosphereCurve
 						{{
-							@key,0 = 0 {engine.VacIsp.ToString (CultureInfo.InvariantCulture)}
-							@key,1 = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
+							@key,0 = 0 {engine.VacIsp.Str ()}
+							@key,1 = 1 {engine.AtmIsp.Str ()}
 						}}
 
 						!thrustCurve,*{{}}
@@ -153,13 +143,13 @@ namespace GenericEngines {
 						name = ModuleEngineConfigs
 						configuration = {engine.EngineID}
 						modded = false
-						origMass = {engine.Mass.ToString (CultureInfo.InvariantCulture)}
+						origMass = {engine.Mass.Str ()}
 						CONFIG
 						{{
 							name = {engine.EngineID}
 							description = Generic Engine | {engine.Name}
-							maxThrust = {engine.Thrust.ToString (CultureInfo.InvariantCulture)}
-							minThrust = {(engine.Thrust * engine.MinThrustPercent).ToString (CultureInfo.InvariantCulture)}
+							maxThrust = {engine.Thrust.Str ()}
+							minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
 							heatProduction = 100
 							massMult = 1
 
@@ -167,8 +157,8 @@ namespace GenericEngines {
 
 							atmosphereCurve
 							{{
-								key = 0 {engine.VacIsp.ToString (CultureInfo.InvariantCulture)}
-								key = 1 {engine.AtmIsp.ToString (CultureInfo.InvariantCulture)}
+								key = 0 {engine.VacIsp.Str ()}
+								key = 1 {engine.AtmIsp.Str ()}
 							}}
 
 							ullage = {engine.NeedsUllage}

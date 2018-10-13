@@ -10,6 +10,7 @@ namespace GenericEngines {
 		public double Scale; //Scale that makes the plume fit 1m wide engine
 		public double EnergyMultiplier;
 		public double PositionOffset;
+		public double FinalOffset;
 		public string PlumeID;
 		
 	}
@@ -20,142 +21,170 @@ namespace GenericEngines {
 			new PlumeInfo {
 				PlumeID = "Kerolox-Upper",
 				Scale = 0.4,
-				PositionOffset = 0.0,
+				PositionOffset = -0.002, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Kerolox-Lower",
 				Scale = 0.4,
-				PositionOffset = 0.0,
+				PositionOffset = -0.002, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Kerolox-Vernier",
-				Scale = 7.0,
-				PositionOffset = 0.0,
+				Scale = 8.5,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 0.5
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-125",
-				Scale = 0.6,
-				PositionOffset = 0.0,
+				Scale = 0.3,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-25",
-				Scale = 0.55,
-				PositionOffset = 0.0,
+				Scale = 0.3,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-375",
-				Scale = 0.35,
-				PositionOffset = 0.0,
+				Scale = 0.15,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Alcolox-Lower-A6",
 				Scale = 0.6,
-				PositionOffset = 0.7,
+				PositionOffset = 0.032638, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ammonialox",
-				Scale = 0.7,
-				PositionOffset = 0.8,
+				Scale = 0.85,
+				PositionOffset = 1.0319, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hydrogen-NTR",
 				Scale = 0.8,
-				PositionOffset = -0.6,
+				PositionOffset = -0.8, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hydrolox-Lower",
 				Scale = 0.7,
-				PositionOffset = 0.7,
+				PositionOffset = 1.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hydrolox-Upper",
 				Scale = 0.8,
-				PositionOffset = 0.7,
+				PositionOffset = 1.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hydynelox-A7",
 				Scale = 0.7,
-				PositionOffset = 0.1,
+				PositionOffset = -0.854729, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-Lower",
-				Scale = 0.9,
-				PositionOffset = 0.2,
+				Scale = 0.95,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-Upper",
-				Scale = 1.0,
-				PositionOffset = 0.2,
+				Scale = 1.1,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-OMS-Red",
-				Scale = 1.8,
-				PositionOffset = 0.5,
+				Scale = 1.7,
+				PositionOffset = 0.514995, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
-				PlumeID = "Hypergolic-OMS-White",
-				Scale = 0.6,
-				PositionOffset = 0.0,
+				PlumeID = "Hypergolic-OMS-White", // (?) - Doesn't have plume definition in RealPlume preset, only flare
+				Scale = 1.8,                      //       Flares get scale 0, so the plume might not show at all
+				PositionOffset = 0, //mu offset (Of plume boundary)
+				FinalOffset = -0.04,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-Vernier",
 				Scale = 4.0,
-				PositionOffset = 0.8,
+				PositionOffset = 1.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Argon-Gridded",
 				Scale = 0.4,
-				PositionOffset = 0.0,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Krypton-Gridded",
 				Scale = 0.4,
-				PositionOffset = -0.6,
+				PositionOffset = -0.854729, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Krypton-Hall",
 				Scale = 0.4,
-				PositionOffset = 0.0,
+				PositionOffset = -0.015503, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Xenon-Gridded",
 				Scale = 0.4,
-				PositionOffset = 0.6,
+				PositionOffset = 1.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Xenon-Hall",
 				Scale = 0.4,
-				PositionOffset = 0.0,
+				PositionOffset = -0.015503, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Solid-Lower",
 				Scale = 0.3,
-				PositionOffset = 0.0,
+				PositionOffset = -0.002, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Solid-Upper",
 				Scale = 0.3,
-				PositionOffset = 0.0,
+				PositionOffset = -0.002, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Solid-Sepmotor",
 				Scale = 3.0,
-				PositionOffset = 0.0,
+				PositionOffset = 0.0, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Solid-Vacuum",
-				Scale = 0.6,
-				PositionOffset = 0.2,
+				Scale = 1.44,
+				PositionOffset = 0.35831, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Turbofan",
 				Scale = 1.2,
-				PositionOffset = -0.4,
+				PositionOffset = -0.41932, //mu offset
+				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Turbojet",
 				Scale = 1.2,
-				PositionOffset = -0.2,
+				PositionOffset = 1.0, //mu offset
+				FinalOffset = -0.6,
 				EnergyMultiplier = 1.0
 			}
 		};
