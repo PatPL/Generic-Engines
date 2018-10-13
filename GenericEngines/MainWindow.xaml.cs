@@ -88,7 +88,7 @@ namespace GenericEngines {
 
 		private void RefreshEngines () {
 			if (mainDataGrid != null) {
-
+				
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
 
@@ -234,6 +234,7 @@ namespace GenericEngines {
 							Name = $"Plume test {((Plume) i).ToString ()}",
 							Width = 0.4,
 							Height = 1.4,
+							ModelID = Model.Thruster,
 							PlumeID = (Plume) i
 						});
 					}
@@ -393,23 +394,32 @@ namespace GenericEngines {
 
 		private void appendButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
-				if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
-					Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
-				}
-				fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
-				fileDialog.FileName = "";
-				fileDialog.DefaultExt = ".enl";
-				fileDialog.Filter = "Engine Lists|*.enl";
-				fileDialog.Multiselect = true;
+				try {
+					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+					if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
+						Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
+					}
+					fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
+					fileDialog.FileName = "";
+					fileDialog.DefaultExt = ".enl";
+					fileDialog.Filter = "Engine Lists|*.enl";
+					fileDialog.Multiselect = true;
 
-				bool? result = fileDialog.ShowDialog ();
+					bool? result = fileDialog.ShowDialog ();
 
-				if (result != null && result == true) {
-					foreach (string i in fileDialog.FileNames)
-					readEnginesFromFile (i, true);
-				} else {
+					if (result != null && result == true) {
+						foreach (string i in fileDialog.FileNames) {
+							readEnginesFromFile (i, true);
+						}
+					} else {
 
+					}
+
+					MessageBox.Show ($"Engines succesfully appended to {currentFile}", "Success");
+				} catch (Exception ex) {
+					// readEnginesFromFile handles file errors one by one
+					App.SaveExceptionToFile (ex);
+					MessageBox.Show ($"Something went wrong while appending engines. One or more of the .enl files might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 				}
 			}
 		}

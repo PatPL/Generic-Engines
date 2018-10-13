@@ -68,8 +68,36 @@ namespace GenericEngines {
 				HiddenMuObjects = new string[] {
 					"Size2A"
 				}
+			}, new ModelInfo { //Model.Thruster
+				OriginalHeight = 0.3055,
+				OriginalWidth = 0.12,
+				PlumeSizeMultiplier = 0.11,
+				PlumePosition = -0.04,
+				NodeStackTop = 0.0495,
+				NodeStackBottom = -0.256,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/LV-1B",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Gimbal",
+				HiddenMuObjects = null
 			}
 		};
+
+		/*
+		new ModelInfo { //Model.
+				OriginalHeight = ,
+				OriginalWidth = ,
+				PlumeSizeMultiplier = ,
+				PlumePosition = ,
+				NodeStackTop = ,
+				NodeStackBottom = ,
+				ModelPath = "",
+				TextureDefinitions = "",
+				ThrustTransformName = "",
+				GimbalTransformName = "",
+				HiddenMuObjects = null
+			}
+		*/
 
 		public static ModelInfo Get (Model index) {
 			return models[(int) index];
@@ -87,6 +115,7 @@ namespace GenericEngines {
 	public enum Model {
 		LR91,
 		AJ10,
-		RS25
+		RS25,
+		Thruster,
 	}
 }

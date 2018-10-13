@@ -110,9 +110,9 @@ namespace GenericEngines {
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-OMS-White", // (?) - Doesn't have plume definition in RealPlume preset, only flare
-				Scale = 0.6,                      //       Flares get scale 0, so the plume might not show at all
-				PositionOffset = -0.854729, //mu offset    (Of flare)
-				FinalOffset = 0.3,
+				Scale = 1.8,                      //       Flares get scale 0, so the plume might not show at all
+				PositionOffset = 0, //mu offset (Of plume boundary)
+				FinalOffset = -0.04,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Hypergolic-Vernier",
