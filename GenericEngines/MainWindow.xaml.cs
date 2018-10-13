@@ -412,7 +412,7 @@ namespace GenericEngines {
 							readEnginesFromFile (i, true);
 						}
 					} else {
-
+						return;
 					}
 
 					MessageBox.Show ($"Engines succesfully appended to {currentFile}", "Success");
