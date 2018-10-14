@@ -85,6 +85,70 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Gimbal",
 				HiddenMuObjects = null
+			}, new ModelInfo { //Model.Aestus
+				OriginalHeight = 0.393,
+				OriginalWidth = 0.234,
+				OriginalBaseWidth = 0.616,
+				PlumeSizeMultiplier = 0.225,
+				PlumePosition = -0.06,
+				NodeStackTop = 0.0,
+				NodeStackBottom = -0.393,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/48-7S",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Obj_Gimbal",
+				HiddenMuObjects = new string[] {
+					"Size2A",
+					"node_fairing_collider"
+				}
+			}, new ModelInfo { //Model.IonThruster
+				OriginalHeight = 0.3935,
+				OriginalWidth = 0.459,
+				OriginalBaseWidth = 0.627,
+				PlumeSizeMultiplier = 0.42,
+				PlumePosition = 0,
+				NodeStackTop = 0.1965,
+				NodeStackBottom = -0.197,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/IonEngine",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
+				HiddenMuObjects = new string[] {
+					"Size1B",
+					"fairing"
+				}
+			}, new ModelInfo { //Model.F1
+				OriginalHeight = 4.48,
+				OriginalWidth = 1.802,
+				OriginalBaseWidth = 3.78,
+				PlumeSizeMultiplier = 1.6,
+				PlumePosition = -0.7,
+				NodeStackTop = 1.49,
+				NodeStackBottom = -2.99,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/KR-2L",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Nozzle",
+				HiddenMuObjects = new string[] {
+					"fairing"
+				}
+			}, new ModelInfo { //Model.RD0105T
+				OriginalHeight = 0.727,
+				OriginalWidth = 0.445,
+				OriginalBaseWidth = 0.989,
+				PlumeSizeMultiplier = 0.4,
+				PlumePosition = -0.12,
+				NodeStackTop = 0.195,
+				NodeStackBottom = -0.532,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/LV900",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Obj_Gimbal",
+				HiddenMuObjects = new string[] {
+					"Size2B",
+					"fairing",
+					"Hoses"
+				}
 			}
 		};
 
@@ -123,5 +187,9 @@ namespace GenericEngines {
 		AJ10,
 		RS25,
 		Thruster,
+		Aestus,
+		IonThruster,
+		F1,
+		RD0105T
 	}
 }

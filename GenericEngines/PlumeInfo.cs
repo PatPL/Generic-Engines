@@ -122,31 +122,31 @@ namespace GenericEngines {
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Argon-Gridded",
-				Scale = 0.4,
+				Scale = 1.2,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Krypton-Gridded",
-				Scale = 0.4,
+				Scale = 1.5,
 				PositionOffset = -0.854729, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Krypton-Hall",
-				Scale = 0.4,
+				Scale = 1.5,
 				PositionOffset = -0.015503, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Xenon-Gridded",
-				Scale = 0.4,
+				Scale = 1.0,
 				PositionOffset = 1.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Xenon-Hall",
-				Scale = 0.4,
+				Scale = 1.6,
 				PositionOffset = -0.015503, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
