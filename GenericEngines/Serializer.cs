@@ -13,7 +13,7 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 7;
+		private readonly static short SerializerVersion = 8;
 		private static byte[] LatestSerializer (Engine e) {
 			
 			short version = SerializerVersion;
@@ -44,7 +44,7 @@ namespace GenericEngines {
 				8 + //double - StartReliability0
 				8 + //double - StartReliability10k
 				8 + //double - CycleReliability0
-				8) + //double - CycleReliability10k
+				8)+ //double - CycleReliability10k
 				8 + //double - AlternatorPower
 				1 + //bool - GimbalConfigNotDefault
 				(e.GimbalConfigNotDefault ? 1 : 0) * ( //Include all properties inside brackets only if any Gimbal properties were changed
@@ -61,7 +61,8 @@ namespace GenericEngines {
 				1 + //bool - ManufacturerNotDefault
 				(e.ManufacturerNotDefault ? 1 : 0) * (e.EngineManufacturer.Length + 2) + //(1B * length + 2B length header) if manufacturer was changed - EngineManufacturer
 				1 + //bool - DescriptionNotDefault
-				(e.DescriptionNotDefault ? 1 : 0) * (e.EngineDescription.Length + 2) //(1B * length + 2B length header) if description was changed - EngineDescription
+				(e.DescriptionNotDefault ? 1 : 0) * (e.EngineDescription.Length + 2) + //(1B * length + 2B length header) if description was changed - EngineDescription
+				1 //bool - UseBaseWidth
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -275,6 +276,9 @@ namespace GenericEngines {
 					output[i++] = Convert.ToByte (c);
 				}
 			}
+
+			//bool - UseBaseWidth
+			output[i++] = (byte) (e.UseBaseWidth ? 1 : 0);
 
 			return output;
 		}
@@ -512,6 +516,11 @@ namespace GenericEngines {
 						}
 					}
 				}
+			}
+
+			if (version >= 8) {
+				//bool - UseBaseWidth
+				output.UseBaseWidth = input[i++] == 1;
 			}
 
 			addedOffset = i - offset;

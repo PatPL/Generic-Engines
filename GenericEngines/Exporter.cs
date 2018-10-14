@@ -38,7 +38,7 @@ namespace GenericEngines {
 					cost = {engine.Cost}
 					category = Engine
 					subcategory = 0
-					title = {engine.EngineName}
+					title = {engine.RealEngineName}
 					manufacturer = {engine.EngineManufacturer}
 					description = {engine.EngineDescription}
 					attachRules = 1,1,1,0,0
