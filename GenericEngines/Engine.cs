@@ -53,6 +53,10 @@ namespace GenericEngines {
 		public string EngineDescription { get; set; } //7
 		public bool UseBaseWidth { get; set; } //8
 
+		//This is necessary to fix deleting
+		public static int UIDc = 1;
+		public int UID { get; set; }
+
 		// Exporter
 
 		public string ModelConfig {
@@ -460,6 +464,8 @@ namespace GenericEngines {
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
 		public Engine () {
+			UID = UIDc++;
+			
 			Active = false;
 			Name = "New Engine";
 			Mass = 1.0;

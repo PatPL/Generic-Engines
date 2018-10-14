@@ -116,7 +116,8 @@ namespace GenericEngines {
 				mainDataGrid.CancelEdit ();
 
 				foreach (Engine i in mainDataGrid.SelectedItems) {
-					Engines.Add (i);
+					//Creates a copy
+					Engines.Add (Serializer.Deserialize (Serializer.Serialize (i), out int _));
 				}
 
 				mainDataGrid.UnselectAll ();
