@@ -108,7 +108,7 @@ namespace GenericEngines {
 							fixedScale = {(modelInfo.PlumeSizeMultiplier * plumeInfo.Scale * Width / GetOriginalWidth).Str ()}
 							flareScale = 0
 							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).Str ()}
-							speed = 1
+							speed = {Math.Max ((Math.Log (VacIsp, 2) / 1.5) - 4.5, 0.2).Str ()}
 						}}
 
 						@MODULE[ModuleEngines*]

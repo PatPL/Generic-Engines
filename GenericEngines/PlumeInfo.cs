@@ -44,7 +44,7 @@ namespace GenericEngines {
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-25",
-				Scale = 0.3,
+				Scale = 0.9,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
