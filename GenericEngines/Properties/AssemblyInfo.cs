@@ -52,4 +52,4 @@ using System.Windows;
 // przy użyciu symbolu „*”, tak jak pokazano poniżej:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion ("0.4.*")]
-[assembly: AssemblyFileVersion ("0.4.2")]
+[assembly: AssemblyFileVersion ("0.4.3")]

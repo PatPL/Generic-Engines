@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("help.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("duplicate.png")]
 
 

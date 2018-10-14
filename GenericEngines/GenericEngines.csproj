@@ -217,5 +217,8 @@
   <ItemGroup>
     <None Include="Resources\GenericEnginesPlumeScaleFixer.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="duplicate.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

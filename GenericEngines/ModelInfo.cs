@@ -28,7 +28,7 @@ namespace GenericEngines {
 			new ModelInfo { //Model.LR91
 				OriginalHeight = 1.885,
 				OriginalWidth = 0.9635,
-				OriginalBaseWidth = 0.88,
+				OriginalBaseWidth = 0.892,
 				PlumeSizeMultiplier = 1.0,
 				PlumePosition = 0.8,
 				NodeStackTop = 0.7215,
@@ -41,7 +41,7 @@ namespace GenericEngines {
 			}, new ModelInfo { //Model.AJ10
 				OriginalHeight = 0.654,
 				OriginalWidth = 0.285,
-				OriginalBaseWidth = 0.3945,
+				OriginalBaseWidth = 0.395,
 				PlumeSizeMultiplier = 0.295,
 				PlumePosition = -0.09,
 				NodeStackTop = 0.33,
@@ -60,7 +60,7 @@ namespace GenericEngines {
 			}, new ModelInfo { //Model.RS25
 				OriginalHeight = 1.5,
 				OriginalWidth = 0.865,
-				OriginalBaseWidth = 0.985,
+				OriginalBaseWidth = 0.989,
 				PlumeSizeMultiplier = 0.85,
 				PlumePosition = -0.8,
 				NodeStackTop = -0.025,
@@ -75,7 +75,7 @@ namespace GenericEngines {
 			}, new ModelInfo { //Model.Thruster
 				OriginalHeight = 0.3055,
 				OriginalWidth = 0.12,
-				OriginalBaseWidth = 0.221,
+				OriginalBaseWidth = 0.222,
 				PlumeSizeMultiplier = 0.11,
 				PlumePosition = -0.04,
 				NodeStackTop = 0.0495,

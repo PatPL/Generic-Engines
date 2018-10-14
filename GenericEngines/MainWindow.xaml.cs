@@ -110,6 +110,20 @@ namespace GenericEngines {
 			lastMouseDownObject = sender;
 		}
 
+		private void duplicateButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				mainDataGrid.CommitEdit ();
+				mainDataGrid.CancelEdit ();
+
+				foreach (Engine i in mainDataGrid.SelectedItems) {
+					Engines.Add (i);
+				}
+
+				mainDataGrid.UnselectAll ();
+				RefreshEngines ();
+			}
+		}
+
 		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				mainDataGrid.CommitEdit ();
@@ -117,6 +131,7 @@ namespace GenericEngines {
 
 				Engine newEngine = new Engine ();
 
+				/* Changed Setting.AvoidCollisionOnNewEngine's function to export only
 				if (Settings.GetBool (Setting.AvoidCollisionOnNewEngine)) {
 					string defaultName = newEngine.Name;
 					int counter = 1;
@@ -125,6 +140,7 @@ namespace GenericEngines {
 						newEngine.Name = $"{defaultName} {counter++}";
 					}
 				}
+				*/
 
 				Engines.Add (newEngine);
 				RefreshEngines ();
@@ -299,9 +315,38 @@ namespace GenericEngines {
 			}
 		}
 
+		List<Engine> FixDuplicateID (List<Engine> input, out bool foundDuplicate) {
+			List<Engine> output = new List<Engine> ();
+			foundDuplicate = false;
+
+			foreach (Engine i in input) {
+				Engine copy = Serializer.Deserialize (Serializer.Serialize (i), out int _);
+				string originalName = copy.Name;
+				int counter = 1;
+
+				while (output.Exists (x => x.Name == copy.Name)) {
+					copy.Name = $"{originalName} {counter++}";
+					foundDuplicate |= true;
+				}
+
+				output.Add (copy);
+			}
+
+			return output;
+		}
+
 		void ExportEnginesToFile (string path) {
 			try {
-				File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out int exportedEnginesCount));
+				int exportedEnginesCount = 0;
+				if (Settings.GetBool (Setting.AvoidCollisionOnNewEngine)) {
+					File.WriteAllText (path, Exporter.ConvertEngineListToConfig (FixDuplicateID (Engines, out bool foundDuplicate), out exportedEnginesCount));
+
+					if (foundDuplicate) {
+						MessageBox.Show ($"Warning! ID duplicates detected. Exporter fixed it, but ID duplicates might cause engines to disappear in game, if one of the duplicates gets removed, or added. Please, try to avoid duplicating IDs. If possible, change IDs and reexport the engines.", "Warning");
+					}
+				} else {
+					File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out exportedEnginesCount));
+				}
 
 				string pathDirectory = new FileInfo (path).Directory.FullName;
 
