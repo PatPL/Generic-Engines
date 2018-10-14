@@ -101,7 +101,8 @@ namespace GenericEngines {
 			{ Setting.AdvConfirmBox, "False" },
 			{ Setting.DefaultSaveDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Saves\\" },
 			{ Setting.DefaultExportDirectory, $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\Exports\\" },
-			{ Setting.MoreEngineInfo, "False" }
+			{ Setting.MoreEngineInfo, "False" },
+			{ Setting.AvoidCollisionOnNewEngine, "True" }
 		};
 	}
 
@@ -110,5 +111,6 @@ namespace GenericEngines {
 		public static readonly string DefaultSaveDirectory = "DefaultSaveDirectory";
 		public static readonly string DefaultExportDirectory = "DefaultExportDirectory";
 		public static readonly string MoreEngineInfo = "MoreEngineInfo";
+		public static readonly string AvoidCollisionOnNewEngine = "AvoidCollisionOnNewEngine";
 	}
 }

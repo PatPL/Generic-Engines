@@ -33,14 +33,14 @@ namespace GenericEngines {
 					
 					{engine.ModelConfig}
 
-					TechRequired = basicRocketry
-					entryCost = 0
+					TechRequired = {TechNodes.GetID (engine.TechUnlockNode)}
+					entryCost = {engine.EntryCost}
 					cost = {engine.Cost}
 					category = Engine
 					subcategory = 0
-					title = {engine.Name}
-					manufacturer = Generic Engines
-					description = Generic Engine | {engine.Name}
+					title = {engine.EngineName}
+					manufacturer = {engine.EngineManufacturer}
+					description = {engine.EngineDescription}
 					attachRules = 1,1,1,0,0
 					mass = {engine.Mass.Str ()}
 					heatConductivity = 0.06
@@ -107,7 +107,8 @@ namespace GenericEngines {
 				@PART[{engine.EngineID}]:FOR[RealismOverhaul]
 				{{
 
-					% RSSROConfig = True
+					%RSSROConfig = True
+					%RP0conf = True
 					
 					%breakingForce = 250
 					%breakingTorque = 250

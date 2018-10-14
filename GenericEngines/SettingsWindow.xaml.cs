@@ -65,6 +65,15 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool AvoidCollisionOnNewEngine {
+			get {
+				return bool.Parse (Settings.Get ("AvoidCollisionOnNewEngine"));
+			}
+			set {
+				Settings.Set ("AvoidCollisionOnNewEngine", value.ToString ());
+			}
+		}
+
 		// /Settings
 
 		object lastMouseDownObject;

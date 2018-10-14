@@ -115,7 +115,18 @@ namespace GenericEngines {
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
 
-				Engines.Add (new Engine ());
+				Engine newEngine = new Engine ();
+
+				if (Settings.GetBool (Setting.AvoidCollisionOnNewEngine)) {
+					string defaultName = newEngine.Name;
+					int counter = 1;
+
+					while (Engines.Exists (x => x.Name == newEngine.Name)) {
+						newEngine.Name = $"{defaultName} {counter++}";
+					}
+				}
+
+				Engines.Add (newEngine);
 				RefreshEngines ();
 			}
 		}
@@ -281,6 +292,11 @@ namespace GenericEngines {
 
 		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
 			isEdited = false;
+
+			if (/*e.Column.SortMemberPath == "EngineName"*/ true) { //Auto resizing seems nice on every column. I'll leave this for now
+				e.Column.Width = new DataGridLength (0);
+				e.Column.Width = new DataGridLength (0, DataGridLengthUnitType.Auto);
+			}
 		}
 
 		void ExportEnginesToFile (string path) {
@@ -438,6 +454,10 @@ namespace GenericEngines {
 
 		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
+		}
+
+		private void techCombo_Loaded (object sender, RoutedEventArgs e) {
+			((ComboBox) sender).ItemsSource = TechNodes.names;
 		}
 	}
 }

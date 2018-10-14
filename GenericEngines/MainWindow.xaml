@@ -193,7 +193,43 @@
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
 						<DataTemplate>
-							<TextBlock Text="Engine name" ToolTip="Engine name" FontFamily="Verdana"></TextBlock>
+							<TextBlock Text="ID" ToolTip="ID" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="RealEngineName" MaxWidth="250">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=RealEngineName, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="16"/>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="16"/>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="16"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Row="0" Text="Title" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
+								<TextBox Grid.Row="1" Text="{Binding Path=EngineName, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBlock Grid.Row="2" Text="Manufacturer" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
+								<TextBox Grid.Row="3" Text="{Binding Path=EngineManufacturer, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBlock Grid.Row="4" Text="Description" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
+								<TextBox TextWrapping="Wrap" Grid.Row="5" Text="{Binding Path=EngineDescription, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" Width="250"></TextBox>
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Name" ToolTip="Name" FontFamily="Verdana"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
@@ -517,6 +553,42 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 				
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=TechNodeStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<ComboBox ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="R&amp;D Unlock node" ToolTip="R&amp;D Unlock node" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn SortMemberPath="EntryCost">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=EntryCost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=EntryCost, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Entry Cost" ToolTip="Entry Cost" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn SortMemberPath="Cost">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
