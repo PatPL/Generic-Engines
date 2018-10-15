@@ -587,16 +587,8 @@ namespace GenericEngines {
 			}
 		}
 
-		private void modelCombo_Loaded (object sender, RoutedEventArgs e) {
-			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Model)).Cast<Model> ();
-		}
-
 		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
-		}
-
-		private void techCombo_Loaded (object sender, RoutedEventArgs e) {
-			((ComboBox) sender).ItemsSource = TechNodes.names;
 		}
 		
 		private void techComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {

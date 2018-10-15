@@ -80,6 +80,7 @@
     <Compile Include="AppInfo.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="FuelRatioList.cs" />
+    <Compile Include="ModelEnumWrapper.cs" />
     <Compile Include="ModelInfo.cs" />
     <Compile Include="PlumeInfo.cs" />
     <Compile Include="PrimitiveTypeExtensions.cs" />

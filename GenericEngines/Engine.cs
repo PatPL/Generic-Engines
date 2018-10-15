@@ -463,6 +463,8 @@ namespace GenericEngines {
 
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
+		public Dictionary<Model, string> ModelsWithLabels => ModelEnumWrapper.Get;
+
 		public Engine () {
 			UID = UIDc++;
 			

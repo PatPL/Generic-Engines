@@ -38,19 +38,19 @@ namespace GenericEngines {
 				EnergyMultiplier = 0.5
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-125",
-				Scale = 0.3,
+				Scale = 0.35,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-25",
-				Scale = 0.9,
+				Scale = 0.6,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-375",
-				Scale = 0.15,
+				Scale = 0.3,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0

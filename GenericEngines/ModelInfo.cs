@@ -175,8 +175,24 @@ namespace GenericEngines {
 
 		public static string GetName (Model index) {
 			switch (index) {
+				case Model.LR91:
+				return "LR-91";
+				case Model.AJ10:
+				return "AJ-10";
+				case Model.RS25:
+				return "RS-25";
+				case Model.Thruster:
+				return "Generic thruster";
+				case Model.Aestus:
+				return "Spark (VSR)";
+				case Model.IonThruster:
+				return "Ion thruster";
+				case Model.F1:
+				return "Rhino (VSR)";
+				case Model.RD0105T:
+				return "Beagle (VSR)";
 				default:
-				return index.ToString ();
+				return "Unknown engine";
 			}
 		}
 
