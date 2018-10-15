@@ -38,19 +38,19 @@ namespace GenericEngines {
 				EnergyMultiplier = 0.5
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-125",
-				Scale = 0.3,
+				Scale = 0.35,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-25",
-				Scale = 0.3,
+				Scale = 0.6,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Cryogenic-UpperLower-375",
-				Scale = 0.15,
+				Scale = 0.3,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
@@ -122,31 +122,31 @@ namespace GenericEngines {
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Argon-Gridded",
-				Scale = 0.4,
+				Scale = 1.2,
 				PositionOffset = 0.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Krypton-Gridded",
-				Scale = 0.4,
+				Scale = 1.5,
 				PositionOffset = -0.854729, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Krypton-Hall",
-				Scale = 0.4,
+				Scale = 1.5,
 				PositionOffset = -0.015503, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Xenon-Gridded",
-				Scale = 0.4,
+				Scale = 1.0,
 				PositionOffset = 1.0, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0
 			}, new PlumeInfo {
 				PlumeID = "Ion-Xenon-Hall",
-				Scale = 0.4,
+				Scale = 1.6,
 				PositionOffset = -0.015503, //mu offset
 				FinalOffset = 0.0,
 				EnergyMultiplier = 1.0

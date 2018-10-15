@@ -13,7 +13,7 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 6;
+		private readonly static short SerializerVersion = 8;
 		private static byte[] LatestSerializer (Engine e) {
 			
 			short version = SerializerVersion;
@@ -44,7 +44,7 @@ namespace GenericEngines {
 				8 + //double - StartReliability0
 				8 + //double - StartReliability10k
 				8 + //double - CycleReliability0
-				8) + //double - CycleReliability10k
+				8)+ //double - CycleReliability10k
 				8 + //double - AlternatorPower
 				1 + //bool - GimbalConfigNotDefault
 				(e.GimbalConfigNotDefault ? 1 : 0) * ( //Include all properties inside brackets only if any Gimbal properties were changed
@@ -54,7 +54,15 @@ namespace GenericEngines {
 				8 + //double - GimbalNY
 				8)+ //double - GimbalPY
 				2 + //short - ModelID
-				2 //short - PlumeID
+				2 + //short - PlumeID
+				2 + //short - TechUnlockNode
+				4 + //int - EntryCost
+				(e.EngineName.Length + 2) + //1B * length + 2B length header - EngineName
+				1 + //bool - ManufacturerNotDefault
+				(e.ManufacturerNotDefault ? 1 : 0) * (e.EngineManufacturer.Length + 2) + //(1B * length + 2B length header) if manufacturer was changed - EngineManufacturer
+				1 + //bool - DescriptionNotDefault
+				(e.DescriptionNotDefault ? 1 : 0) * (e.EngineDescription.Length + 2) + //(1B * length + 2B length header) if description was changed - EngineDescription
+				1 //bool - UseBaseWidth
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -221,6 +229,57 @@ namespace GenericEngines {
 			output[i++] = (byte) (((short) e.PlumeID) % 256);
 			output[i++] = (byte) (((short) e.PlumeID) / 256);
 
+			//short - TechUnlockNode
+			output[i++] = (byte) (((short) e.TechUnlockNode) % 256);
+			output[i++] = (byte) (((short) e.TechUnlockNode) / 256);
+
+			//int - EntryCost
+			foreach (byte b in BitConverter.GetBytes (e.EntryCost)) {
+				output[i++] = b;
+			}
+
+			//1B * length + 2B length header - EngineName
+			//String header
+			output[i++] = (byte) (e.EngineName.Length % 256);
+			output[i++] = (byte) (e.EngineName.Length / 256);
+			//String data
+			foreach (char c in e.EngineName) {
+				output[i++] = Convert.ToByte (c);
+			}
+
+			//bool - ManufacturerNotDefault
+			output[i++] = (byte) (e.ManufacturerNotDefault ? 1 : 0);
+
+			//Write Manufacturer to file if it was changed
+			if (e.ManufacturerNotDefault) {
+				//(1B * length + 2B length header) - EngineManufacturer
+				//String header
+				output[i++] = (byte) (e.EngineManufacturer.Length % 256);
+				output[i++] = (byte) (e.EngineManufacturer.Length / 256);
+				//String data
+				foreach (char c in e.EngineManufacturer) {
+					output[i++] = Convert.ToByte (c);
+				}
+			}
+
+			//bool - DescriptionNotDefault
+			output[i++] = (byte) (e.DescriptionNotDefault ? 1 : 0);
+
+			//Write description to file if it was changed
+			if (e.DescriptionNotDefault) {
+				//(1B * length + 2B length header) - EngineDescription
+				//String header
+				output[i++] = (byte) (e.EngineDescription.Length % 256);
+				output[i++] = (byte) (e.EngineDescription.Length / 256);
+				//String data
+				foreach (char c in e.EngineDescription) {
+					output[i++] = Convert.ToByte (c);
+				}
+			}
+
+			//bool - UseBaseWidth
+			output[i++] = (byte) (e.UseBaseWidth ? 1 : 0);
+
 			return output;
 		}
 
@@ -254,7 +313,6 @@ namespace GenericEngines {
 					for (int c = 0; c < stringLength; ++c) {
 						output.Name += Convert.ToChar (input[i++]);
 					}
-
 				}
 
 				//double - Mass
@@ -406,6 +464,63 @@ namespace GenericEngines {
 				//short - PlumeID
 				output.PlumeID += input[i++];
 				output.PlumeID += input[i++] * 256;
+			}
+
+			if (version >= 7) {
+				//short - TechUnlockNode
+				output.TechUnlockNode += input[i++];
+				output.TechUnlockNode += input[i++] * 256;
+
+				//int - EntryCost
+				output.EntryCost = BitConverter.ToInt32 (input, i);
+				i += 4;
+
+				//1B * length + 2B length header - EngineName
+				{
+					int stringLength = 0;
+					stringLength += input[i++];
+					stringLength += input[i++] * 256;
+					
+					output.EngineName = "";
+					for (int c = 0; c < stringLength; ++c) {
+						output.EngineName += Convert.ToChar (input[i++]);
+					}
+				}
+
+				//bool - ManufacturerNotDefault
+				if (input[i++] == 1) {
+					//(1B * length + 2B length header) if Manufacturer was changed - EngineManufacturer
+					{
+						int stringLength = 0;
+						stringLength += input[i++];
+						stringLength += input[i++] * 256;
+
+						output.EngineManufacturer = "";
+						for (int c = 0; c < stringLength; ++c) {
+							output.EngineManufacturer += Convert.ToChar (input[i++]);
+						}
+					}
+				}
+
+				//bool - DescriptionNotDefault
+				if (input[i++] == 1) {
+					//(1B * length + 2B length header) if description was changed - EngineDescription
+					{
+						int stringLength = 0;
+						stringLength += input[i++];
+						stringLength += input[i++] * 256;
+
+						output.EngineDescription = "";
+						for (int c = 0; c < stringLength; ++c) {
+							output.EngineDescription += Convert.ToChar (input[i++]);
+						}
+					}
+				}
+			}
+
+			if (version >= 8) {
+				//bool - UseBaseWidth
+				output.UseBaseWidth = input[i++] == 1;
 			}
 
 			addedOffset = i - offset;

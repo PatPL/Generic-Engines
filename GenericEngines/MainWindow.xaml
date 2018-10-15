@@ -147,6 +147,7 @@
 			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="36"/>
+			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="*" MinWidth="4"/>
 			<ColumnDefinition Width="36"/>
 			<ColumnDefinition Width="36"/>
@@ -161,11 +162,12 @@
 		<Image Grid.Column="3" Margin="4,4,0,0" Source="save.png" MouseDown="registerMouseDown" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
 		<Image Grid.Column="4" Margin="4,4,0,0" Source="saveas.png" MouseDown="registerMouseDown" MouseUp="saveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
 		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
-		<Image Grid.Column="6" Margin="4,4,0,0" Source="add.png" MouseDown="registerMouseDown" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
-		<Image Grid.Column="7" Margin="4,4,0,0" Source="remove.png" MouseDown="registerMouseDown" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
-		<Image Grid.Column="9" Margin="0,4,4,0" Source="help.png" MouseDown="registerMouseDown" MouseUp="helpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
-		<Image Grid.Column="10" Margin="0,4,4,0" Source="settings.png" MouseDown="registerMouseDown" MouseUp="settingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
-		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="11" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
+		<Image Grid.Column="6" Margin="4,4,0,0" Source="duplicate.png" MouseDown="registerMouseDown" MouseUp="duplicateButton_MouseUp" ToolTip="Duplicate selected engines" Stretch="Fill"/>
+		<Image Grid.Column="7" Margin="4,4,0,0" Source="add.png" MouseDown="registerMouseDown" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
+		<Image Grid.Column="8" Margin="4,4,0,0" Source="remove.png" MouseDown="registerMouseDown" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
+		<Image Grid.Column="10" Margin="0,4,4,0" Source="help.png" MouseDown="registerMouseDown" MouseUp="helpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
+		<Image Grid.Column="11" Margin="0,4,4,0" Source="settings.png" MouseDown="registerMouseDown" MouseUp="settingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
+		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn SortMemberPath="Active" Width="1">
 					<DataGridTemplateColumn.CellTemplate>
@@ -193,7 +195,43 @@
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
 						<DataTemplate>
-							<TextBlock Text="Engine name" ToolTip="Engine name" FontFamily="Verdana"></TextBlock>
+							<TextBlock Text="ID" ToolTip="ID" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="RealEngineName" MaxWidth="250">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=RealEngineName, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="16"/>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="16"/>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="16"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Row="0" Text="Title" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
+								<TextBox Grid.Row="1" Text="{Binding Path=EngineName, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBlock Grid.Row="2" Text="Manufacturer" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
+								<TextBox Grid.Row="3" Text="{Binding Path=EngineManufacturer, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBlock Grid.Row="4" Text="Description" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
+								<TextBox TextWrapping="Wrap" Grid.Row="5" Text="{Binding Path=EngineDescription, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" Width="250"></TextBox>
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Name" ToolTip="Name" FontFamily="Verdana"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
@@ -331,12 +369,12 @@
 									<RowDefinition Height="18"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addPropellantButton_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removePropellantButton_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="38,2,2,0">Mass</TextBlock>
 								<CheckBox IsChecked="{Binding Path=FuelVolumeRatios, UpdateSourceTrigger=PropertyChanged}" Margin="70,2,2,0" Style="{StaticResource CheckBoxSwitch}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="104,2,2,0">Volume</TextBlock>
-								<DataGrid ItemsSource="{Binding Path=PropellantRatio}" AutoGenerateColumns="false" BeginningEdit="propellentDataGrid_BeginningEdit" CellEditEnding="propellentDataGrid_CellEditEnding" PreviewKeyUp="propellentDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="propellentDataGrid_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+								<DataGrid ItemsSource="{Binding Path=PropellantRatio}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>
@@ -427,7 +465,7 @@
 								</Grid.ColumnDefinitions>
 								<TextBlock Text="Model" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
 								<TextBlock Text="Plume" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
-								<ComboBox Loaded="modelCombo_Loaded" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto"></ComboBox>
+								<ComboBox ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto"></ComboBox>
 								<ComboBox Loaded="plumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
 							</Grid>
 						</DataTemplate>
@@ -449,6 +487,7 @@
 						<DataTemplate>
 							<Grid>
 								<Grid.RowDefinitions>
+									<RowDefinition Height="20"/>
 									<RowDefinition Height="1*"/>
 									<RowDefinition Height="1*"/>
 								</Grid.RowDefinitions>
@@ -457,12 +496,15 @@
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="16"/>
 								</Grid.ColumnDefinitions>
-								<TextBlock Text="Width" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
-								<TextBlock Text="Height" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
-								<TextBox Text="{Binding Path=Width, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto"></TextBox>
-								<TextBox Text="{Binding Path=Height, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></TextBox>
-								<TextBlock Text="m" Grid.Column="2" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
-								<TextBlock Text="m" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
+								<TextBlock Grid.ColumnSpan="999" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,1,1,0">Bell</TextBlock>
+								<CheckBox Grid.ColumnSpan="999" IsChecked="{Binding Path=UseBaseWidth, UpdateSourceTrigger=PropertyChanged}" Margin="29,1,1,0" Style="{StaticResource CheckBoxSwitch}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+								<TextBlock Grid.ColumnSpan="999" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="64,1,1,0">Base</TextBlock>
+								<TextBlock Text="Width" Grid.Row="1" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
+								<TextBlock Text="Height" Grid.Row="2" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
+								<TextBox Text="{Binding Path=Width, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" Width="Auto"></TextBox>
+								<TextBox Text="{Binding Path=Height, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="2" MinWidth="50"></TextBox>
+								<TextBlock Text="m" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
+								<TextBlock Text="m" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
 							</Grid>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
@@ -517,6 +559,42 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 				
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=TechNodeStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<ComboBox PreviewKeyUp="techComboBox_PreviewKeyUp" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="R&amp;D Unlock node" ToolTip="R&amp;D Unlock node" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn SortMemberPath="EntryCost">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=EntryCost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Path=EntryCost, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Entry Cost" ToolTip="Entry Cost" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn SortMemberPath="Cost">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>

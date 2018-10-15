@@ -8,7 +8,8 @@ namespace GenericEngines {
 	public class ModelInfo {
 
 		public double OriginalHeight;
-		public double OriginalWidth;
+		public double OriginalWidth; //Bell width
+		public double OriginalBaseWidth; //Engine base width
 		public double PlumeSizeMultiplier;
 		public double PlumePosition;
 		public double NodeStackTop;
@@ -26,7 +27,8 @@ namespace GenericEngines {
 		private static readonly List<ModelInfo> models = new List<ModelInfo> () {
 			new ModelInfo { //Model.LR91
 				OriginalHeight = 1.885,
-				OriginalWidth = 0.97,
+				OriginalWidth = 0.9635,
+				OriginalBaseWidth = 0.892,
 				PlumeSizeMultiplier = 1.0,
 				PlumePosition = 0.8,
 				NodeStackTop = 0.7215,
@@ -39,6 +41,7 @@ namespace GenericEngines {
 			}, new ModelInfo { //Model.AJ10
 				OriginalHeight = 0.654,
 				OriginalWidth = 0.285,
+				OriginalBaseWidth = 0.395,
 				PlumeSizeMultiplier = 0.295,
 				PlumePosition = -0.09,
 				NodeStackTop = 0.33,
@@ -57,6 +60,7 @@ namespace GenericEngines {
 			}, new ModelInfo { //Model.RS25
 				OriginalHeight = 1.5,
 				OriginalWidth = 0.865,
+				OriginalBaseWidth = 0.989,
 				PlumeSizeMultiplier = 0.85,
 				PlumePosition = -0.8,
 				NodeStackTop = -0.025,
@@ -71,6 +75,7 @@ namespace GenericEngines {
 			}, new ModelInfo { //Model.Thruster
 				OriginalHeight = 0.3055,
 				OriginalWidth = 0.12,
+				OriginalBaseWidth = 0.222,
 				PlumeSizeMultiplier = 0.11,
 				PlumePosition = -0.04,
 				NodeStackTop = 0.0495,
@@ -80,6 +85,70 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Gimbal",
 				HiddenMuObjects = null
+			}, new ModelInfo { //Model.Aestus
+				OriginalHeight = 0.393,
+				OriginalWidth = 0.234,
+				OriginalBaseWidth = 0.616,
+				PlumeSizeMultiplier = 0.225,
+				PlumePosition = -0.06,
+				NodeStackTop = 0.0,
+				NodeStackBottom = -0.393,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/48-7S",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Obj_Gimbal",
+				HiddenMuObjects = new string[] {
+					"Size2A",
+					"node_fairing_collider"
+				}
+			}, new ModelInfo { //Model.IonThruster
+				OriginalHeight = 0.3935,
+				OriginalWidth = 0.459,
+				OriginalBaseWidth = 0.627,
+				PlumeSizeMultiplier = 0.42,
+				PlumePosition = 0,
+				NodeStackTop = 0.1965,
+				NodeStackBottom = -0.197,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/IonEngine",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
+				HiddenMuObjects = new string[] {
+					"Size1B",
+					"fairing"
+				}
+			}, new ModelInfo { //Model.F1
+				OriginalHeight = 4.48,
+				OriginalWidth = 1.802,
+				OriginalBaseWidth = 3.78,
+				PlumeSizeMultiplier = 1.6,
+				PlumePosition = -0.7,
+				NodeStackTop = 1.49,
+				NodeStackBottom = -2.99,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/KR-2L",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Nozzle",
+				HiddenMuObjects = new string[] {
+					"fairing"
+				}
+			}, new ModelInfo { //Model.RD0105T
+				OriginalHeight = 0.727,
+				OriginalWidth = 0.445,
+				OriginalBaseWidth = 0.989,
+				PlumeSizeMultiplier = 0.4,
+				PlumePosition = -0.12,
+				NodeStackTop = 0.195,
+				NodeStackBottom = -0.532,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/LV900",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Obj_Gimbal",
+				HiddenMuObjects = new string[] {
+					"Size2B",
+					"fairing",
+					"Hoses"
+				}
 			}
 		};
 
@@ -87,6 +156,7 @@ namespace GenericEngines {
 		new ModelInfo { //Model.
 				OriginalHeight = ,
 				OriginalWidth = ,
+				OriginalBaseWidth = ,
 				PlumeSizeMultiplier = ,
 				PlumePosition = ,
 				NodeStackTop = ,
@@ -105,8 +175,24 @@ namespace GenericEngines {
 
 		public static string GetName (Model index) {
 			switch (index) {
+				case Model.LR91:
+				return "LR-91";
+				case Model.AJ10:
+				return "AJ-10";
+				case Model.RS25:
+				return "RS-25";
+				case Model.Thruster:
+				return "Generic thruster";
+				case Model.Aestus:
+				return "Spark (VSR)";
+				case Model.IonThruster:
+				return "Ion thruster";
+				case Model.F1:
+				return "Rhino (VSR)";
+				case Model.RD0105T:
+				return "Beagle (VSR)";
 				default:
-				return index.ToString ();
+				return "Unknown engine";
 			}
 		}
 
@@ -117,5 +203,9 @@ namespace GenericEngines {
 		AJ10,
 		RS25,
 		Thruster,
+		Aestus,
+		IonThruster,
+		F1,
+		RD0105T
 	}
 }

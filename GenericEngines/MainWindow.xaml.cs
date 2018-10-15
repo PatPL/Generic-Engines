@@ -110,12 +110,40 @@ namespace GenericEngines {
 			lastMouseDownObject = sender;
 		}
 
+		private void duplicateButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				mainDataGrid.CommitEdit ();
+				mainDataGrid.CancelEdit ();
+
+				foreach (Engine i in mainDataGrid.SelectedItems) {
+					//Creates a copy
+					Engines.Add (Serializer.Deserialize (Serializer.Serialize (i), out int _));
+				}
+
+				mainDataGrid.UnselectAll ();
+				RefreshEngines ();
+			}
+		}
+
 		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
 
-				Engines.Add (new Engine ());
+				Engine newEngine = new Engine ();
+
+				/* Changed Setting.AvoidCollisionOnNewEngine's function to export only
+				if (Settings.GetBool (Setting.AvoidCollisionOnNewEngine)) {
+					string defaultName = newEngine.Name;
+					int counter = 1;
+
+					while (Engines.Exists (x => x.Name == newEngine.Name)) {
+						newEngine.Name = $"{defaultName} {counter++}";
+					}
+				}
+				*/
+
+				Engines.Add (newEngine);
 				RefreshEngines ();
 			}
 		}
@@ -274,6 +302,8 @@ namespace GenericEngines {
 		private void mainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
 			isEdited = true;
 
+			mainDataGrid_SetCurrentGDList (sender, e);
+
 			if (e.Column.Header != null && e.Column.Header.ToString () == "Propellants") {
 				currentFuelRatioList = ((Engine) e.Row.Item).PropellantRatio;
 			}
@@ -281,11 +311,47 @@ namespace GenericEngines {
 
 		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
 			isEdited = false;
+
+			GD_Unload (sender, e);
+
+			if (/*e.Column.SortMemberPath == "EngineName"*/ true) { //Auto resizing seems nice on every column. I'll leave this for now
+				e.Column.Width = new DataGridLength (0);
+				e.Column.Width = new DataGridLength (0, DataGridLengthUnitType.Auto);
+			}
+		}
+
+		List<Engine> FixDuplicateID (List<Engine> input, out bool foundDuplicate) {
+			List<Engine> output = new List<Engine> ();
+			foundDuplicate = false;
+
+			foreach (Engine i in input) {
+				Engine copy = Serializer.Deserialize (Serializer.Serialize (i), out int _);
+				string originalName = copy.Name;
+				int counter = 1;
+
+				while (output.Exists (x => x.Name == copy.Name)) {
+					copy.Name = $"{originalName} {counter++}";
+					foundDuplicate |= true;
+				}
+
+				output.Add (copy);
+			}
+
+			return output;
 		}
 
 		void ExportEnginesToFile (string path) {
 			try {
-				File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out int exportedEnginesCount));
+				int exportedEnginesCount = 0;
+				if (Settings.GetBool (Setting.AvoidCollisionOnNewEngine)) {
+					File.WriteAllText (path, Exporter.ConvertEngineListToConfig (FixDuplicateID (Engines, out bool foundDuplicate), out exportedEnginesCount));
+
+					if (foundDuplicate) {
+						MessageBox.Show ($"Warning! ID duplicates detected. Exporter fixed it, but ID duplicates might cause engines to disappear in game, if one of the duplicates gets removed, or added. Please, try to avoid duplicating IDs. If possible, change IDs and reexport the engines.", "Warning");
+					}
+				} else {
+					File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out exportedEnginesCount));
+				}
 
 				string pathDirectory = new FileInfo (path).Directory.FullName;
 
@@ -358,17 +424,106 @@ namespace GenericEngines {
 			((Grid) currentFuelRatioGrid.Parent).UpdateLayout ();
 		}
 
-		private void propellentDataGrid_KeyUp (object sender, KeyEventArgs e) {
+		// Generic Datagrid input (GD)
+		// I can't believe this actually works :D
+		//
+		// Requirements:
+		// The datagrid has to be in the <DataGridTemplateColumn.CellEditingTemplate>
+		// The datagrid has to be in the Grid
+		// 
+		// Datagrid events:
+		// Loaded="GD_Loaded"
+		// 
+		// Button events:
+		// MouseUp="addGD_MouseUp"
+		// MouseUp="removeGD_MouseUp"
+		// 
 
+		private DataGrid CurrentGD = null;
+		private List<object> CurrentGDList;
+		private Type CurrentGDType;
+		private readonly Dictionary<string, Type> GDListTypes = new Dictionary<string, Type> {
+			{ "Propellants", typeof (FuelRatioElement) }
+		};
+
+		private void mainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
+			if (e.Column.Header != null) {
+				switch (e.Column.Header.ToString ()) {
+					case "Propellants":
+					CurrentGDList = ((Engine) e.Row.Item).PropellantRatio.ToList<object> ();
+					break;
+					default:
+					return;
+				}
+
+				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
+			}
 		}
 
-		private void propellentDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
+		private void GD_Loaded (object sender, RoutedEventArgs e) {
+			//Sets current DataGrid
+			CurrentGD = (DataGrid) sender;
 
+			//Set ItemsSource
+			CurrentGD.ItemsSource = CurrentGDList;
+
+			//Grid sizing is bugged, needs a refresh
+			((Grid) CurrentGD.Parent).UpdateLayout ();
 		}
 
-		private void propellentDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
+		private void GD_Unload (object sender, DataGridCellEditEndingEventArgs e) {
+			if (CurrentGD != null) {
+				CurrentGD.CommitEdit ();
+				CurrentGD.CancelEdit ();
 
+				if (e.Column.Header != null) {
+					switch (e.Column.Header.ToString ()) {
+						case "Propellants":
+						((Engine) (e.Row.Item)).PropellantRatio = new FuelRatioList ();
+
+						foreach (object i in CurrentGDList) {
+							((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+						}
+
+						break;
+						default:
+						return;
+					}
+
+					CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
+				}
+
+				CurrentGD = null;
+			}
 		}
+
+		private void addGD_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				CurrentGD.CommitEdit ();
+				CurrentGD.CancelEdit ();
+				
+				CurrentGDList.Add (Activator.CreateInstance (CurrentGDType));
+				CurrentGD.Items.Refresh ();
+			}
+		}
+
+		private void removeGD_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				
+				CurrentGD.CommitEdit ();
+				CurrentGD.CancelEdit ();
+
+				if (CurrentGD.SelectedIndex != -1) {
+					foreach (object i in CurrentGD.SelectedItems) {
+						CurrentGDList.Remove (i);
+					}
+
+					CurrentGD.Items.Refresh ();
+				}
+			}
+		}
+
+		// /Generic Datagrid input (GD)
 
 		private void addPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
@@ -432,12 +587,31 @@ namespace GenericEngines {
 			}
 		}
 
-		private void modelCombo_Loaded (object sender, RoutedEventArgs e) {
-			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Model)).Cast<Model> ();
-		}
-
 		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
+		}
+		
+		private void techComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {
+			ComboBox combo = (ComboBox) sender;
+
+			string tmp = combo.Text;
+
+			combo.IsDropDownOpen = true;
+			combo.ItemsSource = TechNodeEnumWrapper.Get.Where (x => TechNodes.GetName (x.Key).ToLower ().Contains (combo.Text.ToLower ()));
+
+			//For some reason combobox likes to lose its contents
+			combo.Text = tmp;
+
+			if ( //This is literally the worst thing i've ever written but it fixes majority of the problems
+				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).SelectionStart == 0 &&
+				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).SelectionLength == 0 &&
+				e.Key != Key.Home &&
+				e.Key != Key.Left &&
+				e.Key != Key.Back &&
+				e.Key != Key.PageUp
+			) {
+				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).Select (tmp.Length, 0);
+			}
 		}
 	}
 }

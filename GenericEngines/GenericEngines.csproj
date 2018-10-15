@@ -80,6 +80,7 @@
     <Compile Include="AppInfo.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="FuelRatioList.cs" />
+    <Compile Include="ModelEnumWrapper.cs" />
     <Compile Include="ModelInfo.cs" />
     <Compile Include="PlumeInfo.cs" />
     <Compile Include="PrimitiveTypeExtensions.cs" />
@@ -94,6 +95,7 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TechNode.cs" />
+    <Compile Include="TechNodeEnumWrapper.cs" />
     <Page Include="About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\GenericEnginesPlumeScaleFixer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="duplicate.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

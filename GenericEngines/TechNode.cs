@@ -14,7 +14,7 @@ namespace GenericEngines {
 			return names[(int) tn];
 		}
 
-		private static readonly string[] names = new string[] {
+		public static readonly string[] names = new string[] {
 			@"Start",
 			@"Supersonic Plane Development",
 			@"Supersonic Flight",
