@@ -439,7 +439,7 @@ namespace GenericEngines {
 		// MouseUp="removeGD_MouseUp"
 		// 
 
-		private DataGrid CurrentGD;
+		private DataGrid CurrentGD = null;
 		private List<object> CurrentGDList;
 		private Type CurrentGDType;
 		private readonly Dictionary<string, Type> GDListTypes = new Dictionary<string, Type> {
@@ -472,25 +472,28 @@ namespace GenericEngines {
 		}
 
 		private void GD_Unload (object sender, DataGridCellEditEndingEventArgs e) {
+			if (CurrentGD != null) {
+				CurrentGD.CommitEdit ();
+				CurrentGD.CancelEdit ();
 
-			CurrentGD.CommitEdit ();
-			CurrentGD.CancelEdit ();
+				if (e.Column.Header != null) {
+					switch (e.Column.Header.ToString ()) {
+						case "Propellants":
+						((Engine) (e.Row.Item)).PropellantRatio = new FuelRatioList ();
 
-			if (e.Column.Header != null) {
-				switch (e.Column.Header.ToString ()) {
-					case "Propellants":
-					((Engine) (e.Row.Item)).PropellantRatio = new FuelRatioList ();
+						foreach (object i in CurrentGDList) {
+							((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+						}
 
-					foreach (object i in CurrentGDList) {
-						((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+						break;
+						default:
+						return;
 					}
 
-					break;
-					default:
-					return;
+					CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
 				}
 
-				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
+				CurrentGD = null;
 			}
 		}
 
@@ -594,6 +597,29 @@ namespace GenericEngines {
 
 		private void techCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = TechNodes.names;
+		}
+		
+		private void techComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {
+			ComboBox combo = (ComboBox) sender;
+
+			string tmp = combo.Text;
+
+			combo.IsDropDownOpen = true;
+			combo.ItemsSource = TechNodeEnumWrapper.Get.Where (x => TechNodes.GetName (x.Key).ToLower ().Contains (combo.Text.ToLower ()));
+
+			//For some reason combobox likes to lose its contents
+			combo.Text = tmp;
+
+			if ( //This is literally the worst thing i've ever written but it fixes majority of the problems
+				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).SelectionStart == 0 &&
+				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).SelectionLength == 0 &&
+				e.Key != Key.Home &&
+				e.Key != Key.Left &&
+				e.Key != Key.Back &&
+				e.Key != Key.PageUp
+			) {
+				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).Select (tmp.Length, 0);
+			}
 		}
 	}
 }

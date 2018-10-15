@@ -567,7 +567,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<ComboBox ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+							<ComboBox PreviewKeyUp="techComboBox_PreviewKeyUp" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
