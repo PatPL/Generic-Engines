@@ -10,6 +10,11 @@ namespace GenericEngines {
 		public FuelType Propellant { get; set; }
 		public double Ratio { get; set; }
 
+		public FuelRatioElement () {
+			Propellant = FuelType.Hydrazine;
+			Ratio = 1.0;
+		}
+
 		public FuelRatioElement (
 			FuelType _Propellant = FuelType.Hydrazine,
 			double _Ratio = 1.0

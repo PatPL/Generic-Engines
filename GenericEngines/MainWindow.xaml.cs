@@ -302,6 +302,8 @@ namespace GenericEngines {
 		private void mainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
 			isEdited = true;
 
+			mainDataGrid_SetCurrentGDList (sender, e);
+
 			if (e.Column.Header != null && e.Column.Header.ToString () == "Propellants") {
 				currentFuelRatioList = ((Engine) e.Row.Item).PropellantRatio;
 			}
@@ -309,6 +311,8 @@ namespace GenericEngines {
 
 		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
 			isEdited = false;
+
+			GD_Unload (sender, e);
 
 			if (/*e.Column.SortMemberPath == "EngineName"*/ true) { //Auto resizing seems nice on every column. I'll leave this for now
 				e.Column.Width = new DataGridLength (0);
@@ -420,17 +424,103 @@ namespace GenericEngines {
 			((Grid) currentFuelRatioGrid.Parent).UpdateLayout ();
 		}
 
-		private void propellentDataGrid_KeyUp (object sender, KeyEventArgs e) {
+		// Generic Datagrid input (GD)
+		// I can't believe this actually works :D
+		//
+		// Requirements:
+		// The datagrid has to be in the <DataGridTemplateColumn.CellEditingTemplate>
+		// The datagrid has to be in the Grid
+		// 
+		// Datagrid events:
+		// Loaded="GD_Loaded"
+		// 
+		// Button events:
+		// MouseUp="addGD_MouseUp"
+		// MouseUp="removeGD_MouseUp"
+		// 
 
+		private DataGrid CurrentGD;
+		private List<object> CurrentGDList;
+		private Type CurrentGDType;
+		private readonly Dictionary<string, Type> GDListTypes = new Dictionary<string, Type> {
+			{ "Propellants", typeof (FuelRatioElement) }
+		};
+
+		private void mainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
+			if (e.Column.Header != null) {
+				switch (e.Column.Header.ToString ()) {
+					case "Propellants":
+					CurrentGDList = ((Engine) e.Row.Item).PropellantRatio.ToList<object> ();
+					break;
+					default:
+					return;
+				}
+
+				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
+			}
 		}
 
-		private void propellentDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
+		private void GD_Loaded (object sender, RoutedEventArgs e) {
+			//Sets current DataGrid
+			CurrentGD = (DataGrid) sender;
 
+			//Set ItemsSource
+			CurrentGD.ItemsSource = CurrentGDList;
+
+			//Grid sizing is bugged, needs a refresh
+			((Grid) CurrentGD.Parent).UpdateLayout ();
 		}
 
-		private void propellentDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
+		private void GD_Unload (object sender, DataGridCellEditEndingEventArgs e) {
 
+			CurrentGD.CommitEdit ();
+			CurrentGD.CancelEdit ();
+
+			if (e.Column.Header != null) {
+				switch (e.Column.Header.ToString ()) {
+					case "Propellants":
+					((Engine) (e.Row.Item)).PropellantRatio = new FuelRatioList ();
+
+					foreach (object i in CurrentGDList) {
+						((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+					}
+
+					break;
+					default:
+					return;
+				}
+
+				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
+			}
 		}
+
+		private void addGD_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				CurrentGD.CommitEdit ();
+				CurrentGD.CancelEdit ();
+				
+				CurrentGDList.Add (Activator.CreateInstance (CurrentGDType));
+				CurrentGD.Items.Refresh ();
+			}
+		}
+
+		private void removeGD_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				
+				CurrentGD.CommitEdit ();
+				CurrentGD.CancelEdit ();
+
+				if (CurrentGD.SelectedIndex != -1) {
+					foreach (object i in CurrentGD.SelectedItems) {
+						CurrentGDList.Remove (i);
+					}
+
+					CurrentGD.Items.Refresh ();
+				}
+			}
+		}
+
+		// /Generic Datagrid input (GD)
 
 		private void addPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {

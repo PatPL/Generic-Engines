@@ -369,12 +369,12 @@
 									<RowDefinition Height="18"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addPropellantButton_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removePropellantButton_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="38,2,2,0">Mass</TextBlock>
 								<CheckBox IsChecked="{Binding Path=FuelVolumeRatios, UpdateSourceTrigger=PropertyChanged}" Margin="70,2,2,0" Style="{StaticResource CheckBoxSwitch}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="104,2,2,0">Volume</TextBlock>
-								<DataGrid ItemsSource="{Binding Path=PropellantRatio}" AutoGenerateColumns="false" BeginningEdit="propellentDataGrid_BeginningEdit" CellEditEnding="propellentDataGrid_CellEditEnding" PreviewKeyUp="propellentDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="propellentDataGrid_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+								<DataGrid ItemsSource="{Binding Path=PropellantRatio}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>
