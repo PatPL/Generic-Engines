@@ -13,13 +13,13 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 8;
+		private readonly static short SerializerVersion = 9;
 		private static byte[] LatestSerializer (Engine e) {
 			
 			short version = SerializerVersion;
 
 			int i = 0;
-			byte[] output = new byte[
+			byte[] output = new byte[ //This is getting out of hand. Still, I think it's readable
 				2 + //short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
 				1 + //bool - Active
 				(e.Name.Length + 2) + //1B * length + 2B length header - Name
@@ -62,7 +62,11 @@ namespace GenericEngines {
 				(e.ManufacturerNotDefault ? 1 : 0) * (e.EngineManufacturer.Length + 2) + //(1B * length + 2B length header) if manufacturer was changed - EngineManufacturer
 				1 + //bool - DescriptionNotDefault
 				(e.DescriptionNotDefault ? 1 : 0) * (e.EngineDescription.Length + 2) + //(1B * length + 2B length header) if description was changed - EngineDescription
-				1 //bool - UseBaseWidth
+				1 + //bool - UseBaseWidth
+				1 + //EngineType - EngineVariant
+				8 + //double - TanksVolume
+				e.TanksContents.Count * 10 + 2 + //(2B + 8B) * count + 2B length header - TanksContents
+				e.ThrustCurve.Count * 16 + 2 //(8B + 8B) * count + 2B length header - ThrustCurve
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -279,6 +283,42 @@ namespace GenericEngines {
 
 			//bool - UseBaseWidth
 			output[i++] = (byte) (e.UseBaseWidth ? 1 : 0);
+
+			//EngineType - EngineVariant
+			output[i++] = (byte) e.EngineVariant;
+
+			//double - TanksVolume
+			foreach (byte b in BitConverter.GetBytes (e.TanksVolume)) {
+				output[i++] = b;
+			}
+
+			//(2B + 8B) * count + 2B length header - TanksContents
+			//Length header
+			output[i++] = (byte) (e.TanksContents.Count % 256);
+			output[i++] = (byte) (e.TanksContents.Count / 256);
+			//Data
+			foreach (FuelRatioElement f in e.TanksContents) {
+				output[i++] = (byte) ((int) f.Propellant % 256);
+				output[i++] = (byte) ((int) f.Propellant / 256);
+				foreach (byte b in BitConverter.GetBytes (f.Ratio)) {
+					output[i++] = b;
+				}
+			}
+
+			//(8B + 8B) * count + 2B length header - ThrustCurve
+			//Length header
+			output[i++] = (byte) (e.ThrustCurve.Count % 256);
+			output[i++] = (byte) (e.ThrustCurve.Count / 256);
+			//Data
+			foreach (Tuple<double,double> t in e.ThrustCurve) {
+				foreach (byte b in BitConverter.GetBytes (t.Item1)) {
+					output[i++] = b;
+				}
+
+				foreach (byte b in BitConverter.GetBytes (t.Item2)) {
+					output[i++] = b;
+				}
+			}
 
 			return output;
 		}
@@ -521,6 +561,47 @@ namespace GenericEngines {
 			if (version >= 8) {
 				//bool - UseBaseWidth
 				output.UseBaseWidth = input[i++] == 1;
+			}
+
+			if (version >= 9) {
+				//EngineType - EngineVariant
+				output.EngineVariant = (EngineType) input[i++];
+
+				//double - TanksVolume
+				output.TanksVolume = BitConverter.ToDouble (input, i);
+				i += 8;
+
+				//(2B + 8B) * count + 2B length header - TanksContents
+				{
+					int dataLength = 0;
+					dataLength += input[i++];
+					dataLength += input[i++] * 256;
+
+					FuelType fuelType = 0;
+					for (int c = 0; c < dataLength; ++c) {
+						fuelType = 0;
+						fuelType += input[i++];
+						fuelType += input[i++] * 256;
+
+						output.TanksContents.Add (new FuelRatioElement (fuelType, BitConverter.ToDouble (input, i)));
+						i += 8;
+					}
+				}
+
+				//(8B + 8B) * count + 2B length header - ThrustCurve
+				{
+					int dataLength = 0;
+					dataLength += input[i++];
+					dataLength += input[i++] * 256;
+
+					for (int c = 0; c < dataLength; ++c) {
+						double tmp = BitConverter.ToDouble (input, i);
+						i += 8;
+
+						output.ThrustCurve.Add (new Tuple<double, double> (tmp, BitConverter.ToDouble (input, i)));
+						i += 8;
+					}
+				}
 			}
 
 			addedOffset = i - offset;

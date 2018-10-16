@@ -236,6 +236,24 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
+				<DataGridTemplateColumn SortMemberPath="EngineVariant">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=EngineVariant, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<ComboBox Loaded="engineTypeCombo_Loaded" SelectedValue="{Binding Path=EngineVariant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Type" ToolTip="Type" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn SortMemberPath="Mass">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
@@ -355,7 +373,7 @@
 				<DataGridTemplateColumn Header="Propellants">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=PropellantRatio, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=PropellantRatioLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -668,7 +686,64 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-				
+
+				<DataGridTemplateColumn Header="Tank">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=TankStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<!-- Paste grid -->
+							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="18"/>
+									<RowDefinition Height="*"/>
+								</Grid.RowDefinitions>
+								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<TextBlock Foreground="#FF000000" Text="Volume" Margin="40,1,0,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
+								<TextBox Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" Padding="-1" Margin="90,1,0,0" HorizontalAlignment="Left" Width="90" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
+								<TextBlock Foreground="#FF000000" Text="L" Margin="182,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
+								<DataGrid ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+									<DataGrid.Columns>
+										<DataGridTemplateColumn Header="Propellant">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+
+										<DataGridTemplateColumn Header="Amount">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Path=Ratio, StringFormat={}{0}L}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+											<DataGridTemplateColumn.CellEditingTemplate>
+												<DataTemplate>
+													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellEditingTemplate>
+										</DataGridTemplateColumn>
+									</DataGrid.Columns>
+								</DataGrid>
+							</Grid>
+							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Tank" ToolTip="Tank" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>

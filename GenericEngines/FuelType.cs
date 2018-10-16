@@ -50,7 +50,32 @@ namespace GenericEngines {
 		Oxidizer,
 		MonoPropellant,
 		XenonGas,
-		IntakeAir
+		IntakeAir,
+		SolidFuel,
+		HNIW,
+		HTPB,
+		NGNC,
+		PBAN,
+		PSPC
+	}
+
+	public static class FuelUtilisation {
+		public static double Get (FuelType t) {
+			switch (t) {
+				case FuelType.ElectricCharge:
+				return 1000.0;
+				case FuelType.Nitrogen:
+				case FuelType.Helium:
+				return 200.0;
+				case FuelType.NitrousOxide:
+				case FuelType.XenonGas:
+				//case FuelType.ArgonGas:
+				//case FuelType.KryptonGas:
+				return 100.0;
+				default:
+				return 1.0;
+			}
+		}
 	}
 
 	public static class FuelDensity {
@@ -103,7 +128,13 @@ namespace GenericEngines {
 			0.001, //Oxidizer
 			0.0008, //MonoPropellant
 			0.000005894, //XenonGas
-			0.001225 //IntakeAir
+			0.001225, //IntakeAir
+			0.0075, //SolidFuel
+			0.002044, //HNIW
+			0.00177, //HTPB
+			0.0016, //NGNC
+			0.001772, //PBAN
+			0.00174 //PSPC
 		};
 	}
 

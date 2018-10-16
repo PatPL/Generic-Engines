@@ -27,7 +27,7 @@ namespace GenericEngines {
 		bool isEdited = false;
 		DataGrid mainDataGrid;
 		DataGrid currentFuelRatioGrid;
-		FuelRatioList currentFuelRatioList;
+		List<FuelRatioElement> currentFuelRatioList;
 
 		private string _currentFile = null;
 		string currentFile {
@@ -44,10 +44,10 @@ namespace GenericEngines {
 			InitializeComponent ();
 		}
 
-		FuelRatioList currentFuelRatios {
+		List<FuelRatioElement> currentFuelRatios {
 			get {
 				if (currentFuelRatioGrid != null) {
-					return (FuelRatioList) currentFuelRatioGrid.ItemsSource;
+					return (List<FuelRatioElement>) currentFuelRatioGrid.ItemsSource;
 				} else {
 					throw new NullReferenceException ("currentFuelRatioGrid is null");
 				}
@@ -356,6 +356,7 @@ namespace GenericEngines {
 				string pathDirectory = new FileInfo (path).Directory.FullName;
 
 				File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
+				File.WriteAllText ($"{pathDirectory}/GEAllTankDefinition.cfg", AllTankDefinition.Get);
 				MessageBox.Show ($"{exportedEnginesCount} engines succesfully exported to {path}", "Success");
 			} catch (Exception e) {
 				App.SaveExceptionToFile (e);
@@ -443,7 +444,8 @@ namespace GenericEngines {
 		private List<object> CurrentGDList;
 		private Type CurrentGDType;
 		private readonly Dictionary<string, Type> GDListTypes = new Dictionary<string, Type> {
-			{ "Propellants", typeof (FuelRatioElement) }
+			{ "Propellants", typeof (FuelRatioElement) },
+			{ "Tank", typeof (FuelRatioElement) }
 		};
 
 		private void mainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
@@ -451,6 +453,9 @@ namespace GenericEngines {
 				switch (e.Column.Header.ToString ()) {
 					case "Propellants":
 					CurrentGDList = ((Engine) e.Row.Item).PropellantRatio.ToList<object> ();
+					break;
+					case "Tank":
+					CurrentGDList = ((Engine) e.Row.Item).TanksContents.ToList<object> ();
 					break;
 					default:
 					return;
@@ -479,10 +484,18 @@ namespace GenericEngines {
 				if (e.Column.Header != null) {
 					switch (e.Column.Header.ToString ()) {
 						case "Propellants":
-						((Engine) (e.Row.Item)).PropellantRatio = new FuelRatioList ();
+						((Engine) (e.Row.Item)).PropellantRatio = new List<FuelRatioElement> ();
 
 						foreach (object i in CurrentGDList) {
 							((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+						}
+
+						break;
+						case "Tank":
+						((Engine) (e.Row.Item)).TanksContents = new List<FuelRatioElement> ();
+
+						foreach (object i in CurrentGDList) {
+							((Engine) (e.Row.Item)).TanksContents.Add ((FuelRatioElement) i);
 						}
 
 						break;
@@ -590,7 +603,11 @@ namespace GenericEngines {
 		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
 		}
-		
+
+		private void engineTypeCombo_Loaded (object sender, RoutedEventArgs e) {
+			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (EngineType)).Cast<EngineType> ();
+		}
+
 		private void techComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {
 			ComboBox combo = (ComboBox) sender;
 

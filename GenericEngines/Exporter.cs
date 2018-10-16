@@ -116,10 +116,12 @@ namespace GenericEngines {
 					%skinMaxTemp = 673.15
 					%stageOffset = 1
 					%childStageOffset = 1
-					%stagingIcon = LIQUID_ENGINE
+					%stagingIcon = {engine.StagingIcon}
 					@bulkheadProfiles = srf, size3
 					@tags = Generic Engine
 					%engineType = {engine.EngineID}
+
+					{engine.TankConfig}
 
 					@MODULE[ModuleEngines*]
 					{{
