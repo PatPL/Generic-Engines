@@ -5,25 +5,39 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
-	class ModelEnumWrapper {
+	public class ModelEnumWrapper {
 
-		private static Dictionary<Model, string> content = null;
+		public Model model { get; set; }
+		public string modelName { get; set; }
+		public string toolTip { get; set; }
 
-		public static Dictionary<Model, string> Get {
+		private static List<ModelEnumWrapper> content = null;
+
+		public static List<ModelEnumWrapper> Get {
 			get {
 				return content ?? GenerateContent ();
 			}
 		}
 
-		private static Dictionary<Model, string> GenerateContent () {
-			Dictionary<Model, string> output = new Dictionary<Model, string> ();
+		private static List<ModelEnumWrapper> GenerateContent () {
+			List<ModelEnumWrapper> output = new List<ModelEnumWrapper> ();
 
 			foreach (Model i in Enum.GetValues (typeof (Model))) {
-				output.Add (i, ModelList.GetName (i));
+				output.Add (new	ModelEnumWrapper (i, ModelList.GetName (i), ModelList.GetTooltip (i)));
 			}
 
 			content = output;
 			return output;
+		}
+
+		private ModelEnumWrapper (
+			Model _model,
+			string _modelName,
+			string _toolTip
+		) {
+			model = _model;
+			modelName = _modelName;
+			toolTip = _toolTip;
 		}
 
 	}

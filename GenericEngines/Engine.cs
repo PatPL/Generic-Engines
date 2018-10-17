@@ -624,7 +624,9 @@ namespace GenericEngines {
 
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
-		public Dictionary<Model, string> ModelsWithLabels => ModelEnumWrapper.Get;
+		public List<ModelEnumWrapper> ModelsWithLabels => ModelEnumWrapper.Get;
+
+		public string CurrentModelTooltip => ModelList.GetTooltip (ModelID);
 
 		public Engine () {
 			UID = UIDc++;

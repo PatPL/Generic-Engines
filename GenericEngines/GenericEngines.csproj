@@ -52,6 +52,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -167,6 +173,7 @@
     <Resource Include="add.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ModelPreviews\LR91.jpg" />
     <Resource Include="remove.png" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +230,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="duplicate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\Aestus.jpg" />
+    <Resource Include="ModelPreviews\AJ10.jpg" />
+    <Resource Include="ModelPreviews\F1.jpg" />
+    <Resource Include="ModelPreviews\IonThruster.jpg" />
+    <Resource Include="ModelPreviews\RD0105T.jpg" />
+    <Resource Include="ModelPreviews\RS25.jpg" />
+    <Resource Include="ModelPreviews\Thruster.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

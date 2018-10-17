@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True">
+        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="b2v" />
 		<local:ReversedBooleanToVisibilityConverter x:Key="rb2v" />
@@ -118,6 +118,15 @@
 					<Setter Property="Opacity" Value="0.6"/>
 				</Trigger>
 			</Style.Triggers>
+		</Style>
+		<Style TargetType="ListBoxItem">
+			<Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
+			<Setter Property="ToolTipService.BetweenShowDelay" Value="0"/>
+			<Setter Property="ToolTipService.ShowDuration" Value="3600000"/>
+		</Style>
+		<Style TargetType="ComboBox">
+			<Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
+			<Setter Property="ToolTipService.ShowDuration" Value="3600000"/>
 		</Style>
 		<Style TargetType="ToolTip">
 			<Setter Property="FontFamily" Value="Verdana"/>
@@ -483,7 +492,20 @@
 								</Grid.ColumnDefinitions>
 								<TextBlock Text="Model" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
 								<TextBlock Text="Plume" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
-								<ComboBox ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto"></ComboBox>
+								<ComboBox ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="modelName" SelectedValuePath="model" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalContentAlignment="Stretch">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<ListBoxItem Content="{Binding modelName}" Padding="0" HorizontalContentAlignment="Stretch">
+												<ListBoxItem.ToolTip>
+													<Image Source="{Binding toolTip}" Margin="1,1,0,0"/>
+												</ListBoxItem.ToolTip>
+											</ListBoxItem>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+									<ComboBox.ToolTip>
+										<Image Source="{Binding CurrentModelTooltip}" Margin="1,1,0,0"/>
+									</ComboBox.ToolTip>
+								</ComboBox>
 								<ComboBox Loaded="plumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
 							</Grid>
 						</DataTemplate>

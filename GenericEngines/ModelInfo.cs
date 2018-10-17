@@ -196,6 +196,17 @@ namespace GenericEngines {
 			}
 		}
 
+		public static string GetTooltip (Model index) {
+			string output = "ModelPreviews/";
+			switch (index) {
+				default:
+				output += index.ToString ();
+				break;
+			}
+			output += ".jpg";
+			return output;
+		}
+
 	}
 
 	public enum Model {
