@@ -67,12 +67,15 @@ namespace GenericEngines {
 						name = ModuleEngines
 						thrustVectorTransformName = thrustTransform
 						exhaustDamage = True
+						allowShutdown = {engine.AllowShutdown}
+						useEngineResponseTime = {engine.UseEngineResponseTime}
+						throttleLocked = {engine.LockThrottle}
 						ignitionThreshold = 0.1
 						minThrust = 0
 						maxThrust = 610
 						heatProduction = 200
 						fxOffset = 0, 0, 0.974338
-						EngineType = LiquidFuel
+						EngineType = {engine.EngineTypeConfig}
 						useThrustCurve = true 
 						exhaustDamageDistanceOffset = 0.79
 		

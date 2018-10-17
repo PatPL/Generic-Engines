@@ -392,6 +392,58 @@ namespace GenericEngines {
 			}
 		}
 
+		public string EngineTypeConfig {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "LiquidFuel";
+					case EngineType.Solid:
+					return "SolidBooster";
+					default:
+					return "unknown";
+				}
+			}
+		}
+
+		public string AllowShutdown {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "True";
+					case EngineType.Solid:
+					return "False";
+					default:
+					return "True";
+				}
+			}
+		}
+
+		public string UseEngineResponseTime {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "True";
+					case EngineType.Solid:
+					return "False";
+					default:
+					return "True";
+				}
+			}
+		}
+
+		public string LockThrottle {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "False";
+					case EngineType.Solid:
+					return "True";
+					default:
+					return "False";
+				}
+			}
+		}
+
 		public int IgnitionsCount {
 			get {
 				return Ignitions < 0 ? 0 : Ignitions;
