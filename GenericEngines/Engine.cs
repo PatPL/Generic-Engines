@@ -62,16 +62,20 @@ namespace GenericEngines {
 		public int UID { get; set; }
 
 		// Exporter
-		
+
+		public double HeightScale => Height / GetModelInfo.OriginalHeight;
+
+		public double WidthScale => Width / HeightScale / GetOriginalWidth;
+
 		public string TankConfig {
 			get {
 				string output = "";
-				
+
 				if (TanksVolume > 0.0) {
 					string contents = "";
 					double usedVolume = 0.0;
 					foreach (FuelRatioElement i in TanksContents) {
-						
+
 						//Volume in real L
 						//volume 1 xenon = 100 units
 						double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), TanksVolume - usedVolume);
@@ -116,8 +120,8 @@ namespace GenericEngines {
 
 				ModelInfo modelInfo = GetModelInfo;
 
-				double heightScale = Height / modelInfo.OriginalHeight;
-				double widthScale = Width / heightScale / GetOriginalWidth;
+				double heightScale = HeightScale;
+				double widthScale = WidthScale;
 
 				model = $@"
 					MODEL
@@ -133,7 +137,9 @@ namespace GenericEngines {
 					node_stack_bottom = 0.0, {modelInfo.NodeStackBottom.Str ()}, 0.0, 0.0, -1.0, 0.0, 1
 					node_stack_hide = 0.0, {(modelInfo.NodeStackBottom + 0.001).Str ()}, 0.0, 0.0, 0.0, 1.0, 0
 					{/* Hopefully no one will try to attach things sideways */""}
-					node_attach = 0.0, {modelInfo.NodeStackTop.Str ()}, 0.0, 0.0, 1.0, 0.0, 1
+
+					{AttachmentNode}
+
 				";
 
 				return model;
@@ -212,6 +218,17 @@ namespace GenericEngines {
 				output = Regex.Replace (output, "[<>,+*=_]", "-");
 
 				return output;
+			}
+		}
+
+		public string AttachmentNode {
+			get {
+				ModelInfo modelInfo = GetModelInfo;
+				if (modelInfo.RadialAttachment) {
+					return $"node_attach = {(modelInfo.RadialAttachmentPoint * WidthScale).Str ()}, 0.0, 0.0, 1.0, 0.0, 0.0";
+				} else {
+					return $"node_attach = 0.0, {modelInfo.NodeStackTop.Str ()}, 0.0, 0.0, 1.0, 0.0";
+				}
 			}
 		}
 
@@ -376,6 +393,8 @@ namespace GenericEngines {
 		public double GetOriginalWidth => (UseBaseWidth ? GetModelInfo.OriginalBaseWidth : GetModelInfo.OriginalWidth);
 
 		public string RealEngineName => (EngineName == "" ? Name : EngineName);
+
+		public string CanAttachToEngine => (GetModelInfo.CanAttachOnModel ? "1" : "0");
 
 		public string StagingIcon {
 			get {

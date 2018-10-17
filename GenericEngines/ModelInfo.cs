@@ -14,10 +14,14 @@ namespace GenericEngines {
 		public double PlumePosition;
 		public double NodeStackTop;
 		public double NodeStackBottom;
+		public double RadialAttachmentPoint;
+		public bool RadialAttachment = false;
+		public bool CanAttachOnModel = false;
 		public string ModelPath;
 		public string TextureDefinitions;
 		public string ThrustTransformName;
 		public string GimbalTransformName;
+		public string ModelName;
 		public string[] HiddenMuObjects;
 		
 	}
@@ -37,6 +41,7 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
+				ModelName = "LR-91",
 				HiddenMuObjects = null
 			}, new ModelInfo { //Model.AJ10
 				OriginalHeight = 0.654,
@@ -54,6 +59,7 @@ namespace GenericEngines {
 				",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
+				ModelName = "AJ-10",
 				HiddenMuObjects = new string[] {
 					"Cylinder_002"
 				}
@@ -69,6 +75,7 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Nozzle",
+				ModelName = "RS-25",
 				HiddenMuObjects = new string[] {
 					"Size2A"
 				}
@@ -84,6 +91,7 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Gimbal",
+				ModelName = "Generic thruster",
 				HiddenMuObjects = null
 			}, new ModelInfo { //Model.Aestus
 				OriginalHeight = 0.393,
@@ -97,6 +105,7 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Obj_Gimbal",
+				ModelName = "Spark (VSR)",
 				HiddenMuObjects = new string[] {
 					"Size2A",
 					"node_fairing_collider"
@@ -113,6 +122,7 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
+				ModelName = "Ion thruster",
 				HiddenMuObjects = new string[] {
 					"Size1B",
 					"fairing"
@@ -129,6 +139,7 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Nozzle",
+				ModelName = "Rhino (VSR)",
 				HiddenMuObjects = new string[] {
 					"fairing"
 				}
@@ -144,13 +155,52 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Obj_Gimbal",
+				ModelName = "Beagle (VSR)",
 				HiddenMuObjects = new string[] {
 					"Size2B",
 					"fairing",
 					"Hoses"
 				}
+			}, new ModelInfo { //Model.SRBLong
+				OriginalHeight = 8.018,
+				OriginalWidth = 1.05265,
+				OriginalBaseWidth = 1.276,
+				PlumeSizeMultiplier = 1.1,
+				PlumePosition = -0.4,
+				NodeStackTop = 3.89,
+				NodeStackBottom = -4.128,
+				RadialAttachmentPoint = 0.639,
+				RadialAttachment = true,
+				CanAttachOnModel = true,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/BACC",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
+				ModelName = "BACC (VSR)",
+				HiddenMuObjects = new string[] {
+					"fairing"
+				}
+			}, new ModelInfo { //Model.RT5
+				OriginalHeight = 1.444,
+				OriginalWidth = 0.773,
+				OriginalBaseWidth = 1.003,
+				PlumeSizeMultiplier = 0.7,
+				PlumePosition = -0.18,
+				NodeStackTop = 0.552,
+				NodeStackBottom = -0.892,
+				RadialAttachmentPoint = 0.503,
+				RadialAttachment = true,
+				CanAttachOnModel = true,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/RT5",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
+				ModelName = "RT-5 (VSR)",
+				HiddenMuObjects = new string[] {
+					"fairing"
+				}
 			}
-		};
+};
 
 		/*
 		new ModelInfo { //Model.
@@ -161,10 +211,14 @@ namespace GenericEngines {
 				PlumePosition = ,
 				NodeStackTop = ,
 				NodeStackBottom = ,
+				RadialAttachmentPoint = ,
+				RadialAttachment = ,
+				CanPlaceOnModel = ,
 				ModelPath = "",
 				TextureDefinitions = "",
 				ThrustTransformName = "",
 				GimbalTransformName = "",
+				ModelName = "",
 				HiddenMuObjects = null
 			}
 		*/
@@ -174,26 +228,7 @@ namespace GenericEngines {
 		}
 
 		public static string GetName (Model index) {
-			switch (index) {
-				case Model.LR91:
-				return "LR-91";
-				case Model.AJ10:
-				return "AJ-10";
-				case Model.RS25:
-				return "RS-25";
-				case Model.Thruster:
-				return "Generic thruster";
-				case Model.Aestus:
-				return "Spark (VSR)";
-				case Model.IonThruster:
-				return "Ion thruster";
-				case Model.F1:
-				return "Rhino (VSR)";
-				case Model.RD0105T:
-				return "Beagle (VSR)";
-				default:
-				return "Unknown engine";
-			}
+			return Get (index).ModelName;
 		}
 
 		public static string GetTooltip (Model index) {
@@ -217,6 +252,8 @@ namespace GenericEngines {
 		Aestus,
 		IonThruster,
 		F1,
-		RD0105T
+		RD0105T,
+		SRBLong,
+		RT5
 	}
 }

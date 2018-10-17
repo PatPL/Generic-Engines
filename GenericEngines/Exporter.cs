@@ -41,7 +41,7 @@ namespace GenericEngines {
 					title = {engine.RealEngineName}
 					manufacturer = {engine.EngineManufacturer}
 					description = {engine.EngineDescription}
-					attachRules = 1,1,1,0,0
+					attachRules = 1,1,1,{engine.CanAttachToEngine},0
 					mass = {engine.Mass.Str ()}
 					heatConductivity = 0.06
 					skinInternalConductionMult = 4.0
