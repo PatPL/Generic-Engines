@@ -199,6 +199,23 @@ namespace GenericEngines {
 				HiddenMuObjects = new string[] {
 					"fairing"
 				}
+			}, new ModelInfo { //Model.RT2
+				OriginalHeight = 3.5,
+				OriginalWidth = 0.5945,
+				OriginalBaseWidth = 0.613,
+				PlumeSizeMultiplier = 0.55,
+				PlumePosition = -0.16,
+				NodeStackTop = 1.8,
+				NodeStackBottom = -1.7,
+				RadialAttachmentPoint = 0.307,
+				RadialAttachment = true,
+				CanAttachOnModel = true,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/RT2",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
+				ModelName = "RT-2 (VSR)",
+				HiddenMuObjects = null
 			}
 };
 
@@ -213,7 +230,7 @@ namespace GenericEngines {
 				NodeStackBottom = ,
 				RadialAttachmentPoint = ,
 				RadialAttachment = ,
-				CanPlaceOnModel = ,
+				CanAttachOnModel = ,
 				ModelPath = "",
 				TextureDefinitions = "",
 				ThrustTransformName = "",
@@ -254,6 +271,7 @@ namespace GenericEngines {
 		F1,
 		RD0105T,
 		SRBLong,
-		RT5
+		RT5,
+		RT2
 	}
 }
