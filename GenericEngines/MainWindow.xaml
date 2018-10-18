@@ -709,7 +709,66 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn Header="Tank">
+                <DataGridTemplateColumn Header="Thrust Curve">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=ThrustCurveLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <!-- Paste grid -->
+                            <Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="18"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+                                <Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+                                <DataGrid ItemsSource="{Binding Path=ThrustCurve}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Key">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Item1, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Path=Item1, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Value">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Item2, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Path=Item2, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <!-- /Paste -->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Thrust Curve" ToolTip="Thrust Curve" FontFamily="Verdana"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Tank">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=TankStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>

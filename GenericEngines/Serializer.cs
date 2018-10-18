@@ -310,7 +310,7 @@ namespace GenericEngines {
 			output[i++] = (byte) (e.ThrustCurve.Count % 256);
 			output[i++] = (byte) (e.ThrustCurve.Count / 256);
 			//Data
-			foreach (Tuple<double,double> t in e.ThrustCurve) {
+			foreach (DoubleTuple t in e.ThrustCurve) {
 				foreach (byte b in BitConverter.GetBytes (t.Item1)) {
 					output[i++] = b;
 				}
@@ -598,7 +598,7 @@ namespace GenericEngines {
 						double tmp = BitConverter.ToDouble (input, i);
 						i += 8;
 
-						output.ThrustCurve.Add (new Tuple<double, double> (tmp, BitConverter.ToDouble (input, i)));
+						output.ThrustCurve.Add (new DoubleTuple (tmp, BitConverter.ToDouble (input, i)));
 						i += 8;
 					}
 				}

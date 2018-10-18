@@ -55,7 +55,7 @@ namespace GenericEngines {
 		public EngineType EngineVariant { get; set; } //9
 		public double TanksVolume { get; set; } //9
 		public List<FuelRatioElement> TanksContents { get; set; } //9
-		public List<Tuple<double, double>> ThrustCurve { get; set; } //9
+		public List<DoubleTuple> ThrustCurve { get; set; } //9
 
 		//This is necessary to fix deleting
 		public static int UIDc = 1;
@@ -66,6 +66,32 @@ namespace GenericEngines {
 		public double HeightScale => Height / GetModelInfo.OriginalHeight;
 
 		public double WidthScale => Width / HeightScale / GetOriginalWidth;
+
+		public string ThrustCurveConfig {
+			get {
+				string output = "";
+
+				if (ThrustCurve.Count <= 0) {
+					
+				} else {
+					string keys = "";
+					foreach (DoubleTuple i in ThrustCurve) {
+						keys += $@"
+							key = {(i.Item1 / 100).Str ()} {(i.Item2 / 100).Str ()}
+						";
+					}
+
+					output += $@"
+						thrustCurve
+						{{
+							{keys}
+						}}
+					";
+				}
+
+				return output;
+			}
+		}
 
 		public string TankConfig {
 			get {
@@ -526,6 +552,16 @@ namespace GenericEngines {
 
 		// Labels
 
+		public string ThrustCurveLabel {
+			get {
+				if (ThrustCurve.Count <= 0) {
+					return "Default";
+				} else {
+					return "Custom";
+				}
+			}
+		}
+		
 		public string PropellantRatioLabel {
 			get {
 				string output = "";
@@ -689,7 +725,7 @@ namespace GenericEngines {
 			EngineVariant = EngineType.Liquid;
 			TanksVolume = 0.0;
 			TanksContents = new List<FuelRatioElement> (0);
-			ThrustCurve = new List<Tuple<double, double>> (0);
+			ThrustCurve = new List<DoubleTuple> (0);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

@@ -445,7 +445,8 @@ namespace GenericEngines {
 		private Type CurrentGDType;
 		private readonly Dictionary<string, Type> GDListTypes = new Dictionary<string, Type> {
 			{ "Propellants", typeof (FuelRatioElement) },
-			{ "Tank", typeof (FuelRatioElement) }
+			{ "Tank", typeof (FuelRatioElement) },
+			{ "Thrust Curve", typeof (DoubleTuple) }
 		};
 
 		private void mainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
@@ -457,6 +458,9 @@ namespace GenericEngines {
 					case "Tank":
 					CurrentGDList = ((Engine) e.Row.Item).TanksContents.ToList<object> ();
 					break;
+					case "Thrust Curve":
+					CurrentGDList = ((Engine) e.Row.Item).ThrustCurve.ToList<object> ();
+						break;
 					default:
 					return;
 				}
@@ -484,21 +488,29 @@ namespace GenericEngines {
 				if (e.Column.Header != null) {
 					switch (e.Column.Header.ToString ()) {
 						case "Propellants":
-						((Engine) (e.Row.Item)).PropellantRatio = new List<FuelRatioElement> ();
+							((Engine) (e.Row.Item)).PropellantRatio = new List<FuelRatioElement> ();
 
-						foreach (object i in CurrentGDList) {
-							((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
-						}
+							foreach (object i in CurrentGDList) {
+								((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+							}
 
-						break;
+							break;
 						case "Tank":
-						((Engine) (e.Row.Item)).TanksContents = new List<FuelRatioElement> ();
+							((Engine) (e.Row.Item)).TanksContents = new List<FuelRatioElement> ();
 
-						foreach (object i in CurrentGDList) {
-							((Engine) (e.Row.Item)).TanksContents.Add ((FuelRatioElement) i);
-						}
+							foreach (object i in CurrentGDList) {
+								((Engine) (e.Row.Item)).TanksContents.Add ((FuelRatioElement) i);
+							}
 
-						break;
+							break;
+						case "Thrust Curve":
+							((Engine) e.Row.Item).ThrustCurve = new List<DoubleTuple> ();
+
+							foreach (object i in CurrentGDList) {
+								((Engine) (e.Row.Item)).ThrustCurve.Add ((DoubleTuple) i);
+							}
+
+							break;
 						default:
 						return;
 					}

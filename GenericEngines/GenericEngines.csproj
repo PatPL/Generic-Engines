@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="AllTankDefinition.cs" />
     <Compile Include="AppInfo.cs" />
+    <Compile Include="DoubleTuple.cs" />
     <Compile Include="EngineType.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="FuelRatioList.cs" />

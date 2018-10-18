@@ -85,11 +85,9 @@ namespace GenericEngines {
 							key = 1 204
 							key = 6 0.001
 						}}
-						thrustCurve
-						{{
-							key = 1 1
-							key = 0 0
-						}}
+						
+						{engine.ThrustCurveConfig}
+						
 					}}
 
 					{engine.GimbalConfig}
@@ -140,8 +138,6 @@ namespace GenericEngines {
 							@key,0 = 0 {engine.VacIsp.Str ()}
 							@key,1 = 1 {engine.AtmIsp.Str ()}
 						}}
-
-						!thrustCurve,*{{}}
 					}}
 
 					MODULE
