@@ -77,11 +77,12 @@ namespace GenericEngines {
 					string keys = "";
 					foreach (DoubleTuple i in ThrustCurve) {
 						keys += $@"
-							key = {(i.Item1 / 100).Str ()} {(i.Item2 / 100).Str ()}
+							key = {(i.Item1 / 100).Str ()} {(i.Item2 / 100).Str ()} 0 0
 						";
 					}
 
 					output += $@"
+						curveResource = {FuelName.Name (PropellantRatio[0].Propellant)}
 						thrustCurve
 						{{
 							{keys}
@@ -92,6 +93,8 @@ namespace GenericEngines {
 				return output;
 			}
 		}
+
+		public string UsesThrustCurve => (ThrustCurve.Count > 0).ToString ();
 
 		public string TankConfig {
 			get {

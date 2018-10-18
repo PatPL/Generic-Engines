@@ -76,7 +76,7 @@ namespace GenericEngines {
 						heatProduction = 200
 						fxOffset = 0, 0, 0.974338
 						EngineType = {engine.EngineTypeConfig}
-						useThrustCurve = true 
+						useThrustCurve = {engine.UsesThrustCurve}
 						exhaustDamageDistanceOffset = 0.79
 		
 						atmosphereCurve
@@ -129,7 +129,7 @@ namespace GenericEngines {
 						@minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
 						@maxThrust = {engine.Thrust.Str ()}
 						@heatProduction = 180
-						@useThrustCurve = False
+						@useThrustCurve = {engine.UsesThrustCurve}
 
 						{engine.PropellantConfig}
 
@@ -138,6 +138,9 @@ namespace GenericEngines {
 							@key,0 = 0 {engine.VacIsp.Str ()}
 							@key,1 = 1 {engine.AtmIsp.Str ()}
 						}}
+
+						{engine.ThrustCurveConfig}
+
 					}}
 
 					MODULE
@@ -162,6 +165,8 @@ namespace GenericEngines {
 								key = 0 {engine.VacIsp.Str ()}
 								key = 1 {engine.AtmIsp.Str ()}
 							}}
+
+							{engine.ThrustCurveConfig}
 
 							ullage = {engine.NeedsUllage}
 							pressureFed = {engine.PressureFed}
