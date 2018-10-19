@@ -28,6 +28,10 @@ namespace GenericEngines {
 				output.Add (new	ModelEnumWrapper (i, ModelList.GetName (i), ModelList.GetTooltip (i), ModelList.GetType (i)));
 			}
 
+			output.Sort (delegate (ModelEnumWrapper a, ModelEnumWrapper b) {
+				return string.Compare (a.modelName, b.modelName);
+			});
+
 			ListCollectionView realOutput = new ListCollectionView (output);
 			realOutput.GroupDescriptions.Add (new PropertyGroupDescription ("type"));
 

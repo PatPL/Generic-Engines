@@ -250,5 +250,11 @@
     <Resource Include="ModelPreviews\S1.jpg" />
     <Resource Include="ModelPreviews\SRBLong.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\LVT30.jpg" />
+    <Resource Include="ModelPreviews\LVT45.jpg" />
+    <Resource Include="ModelPreviews\NERVA.jpg" />
+    <Resource Include="ModelPreviews\RD0105.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
