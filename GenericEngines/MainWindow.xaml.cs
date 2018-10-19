@@ -642,5 +642,32 @@ namespace GenericEngines {
 				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).Select (tmp.Length, 0);
 			}
 		}
+
+		private void sortThrustCurve_MouseUp (object sender, MouseButtonEventArgs e) {
+			List<DoubleTuple> tupleList = new List<DoubleTuple> ();
+
+			CurrentGD.CommitEdit ();
+			CurrentGD.CancelEdit ();
+
+			foreach (object i in CurrentGDList) {
+				tupleList.Add ((DoubleTuple) i);
+			}
+
+			tupleList.Sort (delegate (DoubleTuple a, DoubleTuple b) {
+				//Will sort descending
+				if (a.Item1 > b.Item1) {
+					return -1;
+				} else if (a.Item1 < b.Item1) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+
+			CurrentGDList = tupleList.ToList<object> ();
+			CurrentGD.ItemsSource = CurrentGDList;
+			CurrentGD.Items.Refresh ();
+
+		}
 	}
 }

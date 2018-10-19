@@ -75,11 +75,33 @@ namespace GenericEngines {
 					
 				} else {
 					string keys = "";
-					foreach (DoubleTuple i in ThrustCurve) {
+
+					List<DoubleTuple> tupleList = ThrustCurve;
+
+					tupleList.Sort (delegate (DoubleTuple a, DoubleTuple b) {
+						//Will sort descending
+						if (a.Item1 > b.Item1) {
+							return -1;
+						} else if (a.Item1 < b.Item1) {
+							return 1;
+						} else {
+							return 0;
+						}
+					});
+
+					double lastTangent = 0;
+					tupleList.Add (new DoubleTuple (Double.MinValue, tupleList.Last ().Item2));
+					double newTangent = 0;
+
+					for (int i = 0; i < tupleList.Count - 1; ++i) {
+						newTangent = (tupleList[i + 1].Item2 - tupleList[i].Item2) / (tupleList[i + 1].Item1 - tupleList[i].Item1);
 						keys += $@"
-							key = {(i.Item1 / 100).Str ()} {(i.Item2 / 100).Str ()} 0 0
+							key = {(tupleList[i].Item1 / 100).Str (4)} {(tupleList[i].Item2 / 100).Str (4)} {newTangent.Str ()} {lastTangent.Str ()}
 						";
+						lastTangent = newTangent;
 					}
+
+					tupleList.RemoveAt (tupleList.Count - 1);
 
 					output += $@"
 						curveResource = {FuelName.Name (PropellantRatio[0].Propellant)}
