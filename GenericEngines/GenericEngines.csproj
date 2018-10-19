@@ -244,5 +244,11 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\RT2.jpg" />
+    <Resource Include="ModelPreviews\RT5.jpg" />
+    <Resource Include="ModelPreviews\S1.jpg" />
+    <Resource Include="ModelPreviews\SRBLong.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

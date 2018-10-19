@@ -22,6 +22,7 @@ namespace GenericEngines {
 		public string ThrustTransformName;
 		public string GimbalTransformName;
 		public string ModelName;
+		public string ModelType;
 		public string[] HiddenMuObjects;
 		
 	}
@@ -42,6 +43,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
 				ModelName = "LR-91",
+				ModelType = "LFEngine",
 				HiddenMuObjects = null
 			}, new ModelInfo { //Model.AJ10
 				OriginalHeight = 0.654,
@@ -60,6 +62,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
 				ModelName = "AJ-10",
+				ModelType = "LFEngine",
 				HiddenMuObjects = new string[] {
 					"Cylinder_002"
 				}
@@ -76,6 +79,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Nozzle",
 				ModelName = "RS-25",
+				ModelType = "LFEngine",
 				HiddenMuObjects = new string[] {
 					"Size2A"
 				}
@@ -92,6 +96,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Gimbal",
 				ModelName = "Generic thruster",
+				ModelType = "LFEngine",
 				HiddenMuObjects = null
 			}, new ModelInfo { //Model.Aestus
 				OriginalHeight = 0.393,
@@ -106,6 +111,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Obj_Gimbal",
 				ModelName = "Spark (VSR)",
+				ModelType = "LFEngine",
 				HiddenMuObjects = new string[] {
 					"Size2A",
 					"node_fairing_collider"
@@ -123,6 +129,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
 				ModelName = "Ion thruster",
+				ModelType = "Ion",
 				HiddenMuObjects = new string[] {
 					"Size1B",
 					"fairing"
@@ -140,6 +147,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Nozzle",
 				ModelName = "Rhino (VSR)",
+				ModelType = "LFEngine",
 				HiddenMuObjects = new string[] {
 					"fairing"
 				}
@@ -156,6 +164,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Obj_Gimbal",
 				ModelName = "Beagle (VSR)",
+				ModelType = "LFEngine",
 				HiddenMuObjects = new string[] {
 					"Size2B",
 					"fairing",
@@ -177,6 +186,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
 				ModelName = "BACC (VSR)",
+				ModelType = "SRB",
 				HiddenMuObjects = new string[] {
 					"fairing"
 				}
@@ -196,6 +206,7 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
 				ModelName = "RT-5 (VSR)",
+				ModelType = "SRB",
 				HiddenMuObjects = new string[] {
 					"fairing"
 				}
@@ -215,6 +226,25 @@ namespace GenericEngines {
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "thrustTransform",
 				ModelName = "RT-2 (VSR)",
+				ModelType = "SRB",
+				HiddenMuObjects = null
+			}, new ModelInfo { //Model.S1
+				OriginalHeight = 14.81,
+				OriginalWidth = 1.043,
+				OriginalBaseWidth = 1.183,
+				PlumeSizeMultiplier = 1.1,
+				PlumePosition = 0.55,
+				NodeStackTop = 7.445,
+				NodeStackBottom = -7.365,
+				RadialAttachmentPoint = 0.595,
+				RadialAttachment = true,
+				CanAttachOnModel = true,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/S1",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform", //This model has separate Nozzle object but its origin is in wrong place :(
+				ModelName = "S-1 (VSR)",
+				ModelType = "SRB",
 				HiddenMuObjects = null
 			}
 };
@@ -236,6 +266,7 @@ namespace GenericEngines {
 				ThrustTransformName = "",
 				GimbalTransformName = "",
 				ModelName = "",
+				ModelType = "",
 				HiddenMuObjects = null
 			}
 		*/
@@ -246,6 +277,10 @@ namespace GenericEngines {
 
 		public static string GetName (Model index) {
 			return Get (index).ModelName;
+		}
+
+		public static string GetType (Model index) {
+			return Get (index).ModelType;
 		}
 
 		public static string GetTooltip (Model index) {
@@ -272,6 +307,7 @@ namespace GenericEngines {
 		RD0105T,
 		SRBLong,
 		RT5,
-		RT2
+		RT2,
+		S1
 	}
 }

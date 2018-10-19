@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.ComponentModel;
+using System.Windows.Data;
 
 namespace GenericEngines {
 	public class Engine : INotifyPropertyChanged {
@@ -704,7 +705,7 @@ namespace GenericEngines {
 
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
-		public List<ModelEnumWrapper> ModelsWithLabels => ModelEnumWrapper.Get;
+		public ListCollectionView ModelsWithLabels => ModelEnumWrapper.Get;
 
 		public string CurrentModelTooltip => ModelList.GetTooltip (ModelID);
 

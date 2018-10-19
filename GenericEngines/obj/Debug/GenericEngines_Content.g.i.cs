@@ -8,6 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icon.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/rt2.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/rt5.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/s1.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/srblong.jpg")]
 
 
