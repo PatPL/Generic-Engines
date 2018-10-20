@@ -256,5 +256,8 @@
     <Resource Include="ModelPreviews\NERVA.jpg" />
     <Resource Include="ModelPreviews\RD0105.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="sort-mini.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

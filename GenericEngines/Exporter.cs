@@ -168,7 +168,7 @@ namespace GenericEngines {
 
 							{engine.ThrustCurveConfig}
 
-							ullage = {engine.NeedsUllage}
+							ullage = {engine.UllageNeeded}
 							pressureFed = {engine.PressureFed}
 							ignitions = {engine.IgnitionsCount}
 							IGNITOR_RESOURCE

@@ -8,9 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/lvt30.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/lvt45.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/nerva.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/rd0105.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sort-mini.png")]
 
 

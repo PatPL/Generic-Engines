@@ -125,27 +125,16 @@ namespace GenericEngines {
 
 				if (TanksVolume > 0.0) {
 					string contents = "";
-					double usedVolume = 0.0;
-					foreach (FuelRatioElement i in TanksContents) {
 
-						//Volume in real L
-						//volume 1 xenon = 100 units
-						double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), TanksVolume - usedVolume);
-
+					foreach (FuelRatioElement i in GetConstrainedTankContents) {
 						contents += $@"
 							TANK
 							{{
 								name = {FuelName.Name (i.Propellant)}
-								amount = {(volume * FuelUtilisation.Get (i.Propellant)).Str ()}
-								maxAmount = {(volume * FuelUtilisation.Get (i.Propellant)).Str ()}
+								amount = {(i.Ratio * FuelUtilisation.Get (i.Propellant)).Str ()}
+								maxAmount = {(i.Ratio * FuelUtilisation.Get (i.Propellant)).Str ()}
 							}}
 						";
-
-						usedVolume += volume;
-
-						if (usedVolume == TanksVolume) {
-							break;
-						}
 					}
 
 					output = $@"
@@ -263,6 +252,8 @@ namespace GenericEngines {
 				return output;
 			}
 		}
+
+		public string UllageNeeded => ((NeedsUllage && EngineVariant != EngineType.Solid) ? "True" : "False");
 
 		public string EngineID {
 			get {
@@ -578,6 +569,12 @@ namespace GenericEngines {
 
 		// Labels
 
+		public string TankVolumeEstimateLabel {
+			get {
+				return $"Estimated volume: {ModelTankVolume.Str (3)}L";
+			}
+		}
+
 		public string ThrustCurveLabel {
 			get {
 				if (ThrustCurve.Count <= 0) {
@@ -634,10 +631,33 @@ namespace GenericEngines {
 		public string MassStatus {
 			get {
 				if (Settings.GetBool (Setting.MoreEngineInfo)) {
-					return $"{Mass.Str ()}t (TWR: {(Thrust / 9.80665 / Mass).Str (3)})";
+					if (TanksContents.Count > 0) {
+						double fm = FullTanksMass;
+						return $"{Mass.Str (6)}t (Full: {fm.Str (6)}t) (Full tanks TWR: {(Thrust / 9.80665 / FullTanksMass).Str (3)})";
+					} else {
+						return $"{Mass.Str (6)}t (TWR: {(Thrust / 9.80665 / Mass).Str (3)})";
+					}
 				} else {
-					return $"{Mass.Str ()}t";
+					if (TanksContents.Count > 0) {
+						return $"{Mass.Str (6)}t (Full: {FullTanksMass.Str (6)}t)";
+					} else {
+						return $"{Mass.Str (6)}t";
+					}
 				}
+			}
+		}
+
+		public double FullTanksMass {
+			get {
+				double output = 0.0;
+
+				output += Mass;
+
+				foreach (FuelRatioElement i in GetConstrainedTankContents) {
+					output += FuelDensity.Get[(int) i.Propellant] * i.Ratio; // t/l * l = t
+				}
+
+				return output;
 			}
 		}
 
@@ -708,6 +728,58 @@ namespace GenericEngines {
 		public ListCollectionView ModelsWithLabels => ModelEnumWrapper.Get;
 
 		public string CurrentModelTooltip => ModelList.GetTooltip (ModelID);
+
+		//Other
+
+		public List<FuelRatioElement> GetConstrainedTankContents {
+			get {
+				List<FuelRatioElement> output = new List<FuelRatioElement> ();
+
+				double usedVolume = 0.0;
+				foreach (FuelRatioElement i in TanksContents) {
+					
+					double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), TanksVolume - usedVolume);
+					usedVolume += volume;
+
+					output.Add (new FuelRatioElement (i.Propellant, volume));
+
+					if (usedVolume == TanksVolume) {
+						break;
+					}
+				}
+
+				return output;
+			}
+		}
+
+		public double BaseWidth {
+			get {
+				if (UseBaseWidth) {
+					return Width;
+				} else {
+					ModelInfo modelInfo = GetModelInfo;
+					return Width * modelInfo.OriginalBaseWidth / modelInfo.OriginalWidth;
+				}
+			}
+		}
+
+		public double ModelTankVolume {
+			get {
+				double output = 0;
+
+				ModelInfo modelInfo = GetModelInfo;
+
+				if (modelInfo.TankOnModel) {
+					output = modelInfo.OriginalTankVolume;
+
+					output *= BaseWidth / modelInfo.OriginalBaseWidth;
+					output *= BaseWidth / modelInfo.OriginalBaseWidth;
+					output *= Height / modelInfo.OriginalHeight;
+				}
+
+				return output;
+			}
+		}
 
 		public Engine () {
 			UID = UIDc++;

@@ -14,7 +14,9 @@ namespace GenericEngines {
 		public double PlumePosition;
 		public double NodeStackTop;
 		public double NodeStackBottom;
+		public double OriginalTankVolume;
 		public double RadialAttachmentPoint;
+		public bool TankOnModel = false;
 		public bool RadialAttachment = false;
 		public bool CanAttachOnModel = false;
 		public string ModelPath;
@@ -159,6 +161,8 @@ namespace GenericEngines {
 				PlumePosition = -0.12,
 				NodeStackTop = 0.195,
 				NodeStackBottom = -0.532,
+				OriginalTankVolume = 110,
+				TankOnModel = true,
 				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/LV900",
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
@@ -179,6 +183,8 @@ namespace GenericEngines {
 				NodeStackTop = 3.89,
 				NodeStackBottom = -4.128,
 				RadialAttachmentPoint = 0.639,
+				OriginalTankVolume = 6780,
+				TankOnModel = true,
 				RadialAttachment = true,
 				CanAttachOnModel = true,
 				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/BACC",
@@ -199,6 +205,8 @@ namespace GenericEngines {
 				NodeStackTop = 0.552,
 				NodeStackBottom = -0.892,
 				RadialAttachmentPoint = 0.503,
+				OriginalTankVolume = 528,
+				TankOnModel = true,
 				RadialAttachment = true,
 				CanAttachOnModel = true,
 				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/RT5",
@@ -219,6 +227,8 @@ namespace GenericEngines {
 				NodeStackTop = 1.8,
 				NodeStackBottom = -1.7,
 				RadialAttachmentPoint = 0.307,
+				OriginalTankVolume = 640,
+				TankOnModel = true,
 				RadialAttachment = true,
 				CanAttachOnModel = true,
 				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/RT2",
@@ -237,6 +247,8 @@ namespace GenericEngines {
 				NodeStackTop = 7.445,
 				NodeStackBottom = -7.365,
 				RadialAttachmentPoint = 0.595,
+				OriginalTankVolume = 11190,
+				TankOnModel = true,
 				RadialAttachment = true,
 				CanAttachOnModel = true,
 				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/S1",
@@ -344,7 +356,9 @@ namespace GenericEngines {
 				PlumePosition = ,
 				NodeStackTop = ,
 				NodeStackBottom = ,
+				OriginalTankVolume = ,
 				RadialAttachmentPoint = ,
+				TankOnModel = ,
 				RadialAttachment = ,
 				CanAttachOnModel = ,
 				ModelPath = "",

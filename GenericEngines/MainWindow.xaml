@@ -739,7 +739,7 @@
                                 </Grid.RowDefinitions>
                                 <Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
                                 <Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="38,2,2,0" Source="help.png" MouseDown="registerMouseDown" MouseUp="sortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="38,2,2,0" Source="sort-mini.png" MouseDown="registerMouseDown" MouseUp="sortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
                                 <DataGrid ItemsSource="{Binding Path=ThrustCurve}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
                                     <DataGrid.Columns>
                                         <DataGridTemplateColumn Header="Fuel%">
@@ -795,14 +795,16 @@
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="18"/>
+									<RowDefinition Height="18"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<TextBlock Foreground="#FF000000" Text="Volume" Margin="40,1,0,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
-								<TextBox Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" Padding="-1" Margin="90,1,0,0" HorizontalAlignment="Left" Width="90" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
-								<TextBlock Foreground="#FF000000" Text="L" Margin="182,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
-								<DataGrid ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+								<TextBlock Foreground="#FF000000" Text="{Binding TankVolumeEstimateLabel}" Margin="2,1,0,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
+								<Image Grid.Row="1" Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Grid.Row="1" Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<TextBlock Grid.Row="1" Foreground="#FF000000" Text="Volume" Margin="40,1,0,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
+								<TextBox Grid.Row="1" Text="{Binding Path=TanksVolume, UpdateSourceTrigger=PropertyChanged}" Padding="-1" Margin="90,1,0,0" HorizontalAlignment="Left" Width="90" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
+								<TextBlock Grid.Row="1" Foreground="#FF000000" Text="L" Margin="182,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
+								<DataGrid ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="2" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>

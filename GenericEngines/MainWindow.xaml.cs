@@ -464,7 +464,7 @@ namespace GenericEngines {
 					default:
 					return;
 				}
-
+				
 				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
 			}
 		}
@@ -518,6 +518,7 @@ namespace GenericEngines {
 					CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
 				}
 
+				((Engine) e.Row.Item).NotifyEveryProperty ();
 				CurrentGD = null;
 			}
 		}
