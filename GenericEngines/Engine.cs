@@ -57,6 +57,8 @@ namespace GenericEngines {
 		public double TanksVolume { get; set; } //9
 		public List<FuelRatioElement> TanksContents { get; set; } //9
 		public List<DoubleTuple> ThrustCurve { get; set; } //9
+		public bool UseTanks { get; set; } //10
+		public bool LimitTanks { get; set; } //10
 
 		//This is necessary to fix deleting
 		public static int UIDc = 1;
@@ -123,10 +125,13 @@ namespace GenericEngines {
 			get {
 				string output = "";
 
-				if (TanksVolume > 0.0) {
+				if (UseTanks) {
+					
+					double volume = 0;
 					string contents = "";
 
 					foreach (FuelRatioElement i in GetConstrainedTankContents) {
+						volume += i.Ratio;
 						contents += $@"
 							TANK
 							{{
@@ -143,7 +148,7 @@ namespace GenericEngines {
 							name = ModuleFuelTanks
 							basemass = -1
 							type = All
-							volume = {TanksVolume.Str ()}
+							volume = {(LimitTanks ? TanksVolume.Str () : volume.Str ())}
 
 							{contents}
 
@@ -620,8 +625,28 @@ namespace GenericEngines {
 
 		public string TankStatus {
 			get {
-				if (TanksVolume > 0.0) {
-					return $"{TanksVolume.Str (3)}L";
+				if (UseTanks) {
+					if (LimitTanks) {
+						if (TanksVolume == 0) {
+							return "Enabled, but empty";
+						} else {
+							double volume = 0;
+							foreach (FuelRatioElement i in GetConstrainedTankContents) {
+								volume += i.Ratio;
+							}
+							return $"Enabled, {volume.Str (3)}L/{TanksVolume.Str (3)}L";
+						}
+					} else {
+						if (TanksContents.Count == 0) {
+							return "Enabled, but empty";
+						} else {
+							double volume = 0;
+							foreach (FuelRatioElement i in GetConstrainedTankContents) {
+								volume += i.Ratio;
+							}
+							return $"Enabled, {volume.Str (3)}L";
+						}
+					}
 				} else {
 					return "Disabled";
 				}
@@ -631,7 +656,7 @@ namespace GenericEngines {
 		public string MassStatus {
 			get {
 				if (Settings.GetBool (Setting.MoreEngineInfo)) {
-					if (TanksContents.Count > 0) {
+					if (UseTanks && GetConstrainedTankContents.Count > 0) {
 						double fm = FullTanksMass;
 						return $"{Mass.Str (6)}t (Full: {fm.Str (6)}t) (Full tanks TWR: {(Thrust / 9.80665 / FullTanksMass).Str (3)})";
 					} else {
@@ -738,12 +763,12 @@ namespace GenericEngines {
 				double usedVolume = 0.0;
 				foreach (FuelRatioElement i in TanksContents) {
 					
-					double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), TanksVolume - usedVolume);
+					double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), (LimitTanks ? TanksVolume - usedVolume : double.MaxValue));
 					usedVolume += volume;
 
 					output.Add (new FuelRatioElement (i.Propellant, volume));
 
-					if (usedVolume == TanksVolume) {
+					if (LimitTanks && usedVolume == TanksVolume) {
 						break;
 					}
 				}
@@ -824,6 +849,8 @@ namespace GenericEngines {
 			TanksVolume = 0.0;
 			TanksContents = new List<FuelRatioElement> (0);
 			ThrustCurve = new List<DoubleTuple> (0);
+			UseTanks = false;
+			LimitTanks = true;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

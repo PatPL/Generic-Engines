@@ -13,7 +13,7 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 9;
+		private readonly static short SerializerVersion = 10;
 		private static byte[] LatestSerializer (Engine e) {
 			
 			short version = SerializerVersion;
@@ -66,7 +66,9 @@ namespace GenericEngines {
 				1 + //EngineType - EngineVariant
 				8 + //double - TanksVolume
 				e.TanksContents.Count * 10 + 2 + //(2B + 8B) * count + 2B length header - TanksContents
-				e.ThrustCurve.Count * 16 + 2 //(8B + 8B) * count + 2B length header - ThrustCurve
+				e.ThrustCurve.Count * 16 + 2 + //(8B + 8B) * count + 2B length header - ThrustCurve
+				1 + //bool - UseTanks
+				1 //bool - LimitTanks
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -319,6 +321,12 @@ namespace GenericEngines {
 					output[i++] = b;
 				}
 			}
+
+			//bool - UseTanks
+			output[i++] = (byte) (e.UseTanks ? 1 : 0);
+
+			//bool - LimitTanks
+			output[i++] = (byte) (e.LimitTanks ? 1 : 0);
 
 			return output;
 		}
@@ -602,6 +610,14 @@ namespace GenericEngines {
 						i += 8;
 					}
 				}
+			}
+
+			if (version >= 10) {
+				//bool - UseTanks
+				output.UseTanks = input[i++] == 1;
+
+				//bool - LimitTanks
+				output.LimitTanks = input[i++] == 1;
 			}
 
 			addedOffset = i - offset;

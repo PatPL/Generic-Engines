@@ -482,6 +482,8 @@ namespace GenericEngines {
 
 		private void GD_Unload (object sender, DataGridCellEditEndingEventArgs e) {
 			if (CurrentGD != null) {
+				
+				
 				CurrentGD.CommitEdit ();
 				CurrentGD.CancelEdit ();
 
@@ -669,6 +671,12 @@ namespace GenericEngines {
 			CurrentGD.ItemsSource = CurrentGDList;
 			CurrentGD.Items.Refresh ();
 
+		}
+
+		private void tanksVolumeInput_PrewiewKeyDown (object sender, KeyEventArgs e) {
+			//I have no idea why it's necessary, but the property doesn't update properly without it.
+			((TextBox) sender).GetBindingExpression (TextBox.TextProperty).UpdateSource ();
+			//Other inputs look literally the same and they work without manual updating ¯\_(ツ)_/¯
 		}
 	}
 }
