@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.ComponentModel;
+using System.Windows.Data;
 
 namespace GenericEngines {
 	public class Engine : INotifyPropertyChanged {
@@ -22,7 +23,7 @@ namespace GenericEngines {
 		public double Thrust { get => _thrust; set { _thrust = value; NotifyPropertyChanged ("MinimumThrustStatus"); NotifyPropertyChanged ("MassStatus"); } } //0
 		public double AtmIsp { get => _atmIsp; set { _atmIsp = value; NotifyPropertyChanged ("ThrustStatus"); } } //0
 		public double VacIsp { get => _vacIsp; set { _vacIsp = value; NotifyPropertyChanged ("ThrustStatus"); } } //0
-		public FuelRatioList PropellantRatio { get; set; } //0
+		public List<FuelRatioElement> PropellantRatio { get; set; } //0
 		public double Width { get; set; } //0
 		public double Height { get; set; } //0
 		public double Gimbal { get; set; } //0
@@ -52,6 +53,12 @@ namespace GenericEngines {
 		public string EngineManufacturer { get; set; } //7
 		public string EngineDescription { get; set; } //7
 		public bool UseBaseWidth { get; set; } //8
+		public EngineType EngineVariant { get; set; } //9
+		public double TanksVolume { get; set; } //9
+		public List<FuelRatioElement> TanksContents { get; set; } //9
+		public List<DoubleTuple> ThrustCurve { get; set; } //9
+		public bool UseTanks { get; set; } //10
+		public bool LimitTanks { get; set; } //10
 
 		//This is necessary to fix deleting
 		public static int UIDc = 1;
@@ -59,14 +66,108 @@ namespace GenericEngines {
 
 		// Exporter
 
+		public double HeightScale => Height / GetModelInfo.OriginalHeight;
+
+		public double WidthScale => Width / HeightScale / GetOriginalWidth;
+
+		public string ThrustCurveConfig {
+			get {
+				string output = "";
+
+				if (ThrustCurve.Count <= 0) {
+					
+				} else {
+					string keys = "";
+
+					List<DoubleTuple> tupleList = ThrustCurve;
+
+					tupleList.Sort (delegate (DoubleTuple a, DoubleTuple b) {
+						//Will sort descending
+						if (a.Item1 > b.Item1) {
+							return -1;
+						} else if (a.Item1 < b.Item1) {
+							return 1;
+						} else {
+							return 0;
+						}
+					});
+
+					double lastTangent = 0;
+					tupleList.Add (new DoubleTuple (Double.MinValue, tupleList.Last ().Item2));
+					double newTangent = 0;
+
+					for (int i = 0; i < tupleList.Count - 1; ++i) {
+						newTangent = (tupleList[i + 1].Item2 - tupleList[i].Item2) / (tupleList[i + 1].Item1 - tupleList[i].Item1);
+						keys += $@"
+							key = {(tupleList[i].Item1 / 100).Str (4)} {(tupleList[i].Item2 / 100).Str (4)} {newTangent.Str ()} {lastTangent.Str ()}
+						";
+						lastTangent = newTangent;
+					}
+
+					tupleList.RemoveAt (tupleList.Count - 1);
+
+					output += $@"
+						curveResource = {FuelName.Name (PropellantRatio[0].Propellant)}
+						thrustCurve
+						{{
+							{keys}
+						}}
+					";
+				}
+
+				return output;
+			}
+		}
+
+		public string UsesThrustCurve => (ThrustCurve.Count > 0).ToString ();
+
+		public string TankConfig {
+			get {
+				string output = "";
+
+				if (UseTanks) {
+					
+					double volume = 0;
+					string contents = "";
+
+					foreach (FuelRatioElement i in GetConstrainedTankContents) {
+						volume += i.Ratio;
+						contents += $@"
+							TANK
+							{{
+								name = {FuelName.Name (i.Propellant)}
+								amount = {(i.Ratio * FuelUtilisation.Get (i.Propellant)).Str ()}
+								maxAmount = {(i.Ratio * FuelUtilisation.Get (i.Propellant)).Str ()}
+							}}
+						";
+					}
+
+					output = $@"
+						MODULE
+						{{
+							name = ModuleFuelTanks
+							basemass = -1
+							type = All
+							volume = {(LimitTanks ? TanksVolume.Str () : volume.Str ())}
+
+							{contents}
+
+						}}
+					";
+				}
+
+				return output;
+			}
+		}
+
 		public string ModelConfig {
 			get {
 				string model = "";
 
 				ModelInfo modelInfo = GetModelInfo;
 
-				double heightScale = Height / modelInfo.OriginalHeight;
-				double widthScale = Width / heightScale / GetOriginalWidth;
+				double heightScale = HeightScale;
+				double widthScale = WidthScale;
 
 				model = $@"
 					MODEL
@@ -82,7 +183,9 @@ namespace GenericEngines {
 					node_stack_bottom = 0.0, {modelInfo.NodeStackBottom.Str ()}, 0.0, 0.0, -1.0, 0.0, 1
 					node_stack_hide = 0.0, {(modelInfo.NodeStackBottom + 0.001).Str ()}, 0.0, 0.0, 0.0, 1.0, 0
 					{/* Hopefully no one will try to attach things sideways */""}
-					node_attach = 0.0, {modelInfo.NodeStackTop.Str ()}, 0.0, 0.0, 1.0, 0.0, 1
+
+					{AttachmentNode}
+
 				";
 
 				return model;
@@ -155,6 +258,8 @@ namespace GenericEngines {
 			}
 		}
 
+		public string UllageNeeded => ((NeedsUllage && EngineVariant != EngineType.Solid) ? "True" : "False");
+
 		public string EngineID {
 			get {
 				string output = $"GE-{Name.Replace (' ', '-')}";
@@ -164,10 +269,21 @@ namespace GenericEngines {
 			}
 		}
 
+		public string AttachmentNode {
+			get {
+				ModelInfo modelInfo = GetModelInfo;
+				if (modelInfo.RadialAttachment) {
+					return $"node_attach = {(modelInfo.RadialAttachmentPoint * WidthScale).Str ()}, 0.0, 0.0, 1.0, 0.0, 0.0";
+				} else {
+					return $"node_attach = 0.0, {modelInfo.NodeStackTop.Str ()}, 0.0, 0.0, 1.0, 0.0";
+				}
+			}
+		}
+
 		public string PropellantConfig {
 			get {
 				bool isElectric = false;
-				FuelRatioList fuelRatios = new FuelRatioList ();
+				List<FuelRatioElement> fuelRatios = new List<FuelRatioElement> ();
 				if (!FuelVolumeRatios) {
 
 					foreach (FuelRatioElement i in PropellantRatio) {
@@ -326,6 +442,75 @@ namespace GenericEngines {
 
 		public string RealEngineName => (EngineName == "" ? Name : EngineName);
 
+		public string CanAttachToEngine => (GetModelInfo.CanAttachOnModel ? "1" : "0");
+
+		public string StagingIcon {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "LIQUID_ENGINE";
+					case EngineType.Solid:
+					return "SOLID_BOOSTER";
+					//case EngineType.RCS:
+					//return "RCS_MODULE";
+					default:
+					return "unknown";
+				}
+			}
+		}
+
+		public string EngineTypeConfig {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "LiquidFuel";
+					case EngineType.Solid:
+					return "SolidBooster";
+					default:
+					return "unknown";
+				}
+			}
+		}
+
+		public string AllowShutdown {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "True";
+					case EngineType.Solid:
+					return "False";
+					default:
+					return "True";
+				}
+			}
+		}
+
+		public string UseEngineResponseTime {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "True";
+					case EngineType.Solid:
+					return "False";
+					default:
+					return "True";
+				}
+			}
+		}
+
+		public string LockThrottle {
+			get {
+				switch (EngineVariant) {
+					case EngineType.Liquid:
+					return "False";
+					case EngineType.Solid:
+					return "True";
+					default:
+					return "False";
+				}
+			}
+		}
+
 		public int IgnitionsCount {
 			get {
 				return Ignitions < 0 ? 0 : Ignitions;
@@ -389,13 +574,115 @@ namespace GenericEngines {
 
 		// Labels
 
+		public string TankVolumeEstimateLabel {
+			get {
+				return $"Estimated volume: {ModelTankVolume.Str (3)}L";
+			}
+		}
+
+		public string ThrustCurveLabel {
+			get {
+				if (ThrustCurve.Count <= 0) {
+					return "Default";
+				} else {
+					return "Custom";
+				}
+			}
+		}
+		
+		public string PropellantRatioLabel {
+			get {
+				string output = "";
+				string electricSuffix = "";
+
+				foreach (FuelRatioElement i in PropellantRatio.ToArray ()) {
+					if (i.Propellant != FuelType.ElectricCharge) {
+						output += $"{i.Ratio.Str ()}:";
+					} else {
+						electricSuffix = $" | Electric: {i.Ratio.Str ()}kW";
+					}
+				}
+
+				output = output.Trim (':');
+
+				if (PropellantRatio.Count <= 2) {
+					output += " ";
+
+					foreach (FuelRatioElement i in PropellantRatio) {
+						if (i.Propellant != FuelType.ElectricCharge) {
+							output += $"{FuelName.Name (i.Propellant)}:";
+						}
+					}
+
+					output = output.Trim (':');
+				}
+
+				output += electricSuffix;
+
+				return output;
+			}
+		}
+
+		public string TankStatus {
+			get {
+				if (UseTanks) {
+					if (LimitTanks) {
+						if (TanksVolume == 0) {
+							return "Enabled, but empty";
+						} else {
+							double volume = 0;
+							foreach (FuelRatioElement i in GetConstrainedTankContents) {
+								volume += i.Ratio;
+							}
+							return $"Enabled, {volume.Str (3)}L/{TanksVolume.Str (3)}L";
+						}
+					} else {
+						if (TanksContents.Count == 0) {
+							return "Enabled, but empty";
+						} else {
+							double volume = 0;
+							foreach (FuelRatioElement i in GetConstrainedTankContents) {
+								volume += i.Ratio;
+							}
+							return $"Enabled, {volume.Str (3)}L";
+						}
+					}
+				} else {
+					return "Disabled";
+				}
+			}
+		}
+
 		public string MassStatus {
 			get {
 				if (Settings.GetBool (Setting.MoreEngineInfo)) {
-					return $"{Mass.Str ()}t (TWR: {(Thrust / 9.80665 / Mass).Str (3)})";
+					if (UseTanks && GetConstrainedTankContents.Count > 0) {
+						double fm = FullTanksMass;
+						return $"{Mass.Str (6)}t (Full: {fm.Str (6)}t) (Full tanks TWR: {(Thrust / 9.80665 / FullTanksMass).Str (3)})";
+					} else {
+						return $"{Mass.Str (6)}t (TWR: {(Thrust / 9.80665 / Mass).Str (3)})";
+					}
 				} else {
-					return $"{Mass.Str ()}t";
+					if (TanksContents.Count > 0) {
+						return $"{Mass.Str (6)}t (Full: {FullTanksMass.Str (6)}t)";
+					} else {
+						return $"{Mass.Str (6)}t";
+					}
 				}
+			}
+		}
+
+		public double FullTanksMass {
+			get {
+				double output = 0.0;
+
+				output += Mass;
+
+				foreach (FuelRatioElement i in GetConstrainedTankContents) {
+					output += FuelDensity.Get[(int) i.Propellant] * i.Ratio; // t/l * l = t
+				}
+
+				return output;
 			}
 		}
 
@@ -463,7 +750,61 @@ namespace GenericEngines {
 
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
-		public Dictionary<Model, string> ModelsWithLabels => ModelEnumWrapper.Get;
+		public ListCollectionView ModelsWithLabels => ModelEnumWrapper.Get;
+
+		public string CurrentModelTooltip => ModelList.GetTooltip (ModelID);
+
+		//Other
+
+		public List<FuelRatioElement> GetConstrainedTankContents {
+			get {
+				List<FuelRatioElement> output = new List<FuelRatioElement> ();
+
+				double usedVolume = 0.0;
+				foreach (FuelRatioElement i in TanksContents) {
+					
+					double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), (LimitTanks ? TanksVolume - usedVolume : double.MaxValue));
+					usedVolume += volume;
+
+					output.Add (new FuelRatioElement (i.Propellant, volume));
+
+					if (LimitTanks && usedVolume == TanksVolume) {
+						break;
+					}
+				}
+
+				return output;
+			}
+		}
+
+		public double BaseWidth {
+			get {
+				if (UseBaseWidth) {
+					return Width;
+				} else {
+					ModelInfo modelInfo = GetModelInfo;
+					return Width * modelInfo.OriginalBaseWidth / modelInfo.OriginalWidth;
+				}
+			}
+		}
+
+		public double ModelTankVolume {
+			get {
+				double output = 0;
+
+				ModelInfo modelInfo = GetModelInfo;
+
+				if (modelInfo.TankOnModel) {
+					output = modelInfo.OriginalTankVolume;
+
+					output *= BaseWidth / modelInfo.OriginalBaseWidth;
+					output *= BaseWidth / modelInfo.OriginalBaseWidth;
+					output *= Height / modelInfo.OriginalHeight;
+				}
+
+				return output;
+			}
+		}
 
 		public Engine () {
 			UID = UIDc++;
@@ -474,7 +815,7 @@ namespace GenericEngines {
 			Thrust = 1000.0;
 			AtmIsp = 250.0;
 			VacIsp = 300.0;
-			PropellantRatio = new FuelRatioList () { new FuelRatioElement () };
+			PropellantRatio = new List<FuelRatioElement> () { new FuelRatioElement () };
 			Width = 1.0;
 			Height = 2.0;
 			Gimbal = 6.0;
@@ -504,6 +845,12 @@ namespace GenericEngines {
 			EngineManufacturer = "Generic Engines";
 			EngineDescription = "This engine was generated by Generic Engines";
 			UseBaseWidth = false;
+			EngineVariant = EngineType.Liquid;
+			TanksVolume = 0.0;
+			TanksContents = new List<FuelRatioElement> (0);
+			ThrustCurve = new List<DoubleTuple> (0);
+			UseTanks = false;
+			LimitTanks = true;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

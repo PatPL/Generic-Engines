@@ -41,7 +41,7 @@ namespace GenericEngines {
 					title = {engine.RealEngineName}
 					manufacturer = {engine.EngineManufacturer}
 					description = {engine.EngineDescription}
-					attachRules = 1,1,1,0,0
+					attachRules = 1,1,1,{engine.CanAttachToEngine},0
 					mass = {engine.Mass.Str ()}
 					heatConductivity = 0.06
 					skinInternalConductionMult = 4.0
@@ -67,13 +67,16 @@ namespace GenericEngines {
 						name = ModuleEngines
 						thrustVectorTransformName = thrustTransform
 						exhaustDamage = True
+						allowShutdown = {engine.AllowShutdown}
+						useEngineResponseTime = {engine.UseEngineResponseTime}
+						throttleLocked = {engine.LockThrottle}
 						ignitionThreshold = 0.1
 						minThrust = 0
 						maxThrust = 610
 						heatProduction = 200
 						fxOffset = 0, 0, 0.974338
-						EngineType = LiquidFuel
-						useThrustCurve = true 
+						EngineType = {engine.EngineTypeConfig}
+						useThrustCurve = {engine.UsesThrustCurve}
 						exhaustDamageDistanceOffset = 0.79
 		
 						atmosphereCurve
@@ -82,11 +85,9 @@ namespace GenericEngines {
 							key = 1 204
 							key = 6 0.001
 						}}
-						thrustCurve
-						{{
-							key = 1 1
-							key = 0 0
-						}}
+						
+						{engine.ThrustCurveConfig}
+						
 					}}
 
 					{engine.GimbalConfig}
@@ -116,17 +117,19 @@ namespace GenericEngines {
 					%skinMaxTemp = 673.15
 					%stageOffset = 1
 					%childStageOffset = 1
-					%stagingIcon = LIQUID_ENGINE
+					%stagingIcon = {engine.StagingIcon}
 					@bulkheadProfiles = srf, size3
 					@tags = Generic Engine
 					%engineType = {engine.EngineID}
+
+					{engine.TankConfig}
 
 					@MODULE[ModuleEngines*]
 					{{
 						@minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
 						@maxThrust = {engine.Thrust.Str ()}
 						@heatProduction = 180
-						@useThrustCurve = False
+						@useThrustCurve = {engine.UsesThrustCurve}
 
 						{engine.PropellantConfig}
 
@@ -136,7 +139,8 @@ namespace GenericEngines {
 							@key,1 = 1 {engine.AtmIsp.Str ()}
 						}}
 
-						!thrustCurve,*{{}}
+						{engine.ThrustCurveConfig}
+
 					}}
 
 					MODULE
@@ -162,7 +166,9 @@ namespace GenericEngines {
 								key = 1 {engine.AtmIsp.Str ()}
 							}}
 
-							ullage = {engine.NeedsUllage}
+							{engine.ThrustCurveConfig}
+
+							ullage = {engine.UllageNeeded}
 							pressureFed = {engine.PressureFed}
 							ignitions = {engine.IgnitionsCount}
 							IGNITOR_RESOURCE

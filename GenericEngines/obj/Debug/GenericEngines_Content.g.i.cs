@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("duplicate.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sort-mini.png")]
 
 

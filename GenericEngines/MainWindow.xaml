@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True">
+        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="b2v" />
 		<local:ReversedBooleanToVisibilityConverter x:Key="rb2v" />
@@ -118,6 +118,15 @@
 					<Setter Property="Opacity" Value="0.6"/>
 				</Trigger>
 			</Style.Triggers>
+		</Style>
+		<Style TargetType="ListBoxItem">
+			<Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
+			<Setter Property="ToolTipService.BetweenShowDelay" Value="0"/>
+			<Setter Property="ToolTipService.ShowDuration" Value="3600000"/>
+		</Style>
+		<Style TargetType="ComboBox">
+			<Setter Property="ToolTipService.InitialShowDelay" Value="500"/>
+			<Setter Property="ToolTipService.ShowDuration" Value="3600000"/>
 		</Style>
 		<Style TargetType="ToolTip">
 			<Setter Property="FontFamily" Value="Verdana"/>
@@ -232,6 +241,24 @@
 					<DataGridTemplateColumn.HeaderTemplate>
 						<DataTemplate>
 							<TextBlock Text="Name" ToolTip="Name" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn SortMemberPath="EngineVariant">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=EngineVariant, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<ComboBox Loaded="engineTypeCombo_Loaded" SelectedValue="{Binding Path=EngineVariant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Type" ToolTip="Type" FontFamily="Verdana"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
@@ -355,7 +382,7 @@
 				<DataGridTemplateColumn Header="Propellants">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=PropellantRatio, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=PropellantRatioLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -465,7 +492,31 @@
 								</Grid.ColumnDefinitions>
 								<TextBlock Text="Model" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
 								<TextBlock Text="Plume" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
-								<ComboBox ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto"></ComboBox>
+								<ComboBox ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="modelName" SelectedValuePath="model" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalContentAlignment="Stretch" Padding="4,3">
+									<ComboBox.GroupStyle>
+										<GroupStyle>
+											<GroupStyle.HeaderTemplate>
+												<DataTemplate>
+													<Border BorderThickness="0,2,0,0" BorderBrush="#FF444444">
+														<TextBlock Background="#FFBBBBBB" Foreground="#FF444444" Text="{Binding Name}" FontFamily="Verdana" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="2,0"/>
+													</Border>
+												</DataTemplate>
+											</GroupStyle.HeaderTemplate>
+										</GroupStyle>
+									</ComboBox.GroupStyle>
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<ListBoxItem Content="{Binding modelName}" Padding="0" HorizontalContentAlignment="Stretch">
+												<ListBoxItem.ToolTip>
+													<Image Source="{Binding toolTip}" Margin="1,1,0,0"/>
+												</ListBoxItem.ToolTip>
+											</ListBoxItem>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+									<ComboBox.ToolTip>
+										<Image Source="{Binding CurrentModelTooltip}" Margin="1,1,0,0"/>
+									</ComboBox.ToolTip>
+								</ComboBox>
 								<ComboBox Loaded="plumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
 							</Grid>
 						</DataTemplate>
@@ -668,7 +719,147 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Thrust Curve">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=ThrustCurveLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <!-- Paste grid -->
+                            <Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="18"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+                                <Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="38,2,2,0" Source="sort-mini.png" MouseDown="registerMouseDown" MouseUp="sortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+                                <DataGrid ItemsSource="{Binding Path=ThrustCurve}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Fuel%">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Item1, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Path=Item1, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Thrust%">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Item2, StringFormat={}{0}%}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding Path=Item2, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <!-- /Paste -->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Thrust Curve" ToolTip="Thrust Curve" FontFamily="Verdana"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Tank">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=TankStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<!-- Paste grid -->
+							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto" MaxHeight="18"/>
+									<RowDefinition Height="auto" MaxHeight="18"/>
+									<RowDefinition Height="auto" MaxHeight="18"/>
+									<RowDefinition Height="auto" MaxHeight="18"/>
+									<RowDefinition Height="auto" MaxHeight="18"/>
+									<RowDefinition Height="auto"/>
+								</Grid.RowDefinitions>
+
+								<TextBlock Foreground="#FF000000" Text="Add tank" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
+								<CheckBox x:Name="UseTanksCheckbox" IsChecked="{Binding Path=UseTanks, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="16" Height="16" Margin="59,1,1,0"/>
+
+								<TextBlock Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Grid.Row="1" Text="Limit tank volume" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
+								<CheckBox Grid.Row="1" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" x:Name="LimitTanksCheckbox" IsChecked="{Binding Path=LimitTanks, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="16" Height="16" Margin="113,1,1,0"/>
+
+								<TextBlock Grid.Row="2" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="to" Margin="2,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
+								<TextBox Grid.Row="2" IsEnabled="{Binding IsChecked, ElementName=LimitTanksCheckbox}" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" PreviewKeyDown="tanksVolumeInput_PrewiewKeyDown" Padding="-1" Margin="18,1,0,0" HorizontalAlignment="Left" Width="110" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
+								<TextBlock Grid.Row="2" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="L" Margin="130,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
+
+								<TextBlock Grid.Row="3" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="{Binding TankVolumeEstimateLabel}" Margin="2,1,2,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
+
+								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								
+								<DataGrid Grid.Row="5" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
+									<DataGrid.Columns>
+										<DataGridTemplateColumn Header="Propellant">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+
+										<DataGridTemplateColumn Header="Amount">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Path=Ratio, StringFormat={}{0}L}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+											<DataGridTemplateColumn.CellEditingTemplate>
+												<DataTemplate>
+													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellEditingTemplate>
+										</DataGridTemplateColumn>
+									</DataGrid.Columns>
+								</DataGrid>
+							</Grid>
+							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Tank" ToolTip="Tank" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
 				
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Width="600" Text="" ToolTip="" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>

@@ -52,6 +52,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -77,7 +83,10 @@
     <Compile Include="About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AllTankDefinition.cs" />
     <Compile Include="AppInfo.cs" />
+    <Compile Include="DoubleTuple.cs" />
+    <Compile Include="EngineType.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="FuelRatioList.cs" />
     <Compile Include="ModelEnumWrapper.cs" />
@@ -94,6 +103,7 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TankType.cs" />
     <Compile Include="TechNode.cs" />
     <Compile Include="TechNodeEnumWrapper.cs" />
     <Page Include="About.xaml">
@@ -164,6 +174,7 @@
     <Resource Include="add.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ModelPreviews\LR91.jpg" />
     <Resource Include="remove.png" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +231,33 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="duplicate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\Aestus.jpg" />
+    <Resource Include="ModelPreviews\AJ10.jpg" />
+    <Resource Include="ModelPreviews\F1.jpg" />
+    <Resource Include="ModelPreviews\IonThruster.jpg" />
+    <Resource Include="ModelPreviews\RD0105T.jpg" />
+    <Resource Include="ModelPreviews\RS25.jpg" />
+    <Resource Include="ModelPreviews\Thruster.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\RT2.jpg" />
+    <Resource Include="ModelPreviews\RT5.jpg" />
+    <Resource Include="ModelPreviews\S1.jpg" />
+    <Resource Include="ModelPreviews\SRBLong.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\LVT30.jpg" />
+    <Resource Include="ModelPreviews\LVT45.jpg" />
+    <Resource Include="ModelPreviews\NERVA.jpg" />
+    <Resource Include="ModelPreviews\RD0105.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="sort-mini.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

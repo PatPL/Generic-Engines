@@ -27,7 +27,7 @@ namespace GenericEngines {
 		bool isEdited = false;
 		DataGrid mainDataGrid;
 		DataGrid currentFuelRatioGrid;
-		FuelRatioList currentFuelRatioList;
+		List<FuelRatioElement> currentFuelRatioList;
 
 		private string _currentFile = null;
 		string currentFile {
@@ -44,10 +44,10 @@ namespace GenericEngines {
 			InitializeComponent ();
 		}
 
-		FuelRatioList currentFuelRatios {
+		List<FuelRatioElement> currentFuelRatios {
 			get {
 				if (currentFuelRatioGrid != null) {
-					return (FuelRatioList) currentFuelRatioGrid.ItemsSource;
+					return (List<FuelRatioElement>) currentFuelRatioGrid.ItemsSource;
 				} else {
 					throw new NullReferenceException ("currentFuelRatioGrid is null");
 				}
@@ -356,6 +356,7 @@ namespace GenericEngines {
 				string pathDirectory = new FileInfo (path).Directory.FullName;
 
 				File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
+				File.WriteAllText ($"{pathDirectory}/GEAllTankDefinition.cfg", AllTankDefinition.Get);
 				MessageBox.Show ($"{exportedEnginesCount} engines succesfully exported to {path}", "Success");
 			} catch (Exception e) {
 				App.SaveExceptionToFile (e);
@@ -443,7 +444,9 @@ namespace GenericEngines {
 		private List<object> CurrentGDList;
 		private Type CurrentGDType;
 		private readonly Dictionary<string, Type> GDListTypes = new Dictionary<string, Type> {
-			{ "Propellants", typeof (FuelRatioElement) }
+			{ "Propellants", typeof (FuelRatioElement) },
+			{ "Tank", typeof (FuelRatioElement) },
+			{ "Thrust Curve", typeof (DoubleTuple) }
 		};
 
 		private void mainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
@@ -452,10 +455,16 @@ namespace GenericEngines {
 					case "Propellants":
 					CurrentGDList = ((Engine) e.Row.Item).PropellantRatio.ToList<object> ();
 					break;
+					case "Tank":
+					CurrentGDList = ((Engine) e.Row.Item).TanksContents.ToList<object> ();
+					break;
+					case "Thrust Curve":
+					CurrentGDList = ((Engine) e.Row.Item).ThrustCurve.ToList<object> ();
+						break;
 					default:
 					return;
 				}
-
+				
 				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
 			}
 		}
@@ -473,19 +482,37 @@ namespace GenericEngines {
 
 		private void GD_Unload (object sender, DataGridCellEditEndingEventArgs e) {
 			if (CurrentGD != null) {
+				
+				
 				CurrentGD.CommitEdit ();
 				CurrentGD.CancelEdit ();
 
 				if (e.Column.Header != null) {
 					switch (e.Column.Header.ToString ()) {
 						case "Propellants":
-						((Engine) (e.Row.Item)).PropellantRatio = new FuelRatioList ();
+							((Engine) (e.Row.Item)).PropellantRatio = new List<FuelRatioElement> ();
 
-						foreach (object i in CurrentGDList) {
-							((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
-						}
+							foreach (object i in CurrentGDList) {
+								((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+							}
 
-						break;
+							break;
+						case "Tank":
+							((Engine) (e.Row.Item)).TanksContents = new List<FuelRatioElement> ();
+
+							foreach (object i in CurrentGDList) {
+								((Engine) (e.Row.Item)).TanksContents.Add ((FuelRatioElement) i);
+							}
+
+							break;
+						case "Thrust Curve":
+							((Engine) e.Row.Item).ThrustCurve = new List<DoubleTuple> ();
+
+							foreach (object i in CurrentGDList) {
+								((Engine) (e.Row.Item)).ThrustCurve.Add ((DoubleTuple) i);
+							}
+
+							break;
 						default:
 						return;
 					}
@@ -493,6 +520,7 @@ namespace GenericEngines {
 					CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
 				}
 
+				((Engine) e.Row.Item).NotifyEveryProperty ();
 				CurrentGD = null;
 			}
 		}
@@ -590,7 +618,11 @@ namespace GenericEngines {
 		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
 		}
-		
+
+		private void engineTypeCombo_Loaded (object sender, RoutedEventArgs e) {
+			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (EngineType)).Cast<EngineType> ();
+		}
+
 		private void techComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {
 			ComboBox combo = (ComboBox) sender;
 
@@ -612,6 +644,39 @@ namespace GenericEngines {
 			) {
 				((TextBox) combo.Template.FindName ("PART_EditableTextBox", combo)).Select (tmp.Length, 0);
 			}
+		}
+
+		private void sortThrustCurve_MouseUp (object sender, MouseButtonEventArgs e) {
+			List<DoubleTuple> tupleList = new List<DoubleTuple> ();
+
+			CurrentGD.CommitEdit ();
+			CurrentGD.CancelEdit ();
+
+			foreach (object i in CurrentGDList) {
+				tupleList.Add ((DoubleTuple) i);
+			}
+
+			tupleList.Sort (delegate (DoubleTuple a, DoubleTuple b) {
+				//Will sort descending
+				if (a.Item1 > b.Item1) {
+					return -1;
+				} else if (a.Item1 < b.Item1) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+
+			CurrentGDList = tupleList.ToList<object> ();
+			CurrentGD.ItemsSource = CurrentGDList;
+			CurrentGD.Items.Refresh ();
+
+		}
+
+		private void tanksVolumeInput_PrewiewKeyDown (object sender, KeyEventArgs e) {
+			//I have no idea why it's necessary, but the property doesn't update properly without it.
+			((TextBox) sender).GetBindingExpression (TextBox.TextProperty).UpdateSource ();
+			//Other inputs look literally the same and they work without manual updating ¯\_(ツ)_/¯
 		}
 	}
 }
