@@ -89,7 +89,6 @@
     <Compile Include="Logic\DoubleTuple.cs" />
     <Compile Include="Logic\EngineType.cs" />
     <Compile Include="Logic\Exporter.cs" />
-    <Compile Include="Logic\FuelRatioList.cs" />
     <Compile Include="Logic\ModelEnumWrapper.cs" />
     <Compile Include="Logic\ModelInfo.cs" />
     <Compile Include="Logic\PlumeInfo.cs" />
@@ -129,7 +128,6 @@
       <DependentUpon>ConfirmWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\Engine.cs" />
-    <Compile Include="Logic\FuelRatios.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

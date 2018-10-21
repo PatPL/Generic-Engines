@@ -7,10 +7,20 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace GenericEngines {
+	/// <summary>
+	/// This is a class used for showing confirm prompt
+	/// </summary>
 	public static class ConfirmBox {
-
+		/// <summary>
+		/// Internal but has to be public. Don't use directly. Use Show () instead.
+		/// </summary>
 		public static bool returnValue;
 
+		/// <summary>
+		/// This shows confirm prompt and returns true/false depending on user input
+		/// </summary>
+		/// <param name="message">The displayed message</param>
+		/// <returns></returns>
 		public static bool Show (string message) {
 			if (Settings.GetBool (Setting.AdvConfirmBox)) {
 				return ShowAdvanced (message);

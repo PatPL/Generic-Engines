@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
 namespace GenericEngines {
+	/// <summary>
+	/// The class responsible for turning Engine objects into KSP configs
+	/// </summary>
 	public static class Exporter {
-
+		/// <summary>
+		/// Returns the compacted configs of all active engines in the list
+		/// </summary>
+		/// <param name="engines">The engine list to be exported</param>
+		/// <param name="activeEngineCount">How many of the engines in the list were active</param>
+		/// <returns></returns>
 		public static string ConvertEngineListToConfig (List<Engine> engines, out int activeEngineCount) {
 			string output = "";
 
@@ -23,6 +31,11 @@ namespace GenericEngines {
 			return output;
 		}
 
+		/// <summary>
+		/// Returns the compacted config an engine
+		/// </summary>
+		/// <param name="engine">The engine to be exported</param>
+		/// <returns></returns>
 		public static string ConvertEngineToConfig (Engine engine) {
 			string output = $@"
 				PART

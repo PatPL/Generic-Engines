@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Contains two double variables
+	/// </summary>
 	public class DoubleTuple {
 		
 		public double Item1 { get; set; }

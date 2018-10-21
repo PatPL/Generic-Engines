@@ -10,7 +10,13 @@ using System.ComponentModel;
 using System.Windows.Data;
 
 namespace GenericEngines {
+	/// <summary>
+	/// The class containing properties of an engine
+	/// </summary>
 	public class Engine : INotifyPropertyChanged {
+
+		#region Variables
+
 		private double _atmIsp;
 		private double _vacIsp;
 		private double _thrust;
@@ -20,9 +26,9 @@ namespace GenericEngines {
 		public bool Active { get; set; } //0
 		public string Name { get => _name; set { _name = value; NotifyPropertyChanged ("RealEngineName"); } } //0
 		public double Mass { get; set; } //0
-		public double Thrust { get => _thrust; set { _thrust = value; NotifyPropertyChanged ("MinimumThrustStatus"); NotifyPropertyChanged ("MassStatus"); } } //0
-		public double AtmIsp { get => _atmIsp; set { _atmIsp = value; NotifyPropertyChanged ("ThrustStatus"); } } //0
-		public double VacIsp { get => _vacIsp; set { _vacIsp = value; NotifyPropertyChanged ("ThrustStatus"); } } //0
+		public double Thrust { get => _thrust; set { _thrust = value; NotifyPropertyChanged ("MinimumThrustLabel"); NotifyPropertyChanged ("MassLabel"); } } //0
+		public double AtmIsp { get => _atmIsp; set { _atmIsp = value; NotifyPropertyChanged ("ThrustLabel"); } } //0
+		public double VacIsp { get => _vacIsp; set { _vacIsp = value; NotifyPropertyChanged ("ThrustLabel"); } } //0
 		public List<FuelRatioElement> PropellantRatio { get; set; } //0
 		public double Width { get; set; } //0
 		public double Height { get; set; } //0
@@ -64,12 +70,23 @@ namespace GenericEngines {
 		public static int UIDc = 1;
 		public int UID { get; set; }
 
-		// Exporter
+		#endregion
 
+		#region ExporterProperties
+
+		/// <summary>
+		/// Returns the model rescaleFactor with current model and height
+		/// </summary>
 		public double HeightScale => Height / GetModelInfo.OriginalHeight;
 
+		/// <summary>
+		/// Returns the model x,z scales with current model, width and height
+		/// </summary>
 		public double WidthScale => Width / HeightScale / GetOriginalWidth;
 
+		/// <summary>
+		/// Returns the thrustCurve and thrustResource
+		/// </summary>
 		public string ThrustCurveConfig {
 			get {
 				string output = "";
@@ -119,8 +136,14 @@ namespace GenericEngines {
 			}
 		}
 
-		public string UsesThrustCurve => (ThrustCurve.Count > 0).ToString ();
+		/// <summary>
+		/// Does the engine have custom thrustCurve?
+		/// </summary>
+		public string UsesThrustCurve => (ThrustCurve.Count > 0 ? "True" : "False");
 
+		/// <summary>
+		/// Returns tank config if the engine has tanks
+		/// </summary>
 		public string TankConfig {
 			get {
 				string output = "";
@@ -160,6 +183,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the config for engine's model and nodes
+		/// </summary>
 		public string ModelConfig {
 			get {
 				string model = "";
@@ -192,6 +218,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the config of the plume
+		/// </summary>
 		public string PlumeConfig {
 			get {
 				string plume = "";
@@ -235,6 +264,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the configs that hide all GameObjects with names set in ModelInfo's HiddenMuObjects array
+		/// </summary>
 		public string HiddenObjectsConfig {
 			get {
 				string output = "";
@@ -258,8 +290,14 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Does the engine need ullage?
+		/// </summary>
 		public string UllageNeeded => ((NeedsUllage && EngineVariant != EngineType.Solid) ? "True" : "False");
 
+		/// <summary>
+		/// The engine part's name
+		/// </summary>
 		public string EngineID {
 			get {
 				string output = $"GE-{Name.Replace (' ', '-')}";
@@ -269,6 +307,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the attachment node config
+		/// </summary>
 		public string AttachmentNode {
 			get {
 				ModelInfo modelInfo = GetModelInfo;
@@ -280,6 +321,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the propellant config with correct KSP ratios
+		/// </summary>
 		public string PropellantConfig {
 			get {
 				bool isElectric = false;
@@ -352,6 +396,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the gimbal config
+		/// </summary>
 		public string GimbalConfig {
 			get {
 				string gimbal = "";
@@ -385,6 +432,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the Test Flight config
+		/// </summary>
 		public string TestFlightConfig {
 			get {
 				string testflight = "";
@@ -410,6 +460,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the alternator config
+		/// </summary>
 		public string AlternatorConfig {
 			get {
 				string alternator = "";
@@ -432,18 +485,33 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the minimum thrust multiplier (0.0 - 1.0)
+		/// </summary>
 		public double MinThrustPercent {
 			get {
 				return (Math.Max (Math.Min (MinThrust, 100), 0) / 100);
 			}
 		}
 
+		/// <summary>
+		/// Returns model's original bell width or base width, depending on UseBaseWidth
+		/// </summary>
 		public double GetOriginalWidth => (UseBaseWidth ? GetModelInfo.OriginalBaseWidth : GetModelInfo.OriginalWidth);
 
+		/// <summary>
+		/// Returns engine's name shown in game
+		/// </summary>
 		public string RealEngineName => (EngineName == "" ? Name : EngineName);
 
+		/// <summary>
+		/// Returns 0 or 1 depending on whether you can attach parts to the engine
+		/// </summary>
 		public string CanAttachToEngine => (GetModelInfo.CanAttachOnModel ? "1" : "0");
 
+		/// <summary>
+		/// Returns the staging icon's name depending on engine's EngineVariant
+		/// </summary>
 		public string StagingIcon {
 			get {
 				switch (EngineVariant) {
@@ -459,6 +527,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns EngineType used by ModuleEngines module
+		/// </summary>
 		public string EngineTypeConfig {
 			get {
 				switch (EngineVariant) {
@@ -472,6 +543,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns whether the engine can be shut down
+		/// </summary>
 		public string AllowShutdown {
 			get {
 				switch (EngineVariant) {
@@ -485,6 +559,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns whether the engine should use throttle response time
+		/// </summary>
 		public string UseEngineResponseTime {
 			get {
 				switch (EngineVariant) {
@@ -498,6 +575,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns whether engine can be throttled in flight
+		/// </summary>
 		public string LockThrottle {
 			get {
 				switch (EngineVariant) {
@@ -511,26 +591,40 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the ignition count. 0 for infinite.
+		/// </summary>
 		public int IgnitionsCount {
 			get {
 				return Ignitions < 0 ? 0 : Ignitions;
 			}
 		}
 
+		/// <summary>
+		/// Returns this engine's ModelInfo
+		/// </summary>
 		public ModelInfo GetModelInfo {
 			get {
 				return ModelList.Get (ModelID);
 			}
 		}
 
+		/// <summary>
+		/// Returns this engine's PlumeInfo
+		/// </summary>
 		public PlumeInfo GetPlumeInfo {
 			get {
 				return PlumeList.Get (PlumeID);
 			}
 		}
 
-		// Serializer
+		#endregion
 
+		#region SerializerProperties
+
+		/// <summary>
+		/// Returns whether any of the Test Flight related properties were changed
+		/// </summary>
 		public bool TestFlightConfigNotDefault {
 			get {
 				Engine comparison = new Engine ();
@@ -545,6 +639,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns whether any of the Advanced gimbal related properties were changed
+		/// </summary>
 		public bool GimbalConfigNotDefault {
 			get {
 				Engine comparison = new Engine ();
@@ -558,6 +655,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns whether the Manufacturer was changed
+		/// </summary>
 		public bool ManufacturerNotDefault {
 			get {
 				Engine comparison = new Engine ();
@@ -565,6 +665,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns whether the Description was changed
+		/// </summary>
 		public bool DescriptionNotDefault {
 			get {
 				Engine comparison = new Engine ();
@@ -572,14 +675,22 @@ namespace GenericEngines {
 			}
 		}
 
-		// Labels
+		#endregion
 
+		#region UILabelsProperties
+
+		/// <summary>
+		/// Returns the estimated volume label
+		/// </summary>
 		public string TankVolumeEstimateLabel {
 			get {
 				return $"Estimated volume: {ModelTankVolume.Str (3)}L";
 			}
 		}
 
+		/// <summary>
+		/// Returns the thrust curve label
+		/// </summary>
 		public string ThrustCurveLabel {
 			get {
 				if (ThrustCurve.Count <= 0) {
@@ -589,7 +700,10 @@ namespace GenericEngines {
 				}
 			}
 		}
-		
+
+		/// <summary>
+		/// Returns the Propellant ratios label
+		/// </summary>
 		public string PropellantRatioLabel {
 			get {
 				string output = "";
@@ -623,7 +737,10 @@ namespace GenericEngines {
 			}
 		}
 
-		public string TankStatus {
+		/// <summary>
+		/// Returns the tank label
+		/// </summary>
+		public string TankLabel {
 			get {
 				if (UseTanks) {
 					if (LimitTanks) {
@@ -653,7 +770,10 @@ namespace GenericEngines {
 			}
 		}
 
-		public string MassStatus {
+		/// <summary>
+		/// Returns the mass label
+		/// </summary>
+		public string MassLabel {
 			get {
 				if (Settings.GetBool (Setting.MoreEngineInfo)) {
 					if (UseTanks && GetConstrainedTankContents.Count > 0) {
@@ -672,6 +792,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns the mass of engine with full tanks
+		/// </summary>
 		public double FullTanksMass {
 			get {
 				double output = 0.0;
@@ -686,13 +809,19 @@ namespace GenericEngines {
 			}
 		}
 
-		public string IgnitionsStatus {
+		/// <summary>
+		/// Returns the label with amount of ignitions
+		/// </summary>
+		public string IgnitionsLabel {
 			get {
 				return Ignitions <= 0 ? "Infinite" : Ignitions.ToString ();
 			}
 		}
 
-		public string ThrustStatus {
+		/// <summary>
+		/// Returns the label with engine's thrust
+		/// </summary>
+		public string ThrustLabel {
 			get {
 				if (Settings.GetBool (Setting.MoreEngineInfo)) {
 					return $"{Thrust.Str ()}kN (SL: {(Thrust * AtmIsp / VacIsp).Str (3)}kN)";
@@ -702,7 +831,10 @@ namespace GenericEngines {
 			}
 		}
 
-		public string MinimumThrustStatus {
+		/// <summary>
+		/// Returns the label with engine's minimum thrust
+		/// </summary>
+		public string MinimumThrustLabel {
 			get {
 				if (Settings.GetBool (Setting.MoreEngineInfo)) {
 					return $"{MinThrust}% (Vac: {(Thrust * MinThrust / 100).Str (3)}kN)";
@@ -712,13 +844,19 @@ namespace GenericEngines {
 			}
 		}
 
-		public string VisualStatus {
+		/// <summary>
+		/// Returns the label with model's name and plume's name
+		/// </summary>
+		public string VisualLabel {
 			get {
 				return $"{ModelList.GetName (ModelID)}, {PlumeList.GetName (PlumeID)}";
 			}
 		}
 
-		public string GimbalStatus {
+		/// <summary>
+		/// Returns the label with engine's gimbal range
+		/// </summary>
+		public string GimbalLabel {
 			get {
 				if (AdvancedGimbal) {
 					return $"X:{GimbalNX.Str ()}°:{GimbalPX.Str ()}°, Y:{GimbalNY.Str ()}°:{GimbalPY.Str ()}°";
@@ -728,7 +866,10 @@ namespace GenericEngines {
 			}
 		}
 
-		public string TestFlightStatus {
+		/// <summary>
+		/// Returns the label with engine's ingition success chance and MTBF
+		/// </summary>
+		public string TestFlightLabel {
 			get {
 				if (EnableTestFlight) {
 					return $"Enabled | {StartReliability0.Str ()}% - {StartReliability10k.Str ()}% | MTBF: {(int) Math.Round ((1 / (1 - (CycleReliability0 / 100))) * RatedBurnTime)}s - {(int) Math.Round ((1 / (1 - (CycleReliability10k / 100))) * RatedBurnTime)}s";
@@ -740,22 +881,44 @@ namespace GenericEngines {
 			}
 		}
 
-		public string Dimensions {
+		/// <summary>
+		/// Returns the label with engine's width and height
+		/// </summary>
+		public string DimensionsLabel {
 			get {
 				return $"{Width.Str ()}m x {Height.Str ()}m";
 			}
 		}
 
-		public string TechNodeStatus => (TechNodeList.GetName (TechUnlockNode));
+		/// <summary>
+		/// Returns the label with engine's R&D unlock node's name
+		/// </summary>
+		public string TechNodeLabel => (TechNodeList.GetName (TechUnlockNode));
 
+		/// <summary>
+		/// Returns a dictionary with TechNode as a key, and their names as values.
+		/// Used to show proper names in ComboBox
+		/// </summary>
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
+		/// <summary>
+		/// Returns ListCollectionView with values needed to show model properly.
+		/// Used to show proper names in ComboBox, and add image prewiew
+		/// </summary>
 		public ListCollectionView ModelsWithLabels => ModelEnumWrapper.Get;
 
-		public string CurrentModelTooltip => ModelList.GetPrewiewImagePath (ModelID);
+		/// <summary>
+		/// Returns the path to the preview image of this engine's model
+		/// </summary>
+		public string CurrentModelPreviewImagePath => ModelList.GetPreviewImagePath (ModelID);
 
-		//Other
+		#endregion
 
+		#region OtherProperties
+
+		/// <summary>
+		/// Returns actual tank contents. Limits them to TanksVolume, if LimitTank is true
+		/// </summary>
 		public List<FuelRatioElement> GetConstrainedTankContents {
 			get {
 				List<FuelRatioElement> output = new List<FuelRatioElement> ();
@@ -777,6 +940,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns engine's base width, regardless of UseBaseWidth
+		/// </summary>
 		public double BaseWidth {
 			get {
 				if (UseBaseWidth) {
@@ -788,6 +954,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns estimated tank volume in L
+		/// </summary>
 		public double ModelTankVolume {
 			get {
 				double output = 0;
@@ -806,6 +975,11 @@ namespace GenericEngines {
 			}
 		}
 
+		#endregion
+
+		/// <summary>
+		/// The constructor with default engine
+		/// </summary>
 		public Engine () {
 			UID = UIDc++;
 			
@@ -853,18 +1027,32 @@ namespace GenericEngines {
 			LimitTanks = true;
 		}
 
+		/// <summary>
+		/// Has to be public to implement INotifyPropertyChanged. Don't use directly
+		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		/// <summary>
+		/// Update the property in UI
+		/// </summary>
+		/// <param name="name">The property to be updated</param>
 		public void NotifyPropertyChanged (string name) {
 			PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
 		}
 
+		/// <summary>
+		/// Updates EVERY property of this engine.
+		/// </summary>
 		public void NotifyEveryProperty () {
 			foreach (PropertyInfo i in typeof (Engine).GetProperties ()) {
 				NotifyPropertyChanged (i.Name);
 			}
 		}
-
+		
+		/// <summary>
+		/// Same as 'new Engine ()'. Returns default engine
+		/// </summary>
+		/// <returns></returns>
 		public static Engine New () {
 			return new Engine ();
 		}

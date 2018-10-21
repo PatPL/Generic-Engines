@@ -5,10 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Contains all info needed to display model correctly in ComboBox
+	/// </summary>
 	public static class TechNodeEnumWrapper {
 
 		private static Dictionary<TechNode, string> content = null;
 
+		/// <summary>
+		/// Get the Dictionary with tech node names
+		/// </summary>
 		public static Dictionary<TechNode, string> Get {
 			get {
 				return content ?? GenerateContent ();

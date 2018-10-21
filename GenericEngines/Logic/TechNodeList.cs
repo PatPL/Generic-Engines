@@ -5,16 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Class storing all TechNode info
+	/// </summary>
 	public static class TechNodeList {
+		/// <summary>
+		/// Returns the ID of given TechNode
+		/// </summary>
+		/// <param name="tn">The TechNode</param>
+		/// <returns></returns>
 		public static string GetID (TechNode tn) {
 			return tn.ToString ();
 		}
 
+		/// <summary>
+		/// Returns the name of given TechNode
+		/// </summary>
+		/// <param name="tn">The TechNode</param>
+		/// <returns></returns>
 		public static string GetName (TechNode tn) {
 			return names[(int) tn];
 		}
 
-		public static readonly string[] names = new string[] {
+		private static readonly string[] names = new string[] {
 			@"Start",
 			@"Supersonic Plane Development",
 			@"Supersonic Flight",
@@ -304,6 +317,9 @@ namespace GenericEngines {
 		};
 	}
 
+	/// <summary>
+	/// Enum with all RP-(0/1)? tech nodes.
+	/// </summary>
 	public enum TechNode {
 		start,
 		supersonicDev,

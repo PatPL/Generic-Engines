@@ -7,11 +7,19 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Stuff related to the Settings system
+	/// </summary>
 	public static class Settings {
 
 		private static readonly string settingsPath = $"{Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments)}\\Generic Engines\\setti.ngs";
 		private static Dictionary<string, string> settings = null;
 
+		/// <summary>
+		/// Returns the value of the setting. Don't use strings directly, use Setting class.
+		/// </summary>
+		/// <param name="key">The setting to be returned</param>
+		/// <returns></returns>
 		public static string Get (string key) {
 			if (settings is null) {
 				LoadSettings ();
@@ -28,10 +36,20 @@ namespace GenericEngines {
 			return output;
 		}
 
+		/// <summary>
+		/// Returns the value of the setting as a bool. Don't use strings directly, use Setting class.
+		/// </summary>
+		/// <param name="key">The setting to be returned</param>
+		/// <returns></returns>
 		public static bool GetBool (string key) {
 			return bool.Parse (Get (key));
 		}
 
+		/// <summary>
+		/// Sets the value of a setting. Don't use strings directly, use Setting class.
+		/// </summary>
+		/// <param name="key">Setting to set</param>
+		/// <param name="value">Value to set</param>
 		public static void Set (string key, string value) {
 
 			if (settings is null) {
@@ -104,6 +122,9 @@ namespace GenericEngines {
 		};
 	}
 
+	/// <summary>
+	/// Contains all settings keys.
+	/// </summary>
 	public static class Setting {
 		public static readonly string AdvConfirmBox = "AdvConfirmBox";
 		public static readonly string DefaultSaveDirectory = "DefaultSaveDirectory";

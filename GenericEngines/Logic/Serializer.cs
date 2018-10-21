@@ -5,10 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// The class used for turning Engine objects into byte arrays and back.
+	/// </summary>
 	public static class Serializer {
 		delegate A SerializerFunc<A, B> (B b);
 		delegate A DeserializerFunc<A, B, C, D> (B b, out C c, D d);
 		
+		/// <summary>
+		/// Returns the version of the serializer
+		/// </summary>
+		/// <returns></returns>
 		public static int Version () {
 			return SerializerVersion;
 		}
@@ -623,12 +630,23 @@ namespace GenericEngines {
 			addedOffset = i - offset;
 			return output;
 		}
-		
 
+		/// <summary>
+		/// Convert an Engine object into a byte array.
+		/// </summary>
+		/// <param name="e">The Engine to be serialized</param>
+		/// <returns></returns>
 		public static byte[] Serialize (Engine e) {
 			return LatestSerializer (e);
 		}
 
+		/// <summary>
+		/// Convert a byte array into an engine.
+		/// </summary>
+		/// <param name="input">The byte array</param>
+		/// <param name="addedOffset">How many bytes long was the deserialized engine?</param>
+		/// <param name="offset">Starting byte array offset</param>
+		/// <returns></returns>
 		public static Engine Deserialize (byte[] input, out int addedOffset, int offset = 0) {
 			return UltimateDeserializer (input, out addedOffset, offset);
 		}

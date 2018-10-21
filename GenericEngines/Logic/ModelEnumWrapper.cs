@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Contains all info needed to display model correctly in ComboBox
+	/// </summary>
 	public class ModelEnumWrapper {
 
 		public Model model { get; set; }
@@ -15,6 +18,9 @@ namespace GenericEngines {
 
 		private static ListCollectionView content = null;
 
+		/// <summary>
+		/// Get the ListCollectionView with all models
+		/// </summary>
 		public static ListCollectionView Get {
 			get {
 				return content ?? GenerateContent ();
@@ -25,7 +31,7 @@ namespace GenericEngines {
 			List<ModelEnumWrapper> output = new List<ModelEnumWrapper> ();
 
 			foreach (Model i in Enum.GetValues (typeof (Model))) {
-				output.Add (new	ModelEnumWrapper (i, ModelList.GetName (i), ModelList.GetPrewiewImagePath (i), ModelList.GetType (i)));
+				output.Add (new	ModelEnumWrapper (i, ModelList.GetName (i), ModelList.GetPreviewImagePath (i), ModelList.GetType (i)));
 			}
 
 			output.Sort (delegate (ModelEnumWrapper a, ModelEnumWrapper b) {

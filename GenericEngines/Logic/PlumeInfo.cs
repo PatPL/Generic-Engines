@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Class storing various Plume parameters
+	/// </summary>
 	public class PlumeInfo {
 
 		public double Scale; //Scale that makes the plume fit 1m wide engine
@@ -15,6 +18,9 @@ namespace GenericEngines {
 		
 	}
 
+	/// <summary>
+	/// Class storing all PlumeInfos and various Plume paremeters
+	/// </summary>
 	public static class PlumeList {
 
 		private static readonly List<PlumeInfo> plumes = new List<PlumeInfo> () {
@@ -189,10 +195,20 @@ namespace GenericEngines {
 			}
 		};
 
+		/// <summary>
+		/// Returns the PlumeInfo of the plume
+		/// </summary>
+		/// <param name="index">The plume</param>
+		/// <returns></returns>
 		public static PlumeInfo Get (Plume index) {
 			return plumes[(int) index];
 		}
 
+		/// <summary>
+		/// Returns the name of the plume
+		/// </summary>
+		/// <param name="index">The plume</param>
+		/// <returns></returns>
 		public static string GetName (Plume index) {
 			switch (index) {
 				default:

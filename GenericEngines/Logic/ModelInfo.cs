@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// Class storing various Model parameters
+	/// </summary>
 	public class ModelInfo {
 
 		public double OriginalHeight;
@@ -29,6 +32,9 @@ namespace GenericEngines {
 		
 	}
 
+	/// <summary>
+	/// Class storing all ModelInfos and various Model paremeters
+	/// </summary>
 	public static class ModelList {
 
 		private static readonly List<ModelInfo> models = new List<ModelInfo> () {
@@ -345,7 +351,7 @@ namespace GenericEngines {
 					"Cube_006_031_001"
 				}
 			}
-};
+		};
 
 		/*
 		new ModelInfo { //Model.
@@ -373,19 +379,39 @@ namespace GenericEngines {
 			}
 		*/
 
+		/// <summary>
+		/// Returns the ModelInfo of the model
+		/// </summary>
+		/// <param name="index">The model</param>
+		/// <returns></returns>
 		public static ModelInfo Get (Model index) {
 			return models[(int) index];
 		}
 
+		/// <summary>
+		/// Returns the name of the model
+		/// </summary>
+		/// <param name="index">The model</param>
+		/// <returns></returns>
 		public static string GetName (Model index) {
 			return Get (index).ModelName;
 		}
 
+		/// <summary>
+		/// Returns the type of the model
+		/// </summary>
+		/// <param name="index">The model</param>
+		/// <returns></returns>
 		public static string GetType (Model index) {
 			return Get (index).ModelType;
 		}
 
-		public static string GetPrewiewImagePath (Model index) {
+		/// <summary>
+		/// Returns the path of the preview image of the model
+		/// </summary>
+		/// <param name="index">The model</param>
+		/// <returns></returns>
+		public static string GetPreviewImagePath (Model index) {
 			string output = "ModelPreviews/";
 			switch (index) {
 				default:
@@ -398,6 +424,9 @@ namespace GenericEngines {
 
 	}
 
+	/// <summary>
+	/// Enum with all of the Models
+	/// </summary>
 	public enum Model {
 		LR91,
 		AJ10,
@@ -417,6 +446,9 @@ namespace GenericEngines {
 		LVT45
 	}
 
+	/// <summary>
+	/// Class with all of the engine types used for grouping in ComboBox
+	/// </summary>
 	public static class EngineGroupType {
 		public static readonly string IRL = "Real Engine";
 		public static readonly string Fake = "Fictional Engine";

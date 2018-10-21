@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
+	/// <summary>
+	/// This class is used to generate the 'All' tank definition CFG.
+	/// </summary>
 	public static class AllTankDefinition {
-
 		private static string SingleResourceTankDefinition (FuelType t) {
 			return $@"
 				TANK
@@ -23,7 +25,7 @@ namespace GenericEngines {
 
 		private static string AllResourcesTankDefinitions () {
 			string output = "";
-
+			
 			foreach (FuelType i in Enum.GetValues (typeof (FuelType))) {
 				output += SingleResourceTankDefinition (i);
 			}
@@ -31,6 +33,9 @@ namespace GenericEngines {
 			return output;
 		}
 		
+		/// <summary>
+		/// Get the entire config for 'All' tank.
+		/// </summary>
 		public static string Get {
 			get {
 				string output = "";

@@ -1,5 +1,7 @@
-﻿
-namespace GenericEngines {
+﻿namespace GenericEngines {
+	/// <summary>
+	/// Enum with RF tank types
+	/// </summary>
 	public enum TankType {
 		Default,
 		Cryogenic,
