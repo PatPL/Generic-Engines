@@ -38,14 +38,10 @@ C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\bin\Debug\GenericEn
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\bin\Debug\GenericEngines.exe
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\bin\Debug\GenericEngines.pdb
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.csprojAssemblyReference.cache
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\ConfirmWindow.g.cs
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\MainWindow.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Properties\TestWindow.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\App.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines_MarkupCompile.cache
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines_MarkupCompile.lref
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\ConfirmWindow.baml
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\MainWindow.baml
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Properties\TestWindow.baml
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.g.resources
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.Properties.Resources.resources
@@ -53,10 +49,6 @@ C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEn
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.csproj.CoreCompileInputs.cache
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.exe
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.pdb
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.g.cs
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.baml
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\About.g.cs
-C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\About.baml
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Uczen\Documents\Generic-Engines-0.3\GenericEngines\obj\Debug\GenericEngines.csprojAssemblyReference.cache
 C:\Users\Uczen\Documents\Generic-Engines-0.3\GenericEngines\obj\Debug\About.g.cs
@@ -106,3 +98,11 @@ C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Gener
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.Properties.Resources.resources
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.csproj.GenerateResource.cache
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.csproj.CoreCompileInputs.cache
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\About.g.cs
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\SettingsWindow.g.cs
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\About.baml
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\SettingsWindow.baml
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\MainWindow.g.cs
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\MainWindow.baml
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.g.cs
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.baml

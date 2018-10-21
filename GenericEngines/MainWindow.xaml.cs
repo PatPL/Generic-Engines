@@ -30,7 +30,7 @@ namespace GenericEngines {
 		List<FuelRatioElement> currentFuelRatioList;
 
 		private string _currentFile = null;
-		string currentFile {
+		string CurrentFile {
 			get {
 				return _currentFile;
 			}
@@ -44,7 +44,7 @@ namespace GenericEngines {
 			InitializeComponent ();
 		}
 
-		List<FuelRatioElement> currentFuelRatios {
+		List<FuelRatioElement> CurrentFuelRatios {
 			get {
 				if (currentFuelRatioGrid != null) {
 					return (List<FuelRatioElement>) currentFuelRatioGrid.ItemsSource;
@@ -106,11 +106,11 @@ namespace GenericEngines {
 			}
 		}
 
-		private void registerMouseDown (object sender, MouseButtonEventArgs e) {
+		private void RegisterMouseDown (object sender, MouseButtonEventArgs e) {
 			lastMouseDownObject = sender;
 		}
 
-		private void duplicateButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void DuplicateButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
@@ -125,7 +125,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void addButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void AddButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
@@ -148,7 +148,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void removeButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void RemoveButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				if (mainDataGrid.SelectedIndex != -1) {
 					if (ConfirmBox.Show ($"You are about to delete\n{mainDataGrid.SelectedItems.Count} item(s). Are you sure?")) {
@@ -166,19 +166,19 @@ namespace GenericEngines {
 			}
 		}
 
-		private void saveButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void SaveButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				if (currentFile == null) {
-					saveasButton_MouseUp (null, null);
+				if (CurrentFile == null) {
+					SaveasButton_MouseUp (null, null);
 				} else {
-					if (ConfirmBox.Show ($"You are about to overwrite the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file. Are you sure?")) {
-						saveEnginesToFile (currentFile);
+					if (ConfirmBox.Show ($"You are about to overwrite the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (CurrentFile))} file. Are you sure?")) {
+						SaveEnginesToFile (CurrentFile);
 					}
 				}
 			}
 		}
 
-		private void saveasButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void SaveasButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
 				if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
@@ -192,17 +192,17 @@ namespace GenericEngines {
 				bool? result = fileDialog.ShowDialog ();
 
 				if (result != null && result == true) {
-					currentFile = fileDialog.FileName;
-					saveEnginesToFile (currentFile);
+					CurrentFile = fileDialog.FileName;
+					SaveEnginesToFile (CurrentFile);
 				} else {
 
 				}
 			}
 		}
 
-		private void openButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void OpenButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open other file?")) {
+				if ((CurrentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (CurrentFile))} file will be lost! Are you sure you want to open other file?")) {
 					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
 					if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
 						Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
@@ -215,8 +215,8 @@ namespace GenericEngines {
 					bool? result = fileDialog.ShowDialog ();
 
 					if (result != null && result == true) {
-						currentFile = fileDialog.FileName;
-						readEnginesFromFile (currentFile);
+						CurrentFile = fileDialog.FileName;
+						ReadEnginesFromFile (CurrentFile);
 					} else {
 
 					}
@@ -224,7 +224,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void exportButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void ExportButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				if (Engines.Count > 0) {
 					Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
@@ -232,7 +232,7 @@ namespace GenericEngines {
 						Directory.CreateDirectory (Settings.Get (Setting.DefaultExportDirectory));
 					}
 					fileDialog.InitialDirectory = Settings.Get (Setting.DefaultExportDirectory);
-					fileDialog.FileName = currentFile == null ? "Unnamed Engine Configs" : System.IO.Path.GetFileNameWithoutExtension (currentFile);
+					fileDialog.FileName = CurrentFile == null ? "Unnamed Engine Configs" : System.IO.Path.GetFileNameWithoutExtension (CurrentFile);
 					fileDialog.DefaultExt = ".cfg";
 					fileDialog.Filter = "Engine Configs|*.cfg";
 
@@ -247,10 +247,10 @@ namespace GenericEngines {
 			}
 		}
 
-		private void newButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void NewButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to open empty file?")) {
-					currentFile = null;
+				if ((CurrentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (CurrentFile))} file will be lost! Are you sure you want to open empty file?")) {
+					CurrentFile = null;
 
 					Engines = new List<Engine> ();
 
@@ -272,13 +272,13 @@ namespace GenericEngines {
 			}
 		}
 
-		private void helpButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void HelpButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				new About ().ShowDialog ();
 			}
 		}
 
-		private void settingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void SettingsButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				new SettingsWindow ().ShowDialog ();
 				foreach (Engine i in Engines) {
@@ -287,29 +287,29 @@ namespace GenericEngines {
 			}
 		}
 
-		private void mainDataGrid_Loaded (object sender, RoutedEventArgs e) {
+		private void MainDataGrid_Loaded (object sender, RoutedEventArgs e) {
 			mainDataGrid = ((DataGrid) sender);
 			mainDataGrid.ItemsSource = new List<Engine> ();
 			RefreshEngines ();
 		}
 
-		private void mainDataGrid_KeyUp (object sender, KeyEventArgs e) {
+		private void MainDataGrid_KeyUp (object sender, KeyEventArgs e) {
 			if (e.Key == Key.Delete && !isEdited) {
-				removeButton_MouseUp (null, null);
+				RemoveButton_MouseUp (null, null);
 			}
 		}
 
-		private void mainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
+		private void MainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
 			isEdited = true;
 
-			mainDataGrid_SetCurrentGDList (sender, e);
+			MainDataGrid_SetCurrentGDList (sender, e);
 
 			if (e.Column.Header != null && e.Column.Header.ToString () == "Propellants") {
 				currentFuelRatioList = ((Engine) e.Row.Item).PropellantRatio;
 			}
 		}
 
-		private void mainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
+		private void MainDataGrid_CellEditEnding (object sender, DataGridCellEditEndingEventArgs e) {
 			isEdited = false;
 
 			GD_Unload (sender, e);
@@ -364,7 +364,7 @@ namespace GenericEngines {
 			}
 		}
 
-		void saveEnginesToFile (string path) {
+		void SaveEnginesToFile (string path) {
 			try {
 				FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
 				file.SetLength (0);
@@ -386,7 +386,7 @@ namespace GenericEngines {
 			}
 		}
 
-		void readEnginesFromFile (string path, bool append = false) {
+		void ReadEnginesFromFile (string path, bool append = false) {
 			try {
 				FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
 
@@ -415,11 +415,11 @@ namespace GenericEngines {
 			}
 		}
 
-		private void propellantCombo_Loaded (object sender, RoutedEventArgs e) {
+		private void PropellantCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (FuelType)).Cast<FuelType> ();
 		}
 
-		private void propellentDataGrid_Loaded (object sender, RoutedEventArgs e) {
+		private void PropellentDataGrid_Loaded (object sender, RoutedEventArgs e) {
 			currentFuelRatioGrid = ((DataGrid) sender);
 			currentFuelRatioGrid.ItemsSource = currentFuelRatioList;
 			((Grid) currentFuelRatioGrid.Parent).UpdateLayout ();
@@ -449,7 +449,7 @@ namespace GenericEngines {
 			{ "Thrust Curve", typeof (DoubleTuple) }
 		};
 
-		private void mainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
+		private void MainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
 			if (e.Column.Header != null) {
 				switch (e.Column.Header.ToString ()) {
 					case "Propellants":
@@ -525,7 +525,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void addGD_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void AddGD_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				CurrentGD.CommitEdit ();
 				CurrentGD.CancelEdit ();
@@ -535,7 +535,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void removeGD_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void RemoveGD_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				
 				CurrentGD.CommitEdit ();
@@ -553,21 +553,21 @@ namespace GenericEngines {
 
 		// /Generic Datagrid input (GD)
 
-		private void addPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void AddPropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				currentFuelRatioGrid.CommitEdit ();
 				currentFuelRatioGrid.CancelEdit ();
 
-				currentFuelRatios.Add (new FuelRatioElement ());
+				CurrentFuelRatios.Add (new FuelRatioElement ());
 				currentFuelRatioGrid.Items.Refresh ();
 			}
 		}
 
-		private void removePropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void RemovePropellantButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				if (currentFuelRatioGrid.SelectedIndex != -1) {
 					foreach (FuelRatioElement i in currentFuelRatioGrid.SelectedItems) {
-						currentFuelRatios.Remove (i);
+						CurrentFuelRatios.Remove (i);
 					}
 
 					currentFuelRatioGrid.Items.Refresh ();
@@ -575,7 +575,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void appendButton_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void AppendButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				try {
 					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
@@ -592,13 +592,13 @@ namespace GenericEngines {
 
 					if (result != null && result == true) {
 						foreach (string i in fileDialog.FileNames) {
-							readEnginesFromFile (i, true);
+							ReadEnginesFromFile (i, true);
 						}
 					} else {
 						return;
 					}
 
-					MessageBox.Show ($"Engines succesfully appended to {currentFile}", "Success");
+					MessageBox.Show ($"Engines succesfully appended to {CurrentFile}", "Success");
 				} catch (Exception ex) {
 					// readEnginesFromFile handles file errors one by one
 					App.SaveExceptionToFile (ex);
@@ -607,23 +607,23 @@ namespace GenericEngines {
 			}
 		}
 
-		private void mainWindow_Closing (object sender, System.ComponentModel.CancelEventArgs e) {
-			if ((currentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (currentFile))} file will be lost! Are you sure you want to close Generic Engines?")) {
+		private void MainWindow_Closing (object sender, System.ComponentModel.CancelEventArgs e) {
+			if ((CurrentFile == null && Engines.Count == 0) || ConfirmBox.Show ($"All unsaved changes to the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (CurrentFile))} file will be lost! Are you sure you want to close Generic Engines?")) {
 
 			} else {
 				e.Cancel = true;
 			}
 		}
 
-		private void plumeCombo_Loaded (object sender, RoutedEventArgs e) {
+		private void PlumeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (Plume)).Cast<Plume> ();
 		}
 
-		private void engineTypeCombo_Loaded (object sender, RoutedEventArgs e) {
+		private void EngineTypeCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (EngineType)).Cast<EngineType> ();
 		}
 
-		private void techComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {
+		private void TechComboBox_PreviewKeyUp (object sender, KeyEventArgs e) {
 			ComboBox combo = (ComboBox) sender;
 
 			string tmp = combo.Text;
@@ -646,7 +646,7 @@ namespace GenericEngines {
 			}
 		}
 
-		private void sortThrustCurve_MouseUp (object sender, MouseButtonEventArgs e) {
+		private void SortThrustCurve_MouseUp (object sender, MouseButtonEventArgs e) {
 			List<DoubleTuple> tupleList = new List<DoubleTuple> ();
 
 			CurrentGD.CommitEdit ();
@@ -673,7 +673,7 @@ namespace GenericEngines {
 
 		}
 
-		private void tanksVolumeInput_PrewiewKeyDown (object sender, KeyEventArgs e) {
+		private void TanksVolumeInput_PrewiewKeyDown (object sender, KeyEventArgs e) {
 			//I have no idea why it's necessary, but the property doesn't update properly without it.
 			((TextBox) sender).GetBindingExpression (TextBox.TextProperty).UpdateSource ();
 			//Other inputs look literally the same and they work without manual updating ¯\_(ツ)_/¯

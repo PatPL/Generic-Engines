@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
+        Title="Generic Engines" Height="600" Width="800" Closing="MainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="b2v" />
 		<local:ReversedBooleanToVisibilityConverter x:Key="rb2v" />
@@ -165,18 +165,18 @@
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Grid.Column="0" Margin="4,4,0,0" Source="new.png" MouseDown="registerMouseDown" MouseUp="newButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
-		<Image Grid.Column="1" Margin="4,4,0,0" Source="open.png" MouseDown="registerMouseDown" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
-		<Image Grid.Column="2" Margin="4,4,0,0" Source="append.png" MouseDown="registerMouseDown" MouseUp="appendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-		<Image Grid.Column="3" Margin="4,4,0,0" Source="save.png" MouseDown="registerMouseDown" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
-		<Image Grid.Column="4" Margin="4,4,0,0" Source="saveas.png" MouseDown="registerMouseDown" MouseUp="saveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
-		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
-		<Image Grid.Column="6" Margin="4,4,0,0" Source="duplicate.png" MouseDown="registerMouseDown" MouseUp="duplicateButton_MouseUp" ToolTip="Duplicate selected engines" Stretch="Fill"/>
-		<Image Grid.Column="7" Margin="4,4,0,0" Source="add.png" MouseDown="registerMouseDown" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
-		<Image Grid.Column="8" Margin="4,4,0,0" Source="remove.png" MouseDown="registerMouseDown" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
-		<Image Grid.Column="10" Margin="0,4,4,0" Source="help.png" MouseDown="registerMouseDown" MouseUp="helpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
-		<Image Grid.Column="11" Margin="0,4,4,0" Source="settings.png" MouseDown="registerMouseDown" MouseUp="settingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
-		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
+		<Image Grid.Column="0" Margin="4,4,0,0" Source="Images/new.png" MouseDown="RegisterMouseDown" MouseUp="NewButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
+		<Image Grid.Column="1" Margin="4,4,0,0" Source="Images/open.png" MouseDown="RegisterMouseDown" MouseUp="OpenButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
+		<Image Grid.Column="2" Margin="4,4,0,0" Source="Images/append.png" MouseDown="RegisterMouseDown" MouseUp="AppendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+		<Image Grid.Column="3" Margin="4,4,0,0" Source="Images/save.png" MouseDown="RegisterMouseDown" MouseUp="SaveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
+		<Image Grid.Column="4" Margin="4,4,0,0" Source="Images/saveas.png" MouseDown="RegisterMouseDown" MouseUp="SaveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
+		<Image Grid.Column="5" Margin="4,4,0,0" Source="Images/export.png" MouseDown="RegisterMouseDown" MouseUp="ExportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
+		<Image Grid.Column="6" Margin="4,4,0,0" Source="Images/duplicate.png" MouseDown="RegisterMouseDown" MouseUp="DuplicateButton_MouseUp" ToolTip="Duplicate selected engines" Stretch="Fill"/>
+		<Image Grid.Column="7" Margin="4,4,0,0" Source="Images/add.png" MouseDown="RegisterMouseDown" MouseUp="AddButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
+		<Image Grid.Column="8" Margin="4,4,0,0" Source="Images/remove.png" MouseDown="RegisterMouseDown" MouseUp="RemoveButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
+		<Image Grid.Column="10" Margin="0,4,4,0" Source="Images/help.png" MouseDown="RegisterMouseDown" MouseUp="HelpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
+		<Image Grid.Column="11" Margin="0,4,4,0" Source="Images/settings.png" MouseDown="RegisterMouseDown" MouseUp="SettingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
+		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="MainDataGrid_BeginningEdit" CellEditEnding="MainDataGrid_CellEditEnding" PreviewKeyUp="MainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="MainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn SortMemberPath="Active" Width="1">
 					<DataGridTemplateColumn.CellTemplate>
@@ -253,7 +253,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<ComboBox Loaded="engineTypeCombo_Loaded" SelectedValue="{Binding Path=EngineVariant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+							<ComboBox Loaded="EngineTypeCombo_Loaded" SelectedValue="{Binding Path=EngineVariant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -396,8 +396,8 @@
 									<RowDefinition Height="18"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="38,2,2,0">Mass</TextBlock>
 								<CheckBox IsChecked="{Binding Path=FuelVolumeRatios, UpdateSourceTrigger=PropertyChanged}" Margin="70,2,2,0" Style="{StaticResource CheckBoxSwitch}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="104,2,2,0">Volume</TextBlock>
@@ -406,7 +406,7 @@
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
-													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
+													<ComboBox Loaded="PropellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
 										</DataGridTemplateColumn>
@@ -517,7 +517,7 @@
 										<Image Source="{Binding CurrentModelTooltip}" Margin="1,1,0,0"/>
 									</ComboBox.ToolTip>
 								</ComboBox>
-								<ComboBox Loaded="plumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
+								<ComboBox Loaded="PlumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
 							</Grid>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
@@ -618,7 +618,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<ComboBox PreviewKeyUp="techComboBox_PreviewKeyUp" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+							<ComboBox PreviewKeyUp="TechComboBox_PreviewKeyUp" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -737,9 +737,9 @@
                                     <RowDefinition Height="18"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-                                <Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="38,2,2,0" Source="sort-mini.png" MouseDown="registerMouseDown" MouseUp="sortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="38,2,2,0" Source="Images/sort-mini.png" MouseDown="RegisterMouseDown" MouseUp="SortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
                                 <DataGrid ItemsSource="{Binding Path=ThrustCurve}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
                                     <DataGrid.Columns>
                                         <DataGridTemplateColumn Header="Fuel%">
@@ -809,20 +809,20 @@
 								<CheckBox Grid.Row="1" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" x:Name="LimitTanksCheckbox" IsChecked="{Binding Path=LimitTanks, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="16" Height="16" Margin="113,1,1,0"/>
 
 								<TextBlock Grid.Row="2" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="to" Margin="2,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
-								<TextBox Grid.Row="2" IsEnabled="{Binding IsChecked, ElementName=LimitTanksCheckbox}" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" PreviewKeyDown="tanksVolumeInput_PrewiewKeyDown" Padding="-1" Margin="18,1,0,0" HorizontalAlignment="Left" Width="110" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
+								<TextBox Grid.Row="2" IsEnabled="{Binding IsChecked, ElementName=LimitTanksCheckbox}" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" PreviewKeyDown="TanksVolumeInput_PrewiewKeyDown" Padding="-1" Margin="18,1,0,0" HorizontalAlignment="Left" Width="110" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
 								<TextBlock Grid.Row="2" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="L" Margin="130,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
 
 								<TextBlock Grid.Row="3" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="{Binding TankVolumeEstimateLabel}" Margin="2,1,2,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
 
-								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								
 								<DataGrid Grid.Row="5" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
-													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
+													<ComboBox Loaded="PropellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
 										</DataGridTemplateColumn>
