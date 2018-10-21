@@ -298,7 +298,7 @@ namespace GenericEngines {
 		/// <summary>
 		/// The engine part's name
 		/// </summary>
-		public string EngineID => $"GE-{Name}";
+		public string EngineID => $"GE-{Name.Replace (' ', '-')}";
 		// This is now validated on input
 
 		/// <summary>
@@ -921,7 +921,7 @@ namespace GenericEngines {
 
 				if (Settings.GetBool (Setting.ValidateIDOnInput)) {
 					foreach (char i in value) {
-						if (Regex.IsMatch (i.ToString (), "[a-zA-Z0-9]{1}")) {
+						if (Regex.IsMatch (i.ToString (), "[a-zA-Z0-9-]{1}")) {
 							input += i;
 						}
 					}
@@ -1001,7 +1001,7 @@ namespace GenericEngines {
 			UID = UIDc++;
 			
 			Active = false;
-			Name = "New Engine";
+			Name = "New-Engine";
 			Mass = 1.0;
 			Thrust = 1000.0;
 			AtmIsp = 250.0;
