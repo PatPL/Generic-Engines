@@ -576,6 +576,10 @@ namespace GenericEngines {
 			if (version >= 8) {
 				//bool - UseBaseWidth
 				output.UseBaseWidth = input[i++] == 1;
+			} else { //version < 8
+				//Default value before version 8 was false
+				output.UseBaseWidth = false;
+				//Now the default value is true
 			}
 
 			if (version >= 9) {
