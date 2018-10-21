@@ -65,7 +65,9 @@ namespace GenericEngines {
 		public List<DoubleTuple> ThrustCurve { get; set; } //9
 		public bool UseTanks { get; set; } //10
 		public bool LimitTanks { get; set; } //10
-
+		public Polymorphism PolyType { get; set; } //11
+		public string MasterEngineID { get; set; } //11
+		
 		//This is necessary to fix deleting
 		public static int UIDc = 1;
 		public int UID { get; set; }
@@ -90,7 +92,7 @@ namespace GenericEngines {
 		public string ThrustCurveConfig {
 			get {
 				string output = "";
-
+				
 				if (ThrustCurve.Count <= 0) {
 
 				} else {
@@ -765,6 +767,28 @@ namespace GenericEngines {
 		}
 
 		/// <summary>
+		/// Returns the Polymorphism status label
+		/// </summary>
+		public string PolyLabel {
+			get {
+				switch (PolyType) {
+					case Polymorphism.Single:
+					return "Single";
+					case Polymorphism.MultiModeMaster:
+					return "Multimode Master";
+					case Polymorphism.MultiModeSlave:
+					return $"Multimode slave to {MasterEngineID}";
+					case Polymorphism.MultiConfigMaster:
+					return "Multiconfig Master";
+					case Polymorphism.MultiConfigSlave:
+					return $"Multiconfig slave to {MasterEngineID}";
+					default:
+					return "Something went wrong";
+				}
+			}
+		}
+
+		/// <summary>
 		/// Returns the mass label
 		/// </summary>
 		public string MassLabel {
@@ -902,6 +926,12 @@ namespace GenericEngines {
 		public ListCollectionView ModelsWithLabels => ModelEnumWrapper.Get;
 
 		/// <summary>
+		/// Returns a dictionary with Polymorphism type as a key, and their names as values.
+		/// Used to show proper names in ComboBox
+		/// </summary>
+		public Dictionary<Polymorphism, string> PolyTypesWithLabels => PolymorphismEnumWrapper.Get;
+
+		/// <summary>
 		/// Returns the path to the preview image of this engine's model
 		/// </summary>
 		public string CurrentModelPreviewImagePath => ModelList.GetPreviewImagePath (ModelID);
@@ -927,6 +957,10 @@ namespace GenericEngines {
 					}
 				} else {
 					input = value;
+				}
+
+				if (input == "") {
+					input = "EnterCorrectID";
 				}
 
 				Name = input;
@@ -996,7 +1030,7 @@ namespace GenericEngines {
 
 		/// <summary>
 		/// The constructor with default engine
-		/// </summary>
+		/// </summary> 1000
 		public Engine () {
 			UID = UIDc++;
 			
@@ -1042,6 +1076,8 @@ namespace GenericEngines {
 			ThrustCurve = new List<DoubleTuple> (0);
 			UseTanks = false;
 			LimitTanks = true;
+			PolyType = Polymorphism.Single;
+			MasterEngineID = "";
 		}
 
 		/// <summary>

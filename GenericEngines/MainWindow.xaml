@@ -9,6 +9,8 @@
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="b2v" />
 		<local:ReversedBooleanToVisibilityConverter x:Key="rb2v" />
+		<local:MultiModeSlaveVisibilityConverter x:Key="mms2v" />
+		<local:MultiConfigSlaveVisibilityConverter x:Key="mcs2v" />
 		<Style TargetType="CheckBox">
 			<Setter Property="HorizontalAlignment" Value="Center"/>
 			<Setter Property="VerticalAlignment" Value="Center"/>
@@ -864,7 +866,40 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-				
+
+				<DataGridTemplateColumn Header="Polymorphism">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=PolyLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<!-- Paste grid -->
+							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="auto" MaxHeight="20"/>
+								</Grid.RowDefinitions>
+
+								<ComboBox ItemsSource="{Binding PolyTypesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding PolyType, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" Margin="0"/>
+
+								<ComboBox Grid.Row="1" Loaded="MasterIDComboBox_Loaded" SelectedValue="{Binding MasterEngineID, UpdateSourceTrigger=PropertyChanged}"/>
+
+							</Grid>
+							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Polymorphism" ToolTip="Polymorphism" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn>
 					<DataGridTemplateColumn.HeaderTemplate>
 						<DataTemplate>

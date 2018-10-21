@@ -81,6 +81,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\PolymorphismEnumWrapper.cs" />
+    <Compile Include="Logic\PolymorphismType.cs" />
     <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
@@ -97,7 +99,7 @@
     <Compile Include="Properties\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logic\ReversedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Logic\VisibilityConverters.cs" />
     <Compile Include="Logic\Serializer.cs" />
     <Compile Include="Logic\Settings.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">

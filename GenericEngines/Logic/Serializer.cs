@@ -20,7 +20,7 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 10;
+		private readonly static short SerializerVersion = 11;
 		private static byte[] LatestSerializer (Engine e) {
 			
 			short version = SerializerVersion;
@@ -75,7 +75,9 @@ namespace GenericEngines {
 				e.TanksContents.Count * 10 + 2 + //(2B + 8B) * count + 2B length header - TanksContents
 				e.ThrustCurve.Count * 16 + 2 + //(8B + 8B) * count + 2B length header - ThrustCurve
 				1 + //bool - UseTanks
-				1 //bool - LimitTanks
+				1 + //bool - LimitTanks
+				1 + //Polymorphism - PolyType
+				e.MasterEngineID.Length + 2 //1B * length + 2B length header - MasterEngineID
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -334,6 +336,18 @@ namespace GenericEngines {
 
 			//bool - LimitTanks
 			output[i++] = (byte) (e.LimitTanks ? 1 : 0);
+
+			//Polymorphism - PolyType
+			output[i++] = (byte) e.PolyType;
+
+			//String + 2B length header - MasterEngineID
+			//String length header
+			output[i++] = (byte) (e.MasterEngineID.Length % 256);
+			output[i++] = (byte) (e.MasterEngineID.Length / 256);
+			//String data
+			foreach (char c in e.MasterEngineID) {
+				output[i++] = Convert.ToByte (c);
+			}
 
 			return output;
 		}
@@ -629,6 +643,23 @@ namespace GenericEngines {
 
 				//bool - LimitTanks
 				output.LimitTanks = input[i++] == 1;
+			}
+
+			if (version >= 11) {
+				//Polymorphism - PolyType
+				output.PolyType = (Polymorphism) input[i++];
+
+				//(1B * length + 2B length header) - MasterEngineID
+				{
+					int stringLength = 0;
+					stringLength += input[i++];
+					stringLength += input[i++] * 256;
+
+					output.MasterEngineID = "";
+					for (int c = 0; c < stringLength; ++c) {
+						output.MasterEngineID += Convert.ToChar (input[i++]);
+					}
+				}
 			}
 
 			addedOffset = i - offset;

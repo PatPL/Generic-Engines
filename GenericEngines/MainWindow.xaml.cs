@@ -88,7 +88,7 @@ namespace GenericEngines {
 
 		private void RefreshEngines () {
 			if (mainDataGrid != null) {
-				
+
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
 
@@ -99,6 +99,8 @@ namespace GenericEngines {
 						column.SortDirection = null;
 					}
 				}
+
+				EnsureEnginePolymorphismConsistency ();
 
 				mainDataGrid.Items.Refresh ();
 			} else {
@@ -121,6 +123,7 @@ namespace GenericEngines {
 				}
 
 				mainDataGrid.UnselectAll ();
+
 				RefreshEngines ();
 			}
 		}
@@ -221,6 +224,9 @@ namespace GenericEngines {
 
 					}
 				}
+
+				RefreshEngines ();
+
 			}
 		}
 
@@ -317,6 +323,10 @@ namespace GenericEngines {
 			if (/*e.Column.SortMemberPath == "EngineName"*/ true) { //Auto resizing seems nice on every column. I'll leave this for now
 				e.Column.Width = new DataGridLength (0);
 				e.Column.Width = new DataGridLength (0, DataGridLengthUnitType.Auto);
+			}
+
+			if ((string) e.Column.Header == "Polymorphism") {
+				EnsureEnginePolymorphismConsistency ();
 			}
 		}
 
@@ -460,11 +470,11 @@ namespace GenericEngines {
 					break;
 					case "Thrust Curve":
 					CurrentGDList = ((Engine) e.Row.Item).ThrustCurve.ToList<object> ();
-						break;
+					break;
 					default:
 					return;
 				}
-				
+
 				CurrentGDType = GDListTypes[e.Column.Header.ToString ()];
 			}
 		}
@@ -482,37 +492,37 @@ namespace GenericEngines {
 
 		private void GD_Unload (object sender, DataGridCellEditEndingEventArgs e) {
 			if (CurrentGD != null) {
-				
-				
+
+
 				CurrentGD.CommitEdit ();
 				CurrentGD.CancelEdit ();
 
 				if (e.Column.Header != null) {
 					switch (e.Column.Header.ToString ()) {
 						case "Propellants":
-							((Engine) (e.Row.Item)).PropellantRatio = new List<FuelRatioElement> ();
+						((Engine) (e.Row.Item)).PropellantRatio = new List<FuelRatioElement> ();
 
-							foreach (object i in CurrentGDList) {
-								((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
-							}
+						foreach (object i in CurrentGDList) {
+							((Engine) (e.Row.Item)).PropellantRatio.Add ((FuelRatioElement) i);
+						}
 
-							break;
+						break;
 						case "Tank":
-							((Engine) (e.Row.Item)).TanksContents = new List<FuelRatioElement> ();
+						((Engine) (e.Row.Item)).TanksContents = new List<FuelRatioElement> ();
 
-							foreach (object i in CurrentGDList) {
-								((Engine) (e.Row.Item)).TanksContents.Add ((FuelRatioElement) i);
-							}
+						foreach (object i in CurrentGDList) {
+							((Engine) (e.Row.Item)).TanksContents.Add ((FuelRatioElement) i);
+						}
 
-							break;
+						break;
 						case "Thrust Curve":
-							((Engine) e.Row.Item).ThrustCurve = new List<DoubleTuple> ();
+						((Engine) e.Row.Item).ThrustCurve = new List<DoubleTuple> ();
 
-							foreach (object i in CurrentGDList) {
-								((Engine) (e.Row.Item)).ThrustCurve.Add ((DoubleTuple) i);
-							}
+						foreach (object i in CurrentGDList) {
+							((Engine) (e.Row.Item)).ThrustCurve.Add ((DoubleTuple) i);
+						}
 
-							break;
+						break;
 						default:
 						return;
 					}
@@ -529,7 +539,7 @@ namespace GenericEngines {
 			if (sender == null || lastMouseDownObject == sender) {
 				CurrentGD.CommitEdit ();
 				CurrentGD.CancelEdit ();
-				
+
 				CurrentGDList.Add (Activator.CreateInstance (CurrentGDType));
 				CurrentGD.Items.Refresh ();
 			}
@@ -537,7 +547,7 @@ namespace GenericEngines {
 
 		private void RemoveGD_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				
+
 				CurrentGD.CommitEdit ();
 				CurrentGD.CancelEdit ();
 
@@ -599,6 +609,9 @@ namespace GenericEngines {
 					}
 
 					MessageBox.Show ($"Engines succesfully appended to {CurrentFile}", "Success");
+					
+					RefreshEngines ();
+
 				} catch (Exception ex) {
 					// readEnginesFromFile handles file errors one by one
 					App.SaveExceptionToFile (ex);
@@ -677,6 +690,100 @@ namespace GenericEngines {
 			//I have no idea why it's necessary, but the property doesn't update properly without it.
 			((TextBox) sender).GetBindingExpression (TextBox.TextProperty).UpdateSource ();
 			//Other inputs look literally the same and they work without manual updating ¯\_(ツ)_/¯
+		}
+		
+		private void MasterIDComboBox_Loaded (object sender, RoutedEventArgs e) {
+			Engine currentEngine = (Engine) mainDataGrid.CurrentItem;
+			ComboBox combo = (ComboBox) sender;
+
+			List<string> IDs = new List<string> { "" };
+			switch (currentEngine.PolyType) {
+				case Polymorphism.MultiModeSlave:
+				foreach (Engine i in Engines) {
+					if (!i.Active) {
+						continue;
+					}
+
+					if (i.PolyType != Polymorphism.MultiModeMaster) {
+						continue;
+					}
+
+					IDs.Add (i.Name);
+				}
+				break;
+				case Polymorphism.MultiConfigSlave:
+				foreach (Engine i in Engines) {
+					if (!i.Active) {
+						continue;
+					}
+
+					if (i.PolyType != Polymorphism.MultiConfigMaster) {
+						continue;
+					}
+
+					IDs.Add (i.Name);
+				}
+				break;
+				default:
+
+				break;
+			}
+
+			if (!IDs.Contains (currentEngine.MasterEngineID)) {
+				currentEngine.MasterEngineID = "";
+			}
+
+			combo.ItemsSource = IDs;
+			combo.Items.Refresh ();
+		}
+
+		/// <summary>
+		/// Fixes Polymorphism config errors and alerts the user if error was found.
+		/// </summary>
+		public void EnsureEnginePolymorphismConsistency () {
+			HashSet<string> LinkedMultiModeMasters = new HashSet<string> ();
+			List<string> EnginesWithErrors = new List<string> ();
+
+			foreach (Engine i in Engines) {
+				if (!i.Active) {
+					continue;
+				}
+
+				if (i.PolyType == Polymorphism.MultiModeSlave && i.MasterEngineID != "") {
+					if (Engines.Exists (x => x.Active && x.Name == i.MasterEngineID)) {
+						if (LinkedMultiModeMasters.Contains (i.MasterEngineID)) {
+							i.MasterEngineID = "";
+							EnginesWithErrors.Add (i.Name);
+						} else {
+							LinkedMultiModeMasters.Add (i.MasterEngineID);
+						}
+					} else {
+						i.MasterEngineID = "";
+						EnginesWithErrors.Add (i.Name);
+					}
+				}
+
+				if (i.PolyType == Polymorphism.MultiConfigSlave && i.MasterEngineID != "") {
+					if (Engines.Exists (x => x.Active && x.Name == i.MasterEngineID)) {
+						
+					} else {
+						i.MasterEngineID = "";
+						EnginesWithErrors.Add (i.Name);
+					}
+				}
+			}
+
+			if (EnginesWithErrors.Count > 0) {
+				string tmp = "";
+
+				foreach (string i in EnginesWithErrors) {
+					tmp += $"{i}, ";
+				}
+
+				tmp = tmp.Substring (0, tmp.Length - 2);
+
+				MessageBox.Show ($"Inconsistencies found in following engines: {tmp}. Their MasterEngineID has been set to empty. You might want to recheck their Polymorphism settings", "Warning");
+			}
 		}
 	}
 }
