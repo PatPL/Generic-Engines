@@ -66,6 +66,7 @@
 			<RowDefinition Height="32"/>
 			<RowDefinition Height="32"/>
 			<RowDefinition Height="32"/>
+			<RowDefinition Height="32"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		
@@ -86,6 +87,9 @@
 
 		<CheckBox Grid.Row="4" IsChecked="{Binding AvoidCollisionOnNewEngine, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" Height="16" Margin="8,0,0,0"/>
 		<TextBlock Grid.Row="4" VerticalAlignment="Center" FontFamily="Verdana" FontSize="16" Margin="32,0,0,0">Avoid ID Collision while exporting engines</TextBlock>
+
+		<CheckBox Grid.Row="5" IsChecked="{Binding ValidateIDOnInput, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" Height="16" Margin="8,0,0,0"/>
+		<TextBlock Grid.Row="5" VerticalAlignment="Center" FontFamily="Verdana" FontSize="16" Margin="32,0,0,0">Validate engine ID on ID change</TextBlock>
 
 	</Grid>
 </Window>

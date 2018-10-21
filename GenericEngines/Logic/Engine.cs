@@ -92,7 +92,7 @@ namespace GenericEngines {
 				string output = "";
 
 				if (ThrustCurve.Count <= 0) {
-					
+
 				} else {
 					string keys = "";
 
@@ -149,7 +149,7 @@ namespace GenericEngines {
 				string output = "";
 
 				if (UseTanks) {
-					
+
 					double volume = 0;
 					string contents = "";
 
@@ -298,14 +298,8 @@ namespace GenericEngines {
 		/// <summary>
 		/// The engine part's name
 		/// </summary>
-		public string EngineID {
-			get {
-				string output = $"GE-{Name.Replace (' ', '-')}";
-				output = Regex.Replace (output, "[<>,+*=_]", "-");
-
-				return output;
-			}
-		}
+		public string EngineID => $"GE-{Name}";
+		// This is now validated on input
 
 		/// <summary>
 		/// Returns the attachment node config
@@ -915,6 +909,29 @@ namespace GenericEngines {
 		#endregion
 
 		#region OtherProperties
+
+		/// <summary>
+		/// Validates ID input if Setting is set
+		/// </summary>
+		public string EngineIDInterface {
+			get {
+				return Name;
+			} set {
+				string input = "";
+
+				if (Settings.GetBool (Setting.ValidateIDOnInput)) {
+					foreach (char i in value) {
+						if (Regex.IsMatch (i.ToString (), "[a-zA-Z0-9]{1}")) {
+							input += i;
+						}
+					}
+				} else {
+					input = value;
+				}
+
+				Name = input;
+			}
+		}
 
 		/// <summary>
 		/// Returns actual tank contents. Limits them to TanksVolume, if LimitTank is true

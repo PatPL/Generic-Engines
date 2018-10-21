@@ -74,6 +74,15 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool ValidateIDOnInput {
+			get {
+				return bool.Parse (Settings.Get ("ValidateIDOnInput"));
+			}
+			set {
+				Settings.Set ("ValidateIDOnInput", value.ToString ());
+			}
+		}
+
 		// /Settings
 
 		object lastMouseDownObject;
