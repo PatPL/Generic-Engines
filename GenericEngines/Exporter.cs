@@ -33,7 +33,7 @@ namespace GenericEngines {
 					
 					{engine.ModelConfig}
 
-					TechRequired = {TechNodes.GetID (engine.TechUnlockNode)}
+					TechRequired = {TechNodeList.GetID (engine.TechUnlockNode)}
 					entryCost = {engine.EntryCost}
 					cost = {engine.Cost}
 					category = Engine

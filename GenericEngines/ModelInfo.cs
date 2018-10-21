@@ -385,7 +385,7 @@ namespace GenericEngines {
 			return Get (index).ModelType;
 		}
 
-		public static string GetTooltip (Model index) {
+		public static string GetPrewiewImagePath (Model index) {
 			string output = "ModelPreviews/";
 			switch (index) {
 				default:

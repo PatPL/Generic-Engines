@@ -19,7 +19,7 @@ namespace GenericEngines {
 			Dictionary<TechNode, string> output = new Dictionary<TechNode, string> ();
 
 			foreach (TechNode i in Enum.GetValues (typeof (TechNode))) {
-				output.Add (i, TechNodes.GetName (i));
+				output.Add (i, TechNodeList.GetName (i));
 			}
 
 			content = output;

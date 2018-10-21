@@ -629,7 +629,7 @@ namespace GenericEngines {
 			string tmp = combo.Text;
 
 			combo.IsDropDownOpen = true;
-			combo.ItemsSource = TechNodeEnumWrapper.Get.Where (x => TechNodes.GetName (x.Key).ToLower ().Contains (combo.Text.ToLower ()));
+			combo.ItemsSource = TechNodeEnumWrapper.Get.Where (x => TechNodeList.GetName (x.Key).ToLower ().Contains (combo.Text.ToLower ()));
 
 			//For some reason combobox likes to lose its contents
 			combo.Text = tmp;

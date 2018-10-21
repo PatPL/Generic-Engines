@@ -25,7 +25,7 @@ namespace GenericEngines {
 			List<ModelEnumWrapper> output = new List<ModelEnumWrapper> ();
 
 			foreach (Model i in Enum.GetValues (typeof (Model))) {
-				output.Add (new	ModelEnumWrapper (i, ModelList.GetName (i), ModelList.GetTooltip (i), ModelList.GetType (i)));
+				output.Add (new	ModelEnumWrapper (i, ModelList.GetName (i), ModelList.GetPrewiewImagePath (i), ModelList.GetType (i)));
 			}
 
 			output.Sort (delegate (ModelEnumWrapper a, ModelEnumWrapper b) {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
-	public static class TechNodes {
+	public static class TechNodeList {
 		public static string GetID (TechNode tn) {
 			return tn.ToString ();
 		}

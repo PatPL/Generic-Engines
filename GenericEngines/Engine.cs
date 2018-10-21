@@ -107,7 +107,7 @@ namespace GenericEngines {
 					tupleList.RemoveAt (tupleList.Count - 1);
 
 					output += $@"
-						curveResource = {FuelName.Name (PropellantRatio[0].Propellant)}
+						curveResource = {FuelTypeList.GetFuelName (PropellantRatio[0].Propellant)}
 						thrustCurve
 						{{
 							{keys}
@@ -135,9 +135,9 @@ namespace GenericEngines {
 						contents += $@"
 							TANK
 							{{
-								name = {FuelName.Name (i.Propellant)}
-								amount = {(i.Ratio * FuelUtilisation.Get (i.Propellant)).Str ()}
-								maxAmount = {(i.Ratio * FuelUtilisation.Get (i.Propellant)).Str ()}
+								name = {FuelTypeList.GetFuelName (i.Propellant)}
+								amount = {(i.Ratio * FuelTypeList.GetFuelUtilisation (i.Propellant)).Str ()}
+								maxAmount = {(i.Ratio * FuelTypeList.GetFuelUtilisation (i.Propellant)).Str ()}
 							}}
 						";
 					}
@@ -290,7 +290,7 @@ namespace GenericEngines {
 						if (i.Propellant == FuelType.ElectricCharge) {
 							isElectric = true;
 						} else {
-							fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelDensity.Get[(int) i.Propellant] / 1000));
+							fuelRatios.Add (new FuelRatioElement (i.Propellant, i.Ratio / FuelTypeList.GetFuelDensity (i.Propellant) / 1000));
 						}
 					}
 
@@ -314,7 +314,7 @@ namespace GenericEngines {
 
 					foreach (FuelRatioElement i in fuelRatios) {
 						normalFuelRatios += i.Ratio;
-						averageDensity += i.Ratio * FuelDensity.Get[(int) i.Propellant];
+						averageDensity += i.Ratio * FuelTypeList.GetFuelDensity (i.Propellant);
 					}
 
 					averageDensity /= normalFuelRatios; // t/l
@@ -339,7 +339,7 @@ namespace GenericEngines {
 					propellants += $@"
 						PROPELLANT
 						{{
-							name = {FuelName.Name (i.Propellant)}
+							name = {FuelTypeList.GetFuelName (i.Propellant)}
 							ratio = {i.Ratio.Str ()}
 							DrawGauge = {firstPropellant}
 						}}
@@ -610,7 +610,7 @@ namespace GenericEngines {
 
 					foreach (FuelRatioElement i in PropellantRatio) {
 						if (i.Propellant != FuelType.ElectricCharge) {
-							output += $"{FuelName.Name (i.Propellant)}:";
+							output += $"{FuelTypeList.GetFuelName (i.Propellant)}:";
 						}
 					}
 
@@ -679,7 +679,7 @@ namespace GenericEngines {
 				output += Mass;
 
 				foreach (FuelRatioElement i in GetConstrainedTankContents) {
-					output += FuelDensity.Get[(int) i.Propellant] * i.Ratio; // t/l * l = t
+					output += FuelTypeList.GetFuelDensity (i.Propellant) * i.Ratio; // t/l * l = t
 				}
 
 				return output;
@@ -746,13 +746,13 @@ namespace GenericEngines {
 			}
 		}
 
-		public string TechNodeStatus => (TechNodes.GetName (TechUnlockNode));
+		public string TechNodeStatus => (TechNodeList.GetName (TechUnlockNode));
 
 		public Dictionary<TechNode, string> TechNodesWithLabels => TechNodeEnumWrapper.Get;
 
 		public ListCollectionView ModelsWithLabels => ModelEnumWrapper.Get;
 
-		public string CurrentModelTooltip => ModelList.GetTooltip (ModelID);
+		public string CurrentModelTooltip => ModelList.GetPrewiewImagePath (ModelID);
 
 		//Other
 
@@ -763,7 +763,7 @@ namespace GenericEngines {
 				double usedVolume = 0.0;
 				foreach (FuelRatioElement i in TanksContents) {
 					
-					double volume = Math.Min (i.Ratio / FuelUtilisation.Get (i.Propellant), (LimitTanks ? TanksVolume - usedVolume : double.MaxValue));
+					double volume = Math.Min (i.Ratio / FuelTypeList.GetFuelUtilisation (i.Propellant), (LimitTanks ? TanksVolume - usedVolume : double.MaxValue));
 					usedVolume += volume;
 
 					output.Add (new FuelRatioElement (i.Propellant, volume));

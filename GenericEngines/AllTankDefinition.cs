@@ -11,9 +11,9 @@ namespace GenericEngines {
 			return $@"
 				TANK
 				{{
-					name = {FuelName.Name (t)}
+					name = {FuelTypeList.GetFuelName (t)}
 					mass = 0.00007
-					utilization = {FuelUtilisation.Get (t)}
+					utilization = {FuelTypeList.GetFuelUtilisation (t)}
 					fillable = True
 					amount = 0.0
 					maxAmount = 0.0
