@@ -830,12 +830,25 @@
 										<DataGridTemplateColumn Header="Amount">
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
-													<TextBlock Text="{Binding Path=Ratio, StringFormat={}{0}L}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+													<TextBlock Text="{Binding Path=RatioAsVolumeLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
 											<DataGridTemplateColumn.CellEditingTemplate>
 												<DataTemplate>
 													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellEditingTemplate>
+										</DataGridTemplateColumn>
+
+										<DataGridTemplateColumn Header="Mass">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Path=MassLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+											<DataGridTemplateColumn.CellEditingTemplate>
+												<DataTemplate>
+													<TextBox Text="{Binding Path=Mass, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellEditingTemplate>
 										</DataGridTemplateColumn>

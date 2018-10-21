@@ -74,13 +74,13 @@
 		<TextBlock VerticalAlignment="Center" FontFamily="Verdana" FontSize="16" Margin="32,0,0,0">Use advanced "Are you sure" Prompt</TextBlock>
 		
 		<TextBox x:Name="DefaultSaveDirectoryTextBox" Text="{Binding DefaultSaveDirectory, UpdateSourceTrigger=PropertyChanged}" BorderBrush="#FF444444" BorderThickness="1px" Grid.Row="1" Height="24" HorizontalAlignment="Left" VerticalAlignment="Center" Width="300" Margin="4,0,0,0" FontFamily="Verdana" FontSize="14"></TextBox>
-		<Image MouseDown="RegisterMouseDown" MouseUp="DefaultSaveDirectory_MouseUp" Grid.Row="1" Source="chooseDirectory24.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="303,0,0,0" Width="12" Height="24"/>
+		<Image MouseDown="RegisterMouseDown" MouseUp="DefaultSaveDirectory_MouseUp" Grid.Row="1" Source="../Images/chooseDirectory24.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="303,0,0,0" Width="12" Height="24"/>
 		<TextBlock Grid.Row="1" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="16" Text="Default engine list save directory" Margin="324,0,0,0" VerticalAlignment="Center"/>
 		
 		<TextBox x:Name="DefaultExportDirectoryTextBox" Text="{Binding DefaultExportDirectory, UpdateSourceTrigger=PropertyChanged}" BorderBrush="#FF444444" BorderThickness="1px" Grid.Row="2" Height="24" HorizontalAlignment="Left" VerticalAlignment="Center" Width="300" Margin="4,0,0,0" FontFamily="Verdana" FontSize="14"></TextBox>
-		<Image MouseDown="RegisterMouseDown" MouseUp="DefaultExportDirectory_MouseUp" Grid.Row="2" Source="chooseDirectory24.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="303,0,0,0" Width="12" Height="24"/>
+		<Image MouseDown="RegisterMouseDown" MouseUp="DefaultExportDirectory_MouseUp" Grid.Row="2" Source="../Images/chooseDirectory24.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="303,0,0,0" Width="12" Height="24"/>
 		<TextBlock Grid.Row="2" HorizontalAlignment="Left" FontFamily="Verdana" FontSize="16" Text="Default engine config export directory" Margin="324,0,0,0" VerticalAlignment="Center"/>
-		<Image MouseDown="RegisterMouseDown" MouseUp="SteamDirectory_MouseUp" Margin="640,0,0,0" Grid.Row="2" Source="steam.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="32" Height="32" ToolTip="Try to find KSP in default steam directory and set directory to $KSP$/GameData/GenericEngines/"/>
+		<Image MouseDown="RegisterMouseDown" MouseUp="SteamDirectory_MouseUp" Margin="640,0,0,0" Grid.Row="2" Source="../Images/steam.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="32" Height="32" ToolTip="Try to find KSP in default steam directory and set directory to $KSP$/GameData/GenericEngines/"/>
 		
         <CheckBox Grid.Row="3" IsChecked="{Binding MoreEngineInfo, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" Height="16" Margin="8,0,0,0"/>
         <TextBlock Grid.Row="3" VerticalAlignment="Center" FontFamily="Verdana" FontSize="16" Margin="32,0,0,0">Show more info about engines</TextBlock>

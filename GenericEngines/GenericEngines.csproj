@@ -93,7 +93,7 @@
     <Compile Include="Logic\ModelInfo.cs" />
     <Compile Include="Logic\PlumeInfo.cs" />
     <Compile Include="Logic\PrimitiveTypeExtensions.cs" />
-    <Compile Include="Properties\FuelRatioElement.cs" />
+    <Compile Include="Logic\FuelRatioElement.cs" />
     <Compile Include="Properties\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
