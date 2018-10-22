@@ -701,7 +701,7 @@ namespace GenericEngines {
 			Engine currentEngine = (Engine) mainDataGrid.CurrentItem;
 			ComboBox combo = (ComboBox) sender;
 
-			List<string> IDs = new List<string> { "" };
+			List<Engine> IDs = new List<Engine> { new Engine () { Name = "" } };
 			switch (currentEngine.PolyType) {
 				case Polymorphism.MultiModeSlave:
 				foreach (Engine i in Engines) {
@@ -713,7 +713,7 @@ namespace GenericEngines {
 						continue;
 					}
 
-					IDs.Add (i.Name);
+					IDs.Add (i);
 				}
 				break;
 				case Polymorphism.MultiConfigSlave:
@@ -726,7 +726,7 @@ namespace GenericEngines {
 						continue;
 					}
 
-					IDs.Add (i.Name);
+					IDs.Add (i);
 				}
 				break;
 				default:
@@ -734,12 +734,14 @@ namespace GenericEngines {
 				break;
 			}
 
-			if (!IDs.Contains (currentEngine.MasterEngineID)) {
-				currentEngine.MasterEngineID = "";
+			if (!IDs.Exists (x => x.Name == currentEngine.MasterEngineName)) {
+				currentEngine.MasterEngineName = "";
 			}
 
 			combo.ItemsSource = IDs;
 			combo.Items.Refresh ();
+
+			combo.SelectedItem = IDs.Find (x => x.Name == currentEngine.MasterEngineName);
 		}
 
 		/// <summary>
@@ -754,26 +756,26 @@ namespace GenericEngines {
 					continue;
 				}
 
-				if (i.PolyType == Polymorphism.MultiModeSlave && i.MasterEngineID != "") {
-					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiModeMaster && x.Name == i.MasterEngineID)) {
-						if (LinkedMultiModeMasters.Contains (i.MasterEngineID)) {
+				if (i.PolyType == Polymorphism.MultiModeSlave && i.MasterEngineName != "") {
+					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiModeMaster && x.Name == i.MasterEngineName)) {
+						if (LinkedMultiModeMasters.Contains (i.MasterEngineName)) {
 							EnginesWithErrors.Add (i);
-							i.MasterEngineID = "";
+							i.MasterEngineName = "";
 						} else {
-							LinkedMultiModeMasters.Add (i.MasterEngineID);
+							LinkedMultiModeMasters.Add (i.MasterEngineName);
 						}
 					} else {
 						EnginesWithErrors.Add (i);
-						i.MasterEngineID = "";
+						i.MasterEngineName = "";
 					}
 				}
 
-				if (i.PolyType == Polymorphism.MultiConfigSlave && i.MasterEngineID != "") {
-					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiConfigMaster && x.Name == i.MasterEngineID)) {
+				if (i.PolyType == Polymorphism.MultiConfigSlave && i.MasterEngineName != "") {
+					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiConfigMaster && x.Name == i.MasterEngineName)) {
 						
 					} else {
 						EnginesWithErrors.Add (i);
-						i.MasterEngineID = "";
+						i.MasterEngineName = "";
 					}
 				}
 			}
@@ -788,7 +790,7 @@ namespace GenericEngines {
 
 				tmp = tmp.Substring (0, tmp.Length - 2);
 
-				MessageBox.Show ($"Inconsistencies found in following engines: {tmp}. Their MasterEngineID has been set to empty. You might want to recheck their Polymorphism settings", "Warning");
+				MessageBox.Show ($"Inconsistencies found in following engines: {tmp}. Their MasterEngineName has been set to empty. You might want to recheck their Polymorphism settings", "Warning");
 			}
 		}
 	}

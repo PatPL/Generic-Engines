@@ -77,7 +77,7 @@ namespace GenericEngines {
 				1 + //bool - UseTanks
 				1 + //bool - LimitTanks
 				1 + //Polymorphism - PolyType
-				e.MasterEngineID.Length + 2 //1B * length + 2B length header - MasterEngineID
+				e.MasterEngineName.Length + 2 //1B * length + 2B length header - MasterEngineName
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -340,12 +340,12 @@ namespace GenericEngines {
 			//Polymorphism - PolyType
 			output[i++] = (byte) e.PolyType;
 
-			//String + 2B length header - MasterEngineID
+			//String + 2B length header - MasterEngineName
 			//String length header
-			output[i++] = (byte) (e.MasterEngineID.Length % 256);
-			output[i++] = (byte) (e.MasterEngineID.Length / 256);
+			output[i++] = (byte) (e.MasterEngineName.Length % 256);
+			output[i++] = (byte) (e.MasterEngineName.Length / 256);
 			//String data
-			foreach (char c in e.MasterEngineID) {
+			foreach (char c in e.MasterEngineName) {
 				output[i++] = Convert.ToByte (c);
 			}
 
@@ -649,15 +649,15 @@ namespace GenericEngines {
 				//Polymorphism - PolyType
 				output.PolyType = (Polymorphism) input[i++];
 
-				//(1B * length + 2B length header) - MasterEngineID
+				//(1B * length + 2B length header) - MasterEngineName
 				{
 					int stringLength = 0;
 					stringLength += input[i++];
 					stringLength += input[i++] * 256;
 
-					output.MasterEngineID = "";
+					output.MasterEngineName = "";
 					for (int c = 0; c < stringLength; ++c) {
-						output.MasterEngineID += Convert.ToChar (input[i++]);
+						output.MasterEngineName += Convert.ToChar (input[i++]);
 					}
 				}
 			}

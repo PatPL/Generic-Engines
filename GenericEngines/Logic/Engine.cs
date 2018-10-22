@@ -66,7 +66,9 @@ namespace GenericEngines {
 		public bool UseTanks { get; set; } //10
 		public bool LimitTanks { get; set; } //10
 		public Polymorphism PolyType { get; set; } //11
-		public string MasterEngineID { get; set; } //11
+		public string MasterEngineName { get; set; } //11
+		public int MasterEngineCost { get; set; } //12
+		public double MasterEngineMass { get; set; } //12
 		
 		//This is necessary to fix deleting
 		public static int UIDc = 1;
@@ -74,7 +76,78 @@ namespace GenericEngines {
 
 		#endregion
 
+		#region InputProperties
+
+		public Engine SetMasterEngine {
+			set {
+				MasterEngineName = value.Name;
+				Width = value.Width;
+				Height = value.Width;
+				ModelID = value.ModelID;
+				MasterEngineCost = value.Cost;
+				MasterEngineMass = value.Mass;
+
+				NotifyEveryProperty ();
+			} get {
+				//Just to be displayed
+				return new Engine () { Name = MasterEngineName };
+			}
+		}
+
+		#endregion
+
 		#region ExporterProperties
+
+		public string MasterEngineID => $"GE-{MasterEngineName}";
+
+		public string GetModuleEngineConfigs {
+			get {
+				string output = "";
+
+				if (!IsMultimode) {
+					output = $@"
+						MODULE
+						{{
+							name = ModuleEngineConfigs
+							configuration = {EngineID}
+							modded = false
+							origMass = {Mass.Str ()}
+							CONFIG
+							{{
+								name = {EngineID}
+								description = {EngineDescription}
+								maxThrust = {Thrust.Str ()}
+								minThrust = {(Thrust * MinThrustPercent).Str ()}
+								%powerEffectName = {GetPlumeInfo.PlumeID}
+								heatProduction = 100
+								massMult = 1
+
+								{PropellantConfig}
+
+								atmosphereCurve
+								{{
+									key = 0 {VacIsp.Str ()}
+									key = 1 {AtmIsp.Str ()}
+								}}
+
+								{ThrustCurveConfig}
+
+								ullage = {UllageNeeded}
+								pressureFed = {PressureFed}
+								ignitions = {IgnitionsCount}
+								IGNITOR_RESOURCE
+								{{
+									name = ElectricCharge
+									amount = 1
+								}}
+							}}
+						}}
+					";
+				}
+
+				return output;
+			}
+		}
 
 		/// <summary>
 		/// The CONFIG in ModuleEngineConfigs
@@ -241,8 +314,10 @@ namespace GenericEngines {
 				PlumeInfo plumeInfo = GetPlumeInfo;
 				ModelInfo modelInfo = GetModelInfo;
 
+				string targetID = ((PolyType == Polymorphism.MultiModeSlave ? MasterEngineID : EngineID));
+
 				plume = $@"
-					@PART[{EngineID}]:FOR[RealPlume]:NEEDS[SmokeScreen]
+					@PART[{targetID}]:FOR[RealPlume]:HAS[!PLUME[{plumeInfo.PlumeID}]]:NEEDS[SmokeScreen]
 					{{
 						PLUME
 						{{
@@ -297,7 +372,7 @@ namespace GenericEngines {
 		/// <summary>
 		/// The engine part's name
 		/// </summary>
-		public string EngineID => $"GE-{Name.Replace (' ', '-')}";
+		public string EngineID => $"GE-{Name}";
 		// This is now validated on input
 
 		/// <summary>
@@ -774,11 +849,11 @@ namespace GenericEngines {
 					case Polymorphism.MultiModeMaster:
 					return "Multimode Master";
 					case Polymorphism.MultiModeSlave:
-					return $"Multimode slave to {MasterEngineID}";
+					return $"Multimode slave to {MasterEngineName}";
 					case Polymorphism.MultiConfigMaster:
 					return "Multiconfig Master";
 					case Polymorphism.MultiConfigSlave:
-					return $"Multiconfig slave to {MasterEngineID}";
+					return $"Multiconfig slave to {MasterEngineName}";
 					default:
 					return "Something went wrong";
 				}
@@ -943,9 +1018,21 @@ namespace GenericEngines {
 		public bool IsMultimode {
 			get {
 				return
-					PolyType != Polymorphism.MultiModeMaster &&
-					PolyType != Polymorphism.MultiModeSlave
+					PolyType == Polymorphism.MultiModeMaster ||
+					PolyType == Polymorphism.MultiModeSlave
 				;
+			}
+		}
+
+		/// <summary>
+		/// Is the engine not a slave?
+		/// </summary>
+		public bool IsNotSlave {
+			get {
+				return !(
+					PolyType == Polymorphism.MultiModeSlave ||
+					PolyType == Polymorphism.MultiConfigSlave
+				);
 			}
 		}
 
@@ -967,6 +1054,8 @@ namespace GenericEngines {
 				} else {
 					input = value;
 				}
+
+				input = input.Replace (' ', '-');
 
 				if (input == "") {
 					input = "EnterCorrectID";
@@ -1086,7 +1175,7 @@ namespace GenericEngines {
 			UseTanks = false;
 			LimitTanks = true;
 			PolyType = Polymorphism.Single;
-			MasterEngineID = "";
+			MasterEngineName = "";
 		}
 
 		/// <summary>

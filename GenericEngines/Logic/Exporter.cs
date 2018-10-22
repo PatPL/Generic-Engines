@@ -32,12 +32,30 @@ namespace GenericEngines {
 		}
 
 		/// <summary>
-		/// Returns the compacted config an engine
+		/// Returns the compacted config of an engine
 		/// </summary>
 		/// <param name="engine">The engine to be exported</param>
 		/// <returns></returns>
 		public static string ConvertEngineToConfig (Engine engine) {
-			string output = $@"
+			string output = "";
+
+			switch (engine.PolyType) {
+				case Polymorphism.Single:
+				case Polymorphism.MultiConfigMaster:
+				case Polymorphism.MultiModeMaster:
+				output = RegularEngineConfig (engine);
+				break;
+				case Polymorphism.MultiModeSlave:
+				output = MultiModeSlaveConfig (engine);
+				break;
+			}
+			
+			output = output.Compact ();
+			return output;
+		}
+
+		private static string RegularEngineConfig (Engine engine) {
+			return $@"
 				PART
 				{{
 					name = {engine.EngineID}
@@ -119,7 +137,6 @@ namespace GenericEngines {
 
 				@PART[{engine.EngineID}]:FOR[RealismOverhaul]
 				{{
-
 					%RSSROConfig = True
 					%RP0conf = True
 					
@@ -138,6 +155,7 @@ namespace GenericEngines {
 
 					@MODULE[ModuleEngines*]
 					{{
+						%engineID = PrimaryMode
 						@minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
 						@maxThrust = {engine.Thrust.Str ()}
 						@heatProduction = 180
@@ -156,42 +174,7 @@ namespace GenericEngines {
 
 					}}
 
-					MODULE
-					{{
-						name = ModuleEngineConfigs
-						configuration = {engine.EngineID}
-						modded = false
-						origMass = {engine.Mass.Str ()}
-						CONFIG
-						{{
-							name = {engine.EngineID}
-							description = Generic Engine | {engine.Name}
-							maxThrust = {engine.Thrust.Str ()}
-							minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
-							%powerEffectName = {engine.GetPlumeInfo.PlumeID}
-							heatProduction = 100
-							massMult = 1
-
-							{engine.PropellantConfig}
-
-							atmosphereCurve
-							{{
-								key = 0 {engine.VacIsp.Str ()}
-								key = 1 {engine.AtmIsp.Str ()}
-							}}
-
-							{engine.ThrustCurveConfig}
-
-							ullage = {engine.UllageNeeded}
-							pressureFed = {engine.PressureFed}
-							ignitions = {engine.IgnitionsCount}
-							IGNITOR_RESOURCE
-							{{
-								name = ElectricCharge
-								amount = 1
-							}}
-						}}
-					}}
+					{engine.GetModuleEngineConfigs}
 
 					!RESOURCE,*{{}}
 				}}
@@ -200,11 +183,52 @@ namespace GenericEngines {
 
 				{engine.TestFlightConfig}
 			";
-			//====
-
-			output = output.Compact ();
-			return output;
 		}
 
+		private static string MultiModeSlaveConfig (Engine engine) {
+			return $@"
+				@PART[{engine.MasterEngineID}]
+				{{
+					MODULE
+					{{
+						name = MultiModeEngine
+						primaryEngineID = PrimaryMode
+						primaryEngineModeDisplayName = Primary mode ({engine.MasterEngineID})
+						secondaryEngineID = SecondaryMode
+						secondaryEngineModeDisplayName = Secondary mode ({engine.EngineID})
+					}}
+				}}
+				
+				@PART[{engine.MasterEngineID}]:FOR[RealismOverhaul]
+				{{
+					+MODULE[ModuleEngines*]
+					{{
+						@engineID = SecondaryMode
+						@minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
+						@maxThrust = {engine.Thrust.Str ()}
+						@heatProduction = 180
+						@useThrustCurve = {engine.UsesThrustCurve}
+						%powerEffectName = {engine.GetPlumeInfo.PlumeID}
+
+						!PROPELLANT,*
+						{{
+						}}
+
+						{engine.PropellantConfig}
+
+						@atmosphereCurve
+						{{
+							@key,0 = 0 {engine.VacIsp.Str ()}
+							@key,1 = 1 {engine.AtmIsp.Str ()}
+						}}
+
+						{engine.ThrustCurveConfig}
+
+					}}
+				}}
+
+				{engine.PlumeConfig}
+			";
+		}
 	}
 }
