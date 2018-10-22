@@ -77,6 +77,17 @@ namespace GenericEngines {
 		#region ExporterProperties
 
 		/// <summary>
+		/// The CONFIG in ModuleEngineConfigs
+		/// </summary>
+		public string GetAsEngineConfig {
+			get {
+				return $@"
+				
+				";
+			}
+		}
+
+		/// <summary>
 		/// Returns the model rescaleFactor with current model and height
 		/// </summary>
 		public double HeightScale => Height / GetModelInfo.OriginalHeight;
@@ -243,20 +254,6 @@ namespace GenericEngines {
 							flareScale = 0
 							energy = {(Math.Log (Thrust + 5, 10) / 3 * plumeInfo.EnergyMultiplier).Str ()}
 							speed = {Math.Max ((Math.Log (VacIsp, 2) / 1.5) - 4.5, 0.2).Str ()}
-						}}
-
-						@MODULE[ModuleEngines*]
-						{{
-							%powerEffectName = {plumeInfo.PlumeID}
-							!fxOffset = NULL
-						}}
-
-						@MODULE[ModuleEngineConfigs]
-						{{
-							@CONFIG,*
-							{{
-								%powerEffectName = {plumeInfo.PlumeID}
-							}}
 						}}
 					}}
 				";
@@ -435,7 +432,7 @@ namespace GenericEngines {
 			get {
 				string testflight = "";
 
-				if (EnableTestFlight) {
+				if (EnableTestFlight && !IsMultimode) {
 					testflight = $@"
 						@PART[*]:HAS[@MODULE[ModuleEngineConfigs]:HAS[@CONFIG[{EngineID}]],!MODULE[TestFlightInterop]]:BEFORE[zTestFlight]
 						{{
@@ -939,6 +936,18 @@ namespace GenericEngines {
 		#endregion
 
 		#region OtherProperties
+
+		/// <summary>
+		/// Is the engine multimode?
+		/// </summary>
+		public bool IsMultimode {
+			get {
+				return
+					PolyType != Polymorphism.MultiModeMaster &&
+					PolyType != Polymorphism.MultiModeSlave
+				;
+			}
+		}
 
 		/// <summary>
 		/// Validates ID input if Setting is set

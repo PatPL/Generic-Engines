@@ -327,6 +327,7 @@ namespace GenericEngines {
 
 			if ((string) e.Column.Header == "Polymorphism") {
 				EnsureEnginePolymorphismConsistency ();
+				((Engine) e.Row.Item).NotifyPropertyChanged ("PolyType");
 			}
 		}
 

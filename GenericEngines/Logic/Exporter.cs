@@ -87,7 +87,6 @@ namespace GenericEngines {
 						minThrust = 0
 						maxThrust = 610
 						heatProduction = 200
-						fxOffset = 0, 0, 0.974338
 						EngineType = {engine.EngineTypeConfig}
 						useThrustCurve = {engine.UsesThrustCurve}
 						exhaustDamageDistanceOffset = 0.79
@@ -143,6 +142,7 @@ namespace GenericEngines {
 						@maxThrust = {engine.Thrust.Str ()}
 						@heatProduction = 180
 						@useThrustCurve = {engine.UsesThrustCurve}
+						%powerEffectName = {engine.GetPlumeInfo.PlumeID}
 
 						{engine.PropellantConfig}
 
@@ -168,6 +168,7 @@ namespace GenericEngines {
 							description = Generic Engine | {engine.Name}
 							maxThrust = {engine.Thrust.Str ()}
 							minThrust = {(engine.Thrust * engine.MinThrustPercent).Str ()}
+							%powerEffectName = {engine.GetPlumeInfo.PlumeID}
 							heatProduction = 100
 							massMult = 1
 

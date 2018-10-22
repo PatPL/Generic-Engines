@@ -212,6 +212,17 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="RealEngineName" MaxWidth="250">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=RealEngineName, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -234,9 +245,31 @@
 								<TextBlock Grid.Row="0" Text="Title" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
 								<TextBox Grid.Row="1" Text="{Binding Path=EngineName, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 								<TextBlock Grid.Row="2" Text="Manufacturer" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
-								<TextBox Grid.Row="3" Text="{Binding Path=EngineManufacturer, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBox Grid.Row="3" Text="{Binding Path=EngineManufacturer, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana">
+									<TextBox.Style>
+										<Style TargetType="TextBox">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+													<Setter Property="IsEnabled" Value="False"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBox.Style>
+								</TextBox>
 								<TextBlock Grid.Row="4" Text="Description" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
-								<TextBox TextWrapping="Wrap" Grid.Row="5" Text="{Binding Path=EngineDescription, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" Width="250"></TextBox>
+								<TextBox TextWrapping="Wrap" Grid.Row="5" Text="{Binding Path=EngineDescription, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" Width="250">
+									<TextBox.Style>
+										<Style TargetType="TextBox">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+													<Setter Property="Background" Value="#FF444444"/>
+													<Setter Property="Foreground" Value="#FF444444"/>
+													<Setter Property="IsEnabled" Value="False"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBox.Style>
+								</TextBox>
 							</Grid>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
@@ -266,6 +299,17 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="Mass">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=MassLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -439,6 +483,22 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="AlternatorPower">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=AlternatorPower, StringFormat={}{0}kW}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -531,6 +591,22 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn SortMemberPath="Width">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=DimensionsLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -569,6 +645,22 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn SortMemberPath="Gimbal">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=GimbalLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -613,6 +705,17 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=TechNodeLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -631,6 +734,17 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn SortMemberPath="EntryCost">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=EntryCost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -649,6 +763,17 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="Cost">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Cost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -668,6 +793,22 @@
 				
 				<!-- Test Flight -->
 				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeMaster">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=TestFlightLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -783,6 +924,22 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Header="Tank">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=TankLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
