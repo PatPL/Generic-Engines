@@ -887,7 +887,7 @@
 
 								<ComboBox ItemsSource="{Binding PolyTypesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding PolyType, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" Margin="0"/>
 
-								<ComboBox Grid.Row="1" Loaded="MasterIDComboBox_Loaded" SelectedValue="{Binding MasterEngineID, UpdateSourceTrigger=PropertyChanged}"/>
+								<ComboBox Grid.Row="1" Loaded="MasterIDComboBox_Loaded" DropDownOpened="MasterIDComboBox_OpenDropbox" SelectedValue="{Binding MasterEngineID, UpdateSourceTrigger=PropertyChanged}"/>
 
 							</Grid>
 							<!-- /Paste -->

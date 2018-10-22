@@ -691,8 +691,12 @@ namespace GenericEngines {
 			((TextBox) sender).GetBindingExpression (TextBox.TextProperty).UpdateSource ();
 			//Other inputs look literally the same and they work without manual updating ¯\_(ツ)_/¯
 		}
-		
+
 		private void MasterIDComboBox_Loaded (object sender, RoutedEventArgs e) {
+			MasterIDComboBox_OpenDropbox (sender, null);
+		}
+
+		private void MasterIDComboBox_OpenDropbox (object sender, EventArgs e) {
 			Engine currentEngine = (Engine) mainDataGrid.CurrentItem;
 			ComboBox combo = (ComboBox) sender;
 
@@ -742,7 +746,7 @@ namespace GenericEngines {
 		/// </summary>
 		public void EnsureEnginePolymorphismConsistency () {
 			HashSet<string> LinkedMultiModeMasters = new HashSet<string> ();
-			List<string> EnginesWithErrors = new List<string> ();
+			List<Engine> EnginesWithErrors = new List<Engine> ();
 
 			foreach (Engine i in Engines) {
 				if (!i.Active) {
@@ -750,25 +754,25 @@ namespace GenericEngines {
 				}
 
 				if (i.PolyType == Polymorphism.MultiModeSlave && i.MasterEngineID != "") {
-					if (Engines.Exists (x => x.Active && x.Name == i.MasterEngineID)) {
+					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiModeMaster && x.Name == i.MasterEngineID)) {
 						if (LinkedMultiModeMasters.Contains (i.MasterEngineID)) {
+							EnginesWithErrors.Add (i);
 							i.MasterEngineID = "";
-							EnginesWithErrors.Add (i.Name);
 						} else {
 							LinkedMultiModeMasters.Add (i.MasterEngineID);
 						}
 					} else {
+						EnginesWithErrors.Add (i);
 						i.MasterEngineID = "";
-						EnginesWithErrors.Add (i.Name);
 					}
 				}
 
 				if (i.PolyType == Polymorphism.MultiConfigSlave && i.MasterEngineID != "") {
-					if (Engines.Exists (x => x.Active && x.Name == i.MasterEngineID)) {
+					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiConfigMaster && x.Name == i.MasterEngineID)) {
 						
 					} else {
+						EnginesWithErrors.Add (i);
 						i.MasterEngineID = "";
-						EnginesWithErrors.Add (i.Name);
 					}
 				}
 			}
@@ -776,8 +780,9 @@ namespace GenericEngines {
 			if (EnginesWithErrors.Count > 0) {
 				string tmp = "";
 
-				foreach (string i in EnginesWithErrors) {
-					tmp += $"{i}, ";
+				foreach (Engine i in EnginesWithErrors) {
+					tmp += $"{i.Name}, ";
+					i.NotifyPropertyChanged ("PolyLabel");
 				}
 
 				tmp = tmp.Substring (0, tmp.Length - 2);
