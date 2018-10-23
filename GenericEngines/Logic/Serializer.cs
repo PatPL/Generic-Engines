@@ -20,7 +20,7 @@ namespace GenericEngines {
 			return SerializerVersion;
 		}
 
-		private readonly static short SerializerVersion = 11;
+		private readonly static short SerializerVersion = 12;
 		private static byte[] LatestSerializer (Engine e) {
 			
 			short version = SerializerVersion;
@@ -77,7 +77,9 @@ namespace GenericEngines {
 				1 + //bool - UseTanks
 				1 + //bool - LimitTanks
 				1 + //Polymorphism - PolyType
-				e.MasterEngineName.Length + 2 //1B * length + 2B length header - MasterEngineName
+				e.MasterEngineName.Length + 2 + //1B * length + 2B length header - MasterEngineName
+				4 + //int - MasterEngineCost
+				8 //double - MasterEngineMass
 			];
 
 			//short - Version (BIG ENDIAN - BACKWARDS COMPATIBILITY)
@@ -347,6 +349,16 @@ namespace GenericEngines {
 			//String data
 			foreach (char c in e.MasterEngineName) {
 				output[i++] = Convert.ToByte (c);
+			}
+
+			//int - MasterEngineCost
+			foreach (byte b in BitConverter.GetBytes (e.MasterEngineCost)) {
+				output[i++] = b;
+			}
+
+			//double - MasterEngineMass
+			foreach (byte b in BitConverter.GetBytes (e.MasterEngineMass)) {
+				output[i++] = b;
 			}
 
 			return output;
@@ -660,6 +672,16 @@ namespace GenericEngines {
 						output.MasterEngineName += Convert.ToChar (input[i++]);
 					}
 				}
+			}
+
+			if (version >= 12) {
+				//int - MasterEngineCost
+				output.MasterEngineCost = BitConverter.ToInt32 (input, i);
+				i += 4;
+
+				//double - MasterEngineMass
+				output.MasterEngineMass = BitConverter.ToDouble (input, i);
+				i += 8;
 			}
 
 			addedOffset = i - offset;

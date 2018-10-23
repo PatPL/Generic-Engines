@@ -48,6 +48,9 @@ namespace GenericEngines {
 				case Polymorphism.MultiModeSlave:
 				output = MultiModeSlaveConfig (engine);
 				break;
+				case Polymorphism.MultiConfigSlave:
+				output = MultiConfigSlaveConfig (engine);
+				break;
 			}
 			
 			output = output.Compact ();
@@ -149,7 +152,7 @@ namespace GenericEngines {
 					%stagingIcon = {engine.StagingIcon}
 					@bulkheadProfiles = srf, size3
 					@tags = Generic Engine
-					%engineType = {engine.EngineID}
+					{/*%engineType = {engine.EngineID}*/""}
 
 					{engine.TankConfig}
 
@@ -228,6 +231,25 @@ namespace GenericEngines {
 				}}
 
 				{engine.PlumeConfig}
+			";
+		}
+
+		private static string MultiConfigSlaveConfig (Engine engine) {
+			return $@"
+				@PART[{engine.MasterEngineID}]:FOR[RealismOverhaul]
+				{{
+					@MODULE[ModuleEngineConfigs]
+					{{
+						{engine.GetEngineConfig}
+					}}
+				}}
+
+				{engine.PlumeConfig}
+
+				{engine.TestFlightConfig}
+
+				{engine.EngineConfigEntryCostConfig}
+
 			";
 		}
 	}

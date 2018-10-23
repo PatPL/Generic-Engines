@@ -81,11 +81,18 @@ namespace GenericEngines {
 		public Engine SetMasterEngine {
 			set {
 				MasterEngineName = value.Name;
-				Width = value.Width;
-				Height = value.Width;
-				ModelID = value.ModelID;
-				MasterEngineCost = value.Cost;
-				MasterEngineMass = value.Mass;
+
+				if (!IsNotSlave && MasterEngineName != "") {
+					Width = value.Width;
+					Height = value.Width;
+					ModelID = value.ModelID;
+					MasterEngineCost = value.Cost;
+					MasterEngineMass = value.Mass;
+
+					if (!DescriptionNotDefault || EngineDescription == value.EngineDescription) {
+						EngineDescription = "";
+					}
+				}
 
 				NotifyEveryProperty ();
 			} get {
@@ -100,6 +107,58 @@ namespace GenericEngines {
 
 		public string MasterEngineID => $"GE-{MasterEngineName}";
 
+		/// <summary>
+		/// Only used by Multi config slave. Returns config setting engine config's entry cost.
+		/// </summary>
+		public string EngineConfigEntryCostConfig {
+			get {
+				return $@"
+					@ENTRYCOSTMODS:FOR[xxxRP-0]
+					{{
+						{EngineID} = {EntryCost}
+					}}
+				";
+			}
+		}
+
+		public string GetEngineConfig {
+			get {
+				return $@"
+					CONFIG
+					{{
+						name = {EngineID}
+						description = {EngineDescription}
+						maxThrust = {Thrust.Str ()}
+						minThrust = {(Thrust * MinThrustPercent).Str ()}
+						%powerEffectName = {GetPlumeInfo.PlumeID}
+						heatProduction = 100
+						massMult = {(PolyType == Polymorphism.MultiConfigSlave ? (Mass / MasterEngineMass).Str () : "1")}
+						%techRequired = {TechNodeList.GetID (TechUnlockNode)}
+						cost = {(PolyType == Polymorphism.MultiConfigSlave ? Cost - MasterEngineCost : 0)}
+
+						{PropellantConfig}
+
+						atmosphereCurve
+						{{
+							key = 0 {VacIsp.Str ()}
+							key = 1 {AtmIsp.Str ()}
+						}}
+
+						{ThrustCurveConfig}
+
+						ullage = {UllageNeeded}
+						pressureFed = {PressureFed}
+						ignitions = {IgnitionsCount}
+						IGNITOR_RESOURCE
+						{{
+							name = ElectricCharge
+							amount = 1
+						}}
+					}}
+				";
+			}
+		}
+
 		public string GetModuleEngineConfigs {
 			get {
 				string output = "";
@@ -112,35 +171,9 @@ namespace GenericEngines {
 							configuration = {EngineID}
 							modded = false
 							origMass = {Mass.Str ()}
-							CONFIG
-							{{
-								name = {EngineID}
-								description = {EngineDescription}
-								maxThrust = {Thrust.Str ()}
-								minThrust = {(Thrust * MinThrustPercent).Str ()}
-								%powerEffectName = {GetPlumeInfo.PlumeID}
-								heatProduction = 100
-								massMult = 1
+							
+							{GetEngineConfig}
 
-								{PropellantConfig}
-
-								atmosphereCurve
-								{{
-									key = 0 {VacIsp.Str ()}
-									key = 1 {AtmIsp.Str ()}
-								}}
-
-								{ThrustCurveConfig}
-
-								ullage = {UllageNeeded}
-								pressureFed = {PressureFed}
-								ignitions = {IgnitionsCount}
-								IGNITOR_RESOURCE
-								{{
-									name = ElectricCharge
-									amount = 1
-								}}
-							}}
 						}}
 					";
 				}
@@ -314,7 +347,7 @@ namespace GenericEngines {
 				PlumeInfo plumeInfo = GetPlumeInfo;
 				ModelInfo modelInfo = GetModelInfo;
 
-				string targetID = ((PolyType == Polymorphism.MultiModeSlave ? MasterEngineID : EngineID));
+				string targetID = ((!IsNotSlave ? MasterEngineID : EngineID));
 
 				plume = $@"
 					@PART[{targetID}]:FOR[RealPlume]:HAS[!PLUME[{plumeInfo.PlumeID}]]:NEEDS[SmokeScreen]
@@ -805,6 +838,8 @@ namespace GenericEngines {
 			}
 		}
 
+		public string NameLabel => IsNotSlave ? RealEngineName : EngineDescription;
+
 		/// <summary>
 		/// Returns the tank label
 		/// </summary>
@@ -939,7 +974,11 @@ namespace GenericEngines {
 		/// </summary>
 		public string VisualLabel {
 			get {
-				return $"{ModelList.GetName (ModelID)}, {PlumeList.GetName (PlumeID)}";
+				if (IsNotSlave) {
+					return $"{ModelList.GetName (ModelID)}, {PlumeList.GetName (PlumeID)}";
+				} else {
+					return $"{PlumeList.GetName (PlumeID)}";
+				}
 			}
 		}
 

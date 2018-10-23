@@ -324,11 +324,14 @@ namespace GenericEngines {
 				e.Column.Width = new DataGridLength (0);
 				e.Column.Width = new DataGridLength (0, DataGridLengthUnitType.Auto);
 			}
-
+			
 			if ((string) e.Column.Header == "Polymorphism") {
 				EnsureEnginePolymorphismConsistency ();
-				((Engine) e.Row.Item).NotifyPropertyChanged ("PolyType");
+				//((Engine) e.Row.Item).NotifyPropertyChanged ("PolyType");
 			}
+
+			((Engine) e.Row.Item).NotifyEveryProperty (); //Sledgehammer
+			
 		}
 
 		List<Engine> FixDuplicateID (List<Engine> input, out bool foundDuplicate) {
