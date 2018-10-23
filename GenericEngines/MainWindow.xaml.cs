@@ -100,8 +100,6 @@ namespace GenericEngines {
 					}
 				}
 
-				EnsureEnginePolymorphismConsistency ();
-
 				mainDataGrid.Items.Refresh ();
 			} else {
 				throw new NullReferenceException ("mainDataGrid is null");
@@ -230,6 +228,20 @@ namespace GenericEngines {
 			}
 		}
 
+		private void ValidateButton_MouseUp (object sender, MouseButtonEventArgs e) {
+			if (sender == null || lastMouseDownObject == sender) {
+				List<string> errors = new List<string> ();
+
+				errors.AddRange (EnsureEnginePolymorphismConsistency ());
+
+				if (errors.Count == 0) {
+					MessageBox.Show ("No inconsistencies found in current engine list", $"{errors.Count} errors found");
+				} else {
+					MessageBox.Show ($"Following errors found:\n{String.Join ("\n", errors.ToArray ())}", $"{errors.Count} errors found");
+				}
+			}
+		}
+
 		private void ExportButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				if (Engines.Count > 0) {
@@ -325,11 +337,11 @@ namespace GenericEngines {
 				e.Column.Width = new DataGridLength (0, DataGridLengthUnitType.Auto);
 			}
 			
+			/*
 			if ((string) e.Column.Header == "Polymorphism") {
-				EnsureEnginePolymorphismConsistency ();
-				//((Engine) e.Row.Item).NotifyPropertyChanged ("PolyType");
+				((Engine) e.Row.Item).NotifyPropertyChanged ("PolyType");
 			}
-
+			*/
 			((Engine) e.Row.Item).NotifyEveryProperty (); //Sledgehammer
 			
 		}
@@ -748,11 +760,11 @@ namespace GenericEngines {
 		}
 
 		/// <summary>
-		/// Fixes Polymorphism config errors and alerts the user if error was found.
+		/// Fixes Polymorphism config errors and alerts the user if error was found. Returns error messages.
 		/// </summary>
-		public void EnsureEnginePolymorphismConsistency () {
+		public List<string> EnsureEnginePolymorphismConsistency () {
 			HashSet<string> LinkedMultiModeMasters = new HashSet<string> ();
-			List<Engine> EnginesWithErrors = new List<Engine> ();
+			List<string> Errors = new List<string> ();
 
 			foreach (Engine i in Engines) {
 				if (!i.Active) {
@@ -762,14 +774,12 @@ namespace GenericEngines {
 				if (i.PolyType == Polymorphism.MultiModeSlave && i.MasterEngineName != "") {
 					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiModeMaster && x.Name == i.MasterEngineName)) {
 						if (LinkedMultiModeMasters.Contains (i.MasterEngineName)) {
-							EnginesWithErrors.Add (i);
-							i.MasterEngineName = "";
+							Errors.Add ($"Error in engine {i.Name}: MultiModeMaster can have at most 1 slave engine. {i.MasterEngineName} already has a slave.");
 						} else {
 							LinkedMultiModeMasters.Add (i.MasterEngineName);
 						}
 					} else {
-						EnginesWithErrors.Add (i);
-						i.MasterEngineName = "";
+						Errors.Add ($"Error in engine {i.Name}: {i.MasterEngineName} is inactive or its Polymorphism is not set to 'MultiModeMaster'.");
 					}
 				}
 
@@ -777,24 +787,13 @@ namespace GenericEngines {
 					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiConfigMaster && x.Name == i.MasterEngineName)) {
 						
 					} else {
-						EnginesWithErrors.Add (i);
-						i.MasterEngineName = "";
+						Errors.Add ($"Error in engine {i.Name}: {i.MasterEngineName} is inactive or its Polymorphism is not set to 'MultiConfigMaster'.");
 					}
 				}
 			}
 
-			if (EnginesWithErrors.Count > 0) {
-				string tmp = "";
+			return Errors;
 
-				foreach (Engine i in EnginesWithErrors) {
-					tmp += $"{i.Name}, ";
-					i.NotifyPropertyChanged ("PolyLabel");
-				}
-
-				tmp = tmp.Substring (0, tmp.Length - 2);
-
-				MessageBox.Show ($"Inconsistencies found in following engines: {tmp}. Their MasterEngineName has been set to empty. You might want to recheck their Polymorphism settings", "Warning");
-			}
 		}
 	}
 }

@@ -121,6 +121,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns single engine config
+		/// </summary>
 		public string GetEngineConfig {
 			get {
 				return $@"
@@ -159,6 +162,9 @@ namespace GenericEngines {
 			}
 		}
 
+		/// <summary>
+		/// Returns basic ModuleEngineConfigs for master engine
+		/// </summary>
 		public string GetModuleEngineConfigs {
 			get {
 				string output = "";
