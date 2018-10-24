@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace GenericEngines {
 	public static class EngineUtility {
@@ -125,7 +126,40 @@ namespace GenericEngines {
 			return status;
 			
 		}
+
+		public static List<string> Validate (List<Engine> engines) {
+			List<string> errors = new List<string> ();
+
+			errors.AddRange (EnsureEnginePolymorphismConsistency (engines));
+			errors.AddRange (CheckDuplicateIDs (engines));
+
+			return errors;
+		}
 		
+		public static List<string> CheckDuplicateIDs (List<Engine> engines) {
+			HashSet<string> takenIDs = new HashSet<string> ();
+			List<string> errors = new List<string> ();
+
+			foreach (Engine i in engines) {
+				if (!i.Active) {
+					continue;
+				}
+
+				if (Regex.IsMatch (i.Name, "[^a-zA-Z0-9-]")) {
+					errors.Add ($"ID contains illegal characters: {i.Name}. Change the IDs.");
+					continue;
+				}
+
+				if (takenIDs.Contains (i.Name)) {
+					errors.Add ($"ID duplicate found: {i.Name}. Change the IDs.");
+				} else {
+					takenIDs.Add (i.Name);
+				}
+			}
+
+			return errors;
+		}
+
 		/// <summary>
 		/// Fixes Polymorphism config errors and alerts the user if error was found. Returns error messages.
 		/// </summary>

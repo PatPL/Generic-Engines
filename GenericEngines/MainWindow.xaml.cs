@@ -251,9 +251,7 @@ namespace GenericEngines {
 
 		private void ValidateButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				List<string> errors = new List<string> ();
-
-				errors.AddRange (EngineUtility.EnsureEnginePolymorphismConsistency (Engines));
+				List<string> errors = EngineUtility.Validate (Engines);
 
 				if (errors.Count == 0) {
 					MessageBox.Show ("No inconsistencies found in current engine list", $"{errors.Count} errors found");

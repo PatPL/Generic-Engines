@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace GenericEngines {
@@ -394,6 +395,8 @@ namespace GenericEngines {
 					for (int c = 0; c < stringLength; ++c) {
 						output.Name += Convert.ToChar (input[i++]);
 					}
+					output.Name = Regex.Replace (output.Name, "[<>,+*=_ ]", "-");
+					
 				}
 
 				//double - Mass
