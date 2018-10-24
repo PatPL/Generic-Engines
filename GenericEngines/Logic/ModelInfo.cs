@@ -350,6 +350,29 @@ namespace GenericEngines {
 					"Size2A",
 					"Cube_006_031_001"
 				}
+			}, new ModelInfo { //Model.P1057
+				OriginalHeight = 0.615,
+				OriginalWidth = 0.226,
+				OriginalBaseWidth = 0.584,
+				PlumeSizeMultiplier = 0.19,
+				PlumePosition = -0.075,
+				NodeStackTop = 0.02,
+				NodeStackBottom = -0.595,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.0,
+				TankOnModel = false,
+				RadialAttachment = false,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/105-7P",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "nozzle",
+				ModelName = "105-7P (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = new string[] {
+					"Size2A",
+					"node_fairing_collider"
+				}
 			}
 		};
 
@@ -443,7 +466,8 @@ namespace GenericEngines {
 		RD0105,
 		NERVA,
 		LVT30,
-		LVT45
+		LVT45,
+		P1057
 	}
 
 	/// <summary>

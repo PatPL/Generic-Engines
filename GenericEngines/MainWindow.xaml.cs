@@ -714,7 +714,7 @@ namespace GenericEngines {
 				}
 			}
 
-			if (e.Key == Key.Space && mainDataGrid.CurrentCell.IsValid) {
+			if (e.Key == Key.Space && !isEdited && mainDataGrid.CurrentCell.IsValid) {
 				mainDataGrid.BeginEdit ();
 
 				KeyEventArgs tabPressEventArgs = new KeyEventArgs (Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab) { RoutedEvent = Keyboard.KeyDownEvent };
