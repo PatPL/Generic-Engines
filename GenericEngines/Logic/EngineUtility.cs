@@ -136,6 +136,11 @@ namespace GenericEngines {
 			return errors;
 		}
 		
+		/// <summary>
+		/// Looks for errors in engine's ID
+		/// </summary>
+		/// <param name="engines"></param>
+		/// <returns></returns>
 		public static List<string> CheckDuplicateIDs (List<Engine> engines) {
 			HashSet<string> takenIDs = new HashSet<string> ();
 			List<string> errors = new List<string> ();
