@@ -256,7 +256,8 @@ namespace GenericEngines {
 				if (errors.Count == 0) {
 					MessageBox.Show ("No inconsistencies found in current engine list", $"{errors.Count} errors found");
 				} else {
-					MessageBox.Show ($"Following errors found:\n{String.Join ("\n", errors.ToArray ())}", $"{errors.Count} errors found");
+					ListMessageBox.Show ("Following errors found:", errors);
+					//MessageBox.Show ($"Following errors found:\n{String.Join ("\n", errors.ToArray ())}", $"{errors.Count} errors found");
 				}
 			}
 		}
@@ -264,6 +265,11 @@ namespace GenericEngines {
 		private void ExportButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
 				if (Engines.Count > 0) {
+					if (EngineUtility.Validate (Engines).Count > 0) {
+						MessageBox.Show ("Validation errors found in current list. Fix all errors and try again", "Error");
+						return;
+					}
+
 					Microsoft.Win32.SaveFileDialog fileDialog = new Microsoft.Win32.SaveFileDialog ();
 					if (!Directory.Exists (Settings.Get (Setting.DefaultExportDirectory))) {
 						Directory.CreateDirectory (Settings.Get (Setting.DefaultExportDirectory));

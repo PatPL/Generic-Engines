@@ -104,6 +104,9 @@
     <Compile Include="Logic\VisibilityConverters.cs" />
     <Compile Include="Logic\Serializer.cs" />
     <Compile Include="Logic\Settings.cs" />
+    <Compile Include="Windows\ListMessageBox.xaml.cs">
+      <DependentUpon>ListMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Properties\TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ListMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

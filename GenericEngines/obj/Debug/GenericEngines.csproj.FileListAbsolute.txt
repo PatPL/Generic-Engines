@@ -106,3 +106,5 @@ C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\MainWindo
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\MainWindow.baml
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.baml
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ListMessageBox.g.cs
+C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ListMessageBox.baml
