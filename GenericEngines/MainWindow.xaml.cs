@@ -173,7 +173,15 @@ namespace GenericEngines {
 					SaveasButton_MouseUp (null, null);
 				} else {
 					if (ConfirmBox.Show ($"You are about to overwrite the {String.Format ("\"{0}\"", System.IO.Path.GetFileName (CurrentFile))} file. Are you sure?")) {
-						SaveEnginesToFile (CurrentFile);
+						(int savedEngines, ReturnStatus status) = EngineUtility.SaveEnginesToFile (Engines, CurrentFile);
+						switch (status) {
+							case ReturnStatus.Success:
+							MessageBox.Show ($"{savedEngines} engines succesfully saved to {CurrentFile}", "Success");
+							break;
+							case ReturnStatus.Error:
+							MessageBox.Show ($"Something went wrong while saving engines to {CurrentFile}. Try to choose a different location. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+							break;
+						}
 					}
 				}
 			}
@@ -194,7 +202,15 @@ namespace GenericEngines {
 
 				if (result != null && result == true) {
 					CurrentFile = fileDialog.FileName;
-					SaveEnginesToFile (CurrentFile);
+					(int savedEngines, ReturnStatus status) = EngineUtility.SaveEnginesToFile (Engines, CurrentFile);
+					switch (status) {
+						case ReturnStatus.Success:
+						MessageBox.Show ($"{savedEngines} engines succesfully saved to {CurrentFile}", "Success");
+						break;
+						case ReturnStatus.Error:
+						MessageBox.Show ($"Something went wrong while saving engines to {CurrentFile}. Try to choose a different location. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+						break;
+					}
 				} else {
 
 				}
@@ -216,15 +232,20 @@ namespace GenericEngines {
 					bool? result = fileDialog.ShowDialog ();
 
 					if (result != null && result == true) {
-						CurrentFile = fileDialog.FileName;
-						ReadEnginesFromFile (CurrentFile);
-					} else {
+						(List<Engine> newEngines, ReturnStatus status) = EngineUtility.ReadEnginesFromFile (fileDialog.FileName);
 
+						switch (status) {
+							case ReturnStatus.Success:
+							CurrentFile = fileDialog.FileName;
+							Engines = newEngines;
+							RefreshEngines ();
+							break;
+							case ReturnStatus.Error:
+							MessageBox.Show ($"Something went wrong while reading the file. Your .enl file might be corrupted. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+							break;
+						}
 					}
 				}
-
-				RefreshEngines ();
-
 			}
 		}
 
@@ -232,7 +253,7 @@ namespace GenericEngines {
 			if (sender == null || lastMouseDownObject == sender) {
 				List<string> errors = new List<string> ();
 
-				errors.AddRange (EnsureEnginePolymorphismConsistency ());
+				errors.AddRange (EngineUtility.EnsureEnginePolymorphismConsistency (Engines));
 
 				if (errors.Count == 0) {
 					MessageBox.Show ("No inconsistencies found in current engine list", $"{errors.Count} errors found");
@@ -257,9 +278,17 @@ namespace GenericEngines {
 					bool? result = fileDialog.ShowDialog ();
 
 					if (result != null && result == true) {
-						ExportEnginesToFile (fileDialog.FileName);
+						(int exportedEngineCount, ReturnStatus status) = EngineUtility.ExportEnginesToFile (Engines, fileDialog.FileName);
+						switch (status) {
+							case ReturnStatus.Success:
+							MessageBox.Show ($"{exportedEngineCount} engines succesfully exported to {fileDialog.FileName}", "Success");
+							break;
+							case ReturnStatus.Error:
+							MessageBox.Show ($"Something went wrong while exporting engines to {fileDialog.FileName}. All changes were reverted. If you're exporting directly to KSP folder, KSP shouldn't be running. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+							break;
+						}
 					} else {
-
+						
 					}
 				}
 			}
@@ -345,102 +374,7 @@ namespace GenericEngines {
 			((Engine) e.Row.Item).NotifyEveryProperty (); //Sledgehammer
 			
 		}
-
-		List<Engine> FixDuplicateID (List<Engine> input, out bool foundDuplicate) {
-			List<Engine> output = new List<Engine> ();
-			foundDuplicate = false;
-
-			foreach (Engine i in input) {
-				Engine copy = Serializer.Deserialize (Serializer.Serialize (i), out int _);
-				string originalName = copy.Name;
-				int counter = 1;
-
-				while (output.Exists (x => x.Name == copy.Name)) {
-					copy.Name = $"{originalName} {counter++}";
-					foundDuplicate |= true;
-				}
-
-				output.Add (copy);
-			}
-
-			return output;
-		}
-
-		void ExportEnginesToFile (string path) {
-			try {
-				int exportedEnginesCount = 0;
-				if (Settings.GetBool (Setting.AvoidCollisionOnNewEngine)) {
-					File.WriteAllText (path, Exporter.ConvertEngineListToConfig (FixDuplicateID (Engines, out bool foundDuplicate), out exportedEnginesCount));
-
-					if (foundDuplicate) {
-						MessageBox.Show ($"Warning! ID duplicates detected. Exporter fixed it, but ID duplicates might cause engines to disappear in game, if one of the duplicates gets removed, or added. Please, try to avoid duplicating IDs. If possible, change IDs and reexport the engines.", "Warning");
-					}
-				} else {
-					File.WriteAllText (path, Exporter.ConvertEngineListToConfig (Engines, out exportedEnginesCount));
-				}
-
-				string pathDirectory = new FileInfo (path).Directory.FullName;
-
-				File.WriteAllBytes ($"{pathDirectory}/PlumeScaleFixer.dll", Properties.Resources.GenericEnginesPlumeScaleFixer);
-				File.WriteAllText ($"{pathDirectory}/GEAllTankDefinition.cfg", AllTankDefinition.Get);
-				MessageBox.Show ($"{exportedEnginesCount} engines succesfully exported to {path}", "Success");
-			} catch (Exception e) {
-				App.SaveExceptionToFile (e);
-				MessageBox.Show ($"Something went wrong while exporting engines to {path}. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
-			}
-		}
-
-		void SaveEnginesToFile (string path) {
-			try {
-				FileStream file = new FileStream (path, FileMode.OpenOrCreate, FileAccess.Write);
-				file.SetLength (0);
-
-				byte[] serializedEngine;
-				foreach (Engine i in Engines) {
-
-					//serializedEngine = i.Serialize ();
-					serializedEngine = Serializer.Serialize (i);
-
-					file.Write (serializedEngine, 0, serializedEngine.Length);
-				}
-
-				file.Close ();
-				MessageBox.Show ($"{Engines.Count} engines succesfully saved to {path}", "Success");
-			} catch (Exception e) {
-				App.SaveExceptionToFile (e);
-				MessageBox.Show ($"Something went wrong while saving engines to {path}. Try to choose different location. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
-			}
-		}
-
-		void ReadEnginesFromFile (string path, bool append = false) {
-			try {
-				FileStream file = new FileStream (path, FileMode.Open, FileAccess.Read);
-
-				if (!append) {
-					Engines.Clear ();
-				}
-				List<Engine> newEngines = (append ? Engines : new List<Engine> ());
-
-				byte[] data = new byte[file.Length];
-				file.Read (data, 0, (int) file.Length);
-
-				int offset = 0;
-
-				while (offset < data.Length) {
-					//newEngines.Add (Engine.Deserialize (data, out int addedOffset, offset));
-					newEngines.Add (Serializer.Deserialize (data, out int addedOffset, offset));
-
-					offset += addedOffset;
-				}
-				file.Close ();
-
-				Engines = newEngines;
-			} catch (Exception e) {
-				App.SaveExceptionToFile (e);
-				MessageBox.Show ($"Something went wrong while reading engines from {path}. Your .enl file might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
-			}
-		}
-
+		
 		private void PropellantCombo_Loaded (object sender, RoutedEventArgs e) {
 			((ComboBox) sender).ItemsSource = Enum.GetValues (typeof (FuelType)).Cast<FuelType> ();
 		}
@@ -603,35 +537,32 @@ namespace GenericEngines {
 
 		private void AppendButton_MouseUp (object sender, MouseButtonEventArgs e) {
 			if (sender == null || lastMouseDownObject == sender) {
-				try {
-					Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
-					if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
-						Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
-					}
-					fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
-					fileDialog.FileName = "";
-					fileDialog.DefaultExt = ".enl";
-					fileDialog.Filter = "Engine Lists|*.enl";
-					fileDialog.Multiselect = true;
+				Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog ();
+				if (!Directory.Exists (Settings.Get (Setting.DefaultSaveDirectory))) {
+					Directory.CreateDirectory (Settings.Get (Setting.DefaultSaveDirectory));
+				}
+				fileDialog.InitialDirectory = Settings.Get (Setting.DefaultSaveDirectory);
+				fileDialog.FileName = "";
+				fileDialog.DefaultExt = ".enl";
+				fileDialog.Filter = "Engine Lists|*.enl";
+				fileDialog.Multiselect = true;
 
-					bool? result = fileDialog.ShowDialog ();
+				bool? result = fileDialog.ShowDialog ();
 
-					if (result != null && result == true) {
-						foreach (string i in fileDialog.FileNames) {
-							ReadEnginesFromFile (i, true);
+				bool errors = false;
+				if (result != null && result == true) {
+					foreach (string i in fileDialog.FileNames) {
+						if (EngineUtility.AppendEnginesToList (i, Engines) == ReturnStatus.Error) {
+							errors = true;
+							MessageBox.Show ($"Something went wrong while reading engines from {i}. Your .enl file might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
 						}
-					} else {
-						return;
 					}
 
-					MessageBox.Show ($"Engines succesfully appended to {CurrentFile}", "Success");
-					
 					RefreshEngines ();
 
-				} catch (Exception ex) {
-					// readEnginesFromFile handles file errors one by one
-					App.SaveExceptionToFile (ex);
-					MessageBox.Show ($"Something went wrong while appending engines. One or more of the .enl files might be corrupt. More info about this error saved to {App.otherErrorLogLocation}", "Warning");
+					if (!errors) {
+						MessageBox.Show ($"All files appended successfully", "Success");
+					}
 				}
 			}
 		}
@@ -719,81 +650,22 @@ namespace GenericEngines {
 			List<Engine> IDs = new List<Engine> { new Engine () { Name = "" } };
 			switch (currentEngine.PolyType) {
 				case Polymorphism.MultiModeSlave:
-				foreach (Engine i in Engines) {
-					if (!i.Active) {
-						continue;
-					}
-
-					if (i.PolyType != Polymorphism.MultiModeMaster) {
-						continue;
-					}
-
-					IDs.Add (i);
-				}
+				IDs.AddRange (Engines.FindAll (x => x.Active && x.PolyType == Polymorphism.MultiModeMaster));
 				break;
 				case Polymorphism.MultiConfigSlave:
-				foreach (Engine i in Engines) {
-					if (!i.Active) {
-						continue;
-					}
-
-					if (i.PolyType != Polymorphism.MultiConfigMaster) {
-						continue;
-					}
-
-					IDs.Add (i);
-				}
+				IDs.AddRange (Engines.FindAll (x => x.Active && x.PolyType == Polymorphism.MultiConfigMaster));
 				break;
-				default:
-
-				break;
-			}
-
-			if (!IDs.Exists (x => x.Name == currentEngine.MasterEngineName)) {
-				currentEngine.MasterEngineName = "";
 			}
 
 			combo.ItemsSource = IDs;
 			combo.Items.Refresh ();
 
-			combo.SelectedItem = IDs.Find (x => x.Name == currentEngine.MasterEngineName);
-		}
-
-		/// <summary>
-		/// Fixes Polymorphism config errors and alerts the user if error was found. Returns error messages.
-		/// </summary>
-		public List<string> EnsureEnginePolymorphismConsistency () {
-			HashSet<string> LinkedMultiModeMasters = new HashSet<string> ();
-			List<string> Errors = new List<string> ();
-
-			foreach (Engine i in Engines) {
-				if (!i.Active) {
-					continue;
-				}
-
-				if (i.PolyType == Polymorphism.MultiModeSlave && i.MasterEngineName != "") {
-					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiModeMaster && x.Name == i.MasterEngineName)) {
-						if (LinkedMultiModeMasters.Contains (i.MasterEngineName)) {
-							Errors.Add ($"Error in engine {i.Name}: MultiModeMaster can have at most 1 slave engine. {i.MasterEngineName} already has a slave.");
-						} else {
-							LinkedMultiModeMasters.Add (i.MasterEngineName);
-						}
-					} else {
-						Errors.Add ($"Error in engine {i.Name}: {i.MasterEngineName} is inactive or its Polymorphism is not set to 'MultiModeMaster'.");
-					}
-				}
-
-				if (i.PolyType == Polymorphism.MultiConfigSlave && i.MasterEngineName != "") {
-					if (Engines.Exists (x => x.Active && x.PolyType == Polymorphism.MultiConfigMaster && x.Name == i.MasterEngineName)) {
-						
-					} else {
-						Errors.Add ($"Error in engine {i.Name}: {i.MasterEngineName} is inactive or its Polymorphism is not set to 'MultiConfigMaster'.");
-					}
-				}
+			Engine master = IDs.Find (x => x.Name == currentEngine.MasterEngineName);
+			if (master is null) {
+				currentEngine.MasterEngineName = "";
+			} else {
+				combo.SelectedItem = master;
 			}
-
-			return Errors;
-
 		}
 	}
 }

@@ -81,6 +81,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\EngineUtility.cs" />
+    <Compile Include="Logic\MainWindowLogic.cs" />
     <Compile Include="Logic\PolymorphismEnumWrapper.cs" />
     <Compile Include="Logic\PolymorphismType.cs" />
     <Compile Include="Windows\About.xaml.cs">
