@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="ListMessageBox" Height="400" Width="500" WindowStyle="ToolWindow" FontFamily="Verdana" Background="#FFBBBBBB" SizeToContent="WidthAndHeight" MaxWidth="800" MaxHeight="600">
+        Title="Message" Height="400" Width="500" WindowStyle="ToolWindow" FontFamily="Verdana" Background="#FFBBBBBB" SizeToContent="WidthAndHeight" MaxWidth="800" MaxHeight="600" ResizeMode="NoResize">
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="24"/>

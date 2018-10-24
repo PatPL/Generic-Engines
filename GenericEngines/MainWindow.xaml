@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="600" Width="800" Closing="MainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
+        Title="Generic Engines" Height="600" Width="800" KeyUp="Window_KeyUp" Closing="MainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="b2v" />
 		<local:ReversedBooleanToVisibilityConverter x:Key="rb2v" />
@@ -148,6 +148,20 @@
 			</Setter>
 		</Style>
 	</Window.Resources>
+	<Window.InputBindings>
+		<KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding New_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding Open_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="I" Command="{Binding Append_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding Save_Command}"/>
+		<KeyBinding Modifiers="Ctrl+Shift" Key="S" Command="{Binding SaveAs_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding Validate_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding Export_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding Duplicate_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="Add" Command="{Binding Add_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="OemPlus" Command="{Binding Add_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="Subtract" Command="{Binding Remove_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="OemMinus" Command="{Binding Remove_Command}"/>
+	</Window.InputBindings>
 	<Grid Margin="0,0,0,0" Background="#FFDDDDDD">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="36"/>
@@ -168,19 +182,19 @@
 			<RowDefinition Height="36"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Grid.Column="0" Margin="4,4,0,0" Source="Images/new.png" MouseDown="RegisterMouseDown" MouseUp="NewButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
-		<Image Grid.Column="1" Margin="4,4,0,0" Source="Images/open.png" MouseDown="RegisterMouseDown" MouseUp="OpenButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
-		<Image Grid.Column="2" Margin="4,4,0,0" Source="Images/append.png" MouseDown="RegisterMouseDown" MouseUp="AppendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-		<Image Grid.Column="3" Margin="4,4,0,0" Source="Images/save.png" MouseDown="RegisterMouseDown" MouseUp="SaveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
-		<Image Grid.Column="4" Margin="4,4,0,0" Source="Images/saveas.png" MouseDown="RegisterMouseDown" MouseUp="SaveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
-		<Image Grid.Column="5" Margin="4,4,0,0" Source="Images/validate.png" MouseDown="RegisterMouseDown" MouseUp="ValidateButton_MouseUp" ToolTip="Validate current engine list" Stretch="Fill"/>
-		<Image Grid.Column="6" Margin="4,4,0,0" Source="Images/export.png" MouseDown="RegisterMouseDown" MouseUp="ExportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
-		<Image Grid.Column="7" Margin="4,4,0,0" Source="Images/duplicate.png" MouseDown="RegisterMouseDown" MouseUp="DuplicateButton_MouseUp" ToolTip="Duplicate selected engines" Stretch="Fill"/>
-		<Image Grid.Column="8" Margin="4,4,0,0" Source="Images/add.png" MouseDown="RegisterMouseDown" MouseUp="AddButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
-		<Image Grid.Column="9" Margin="4,4,0,0" Source="Images/remove.png" MouseDown="RegisterMouseDown" MouseUp="RemoveButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
+		<Image Grid.Column="0" Margin="4,4,0,0" Source="Images/new.png" MouseDown="RegisterMouseDown" MouseUp="NewButton_MouseUp" ToolTip="(Ctrl + N) Open a new empty file" Stretch="Fill"/>
+		<Image Grid.Column="1" Margin="4,4,0,0" Source="Images/open.png" MouseDown="RegisterMouseDown" MouseUp="OpenButton_MouseUp" ToolTip="(Ctrl + O) Open engine configs from file" Stretch="Fill"/>
+		<Image Grid.Column="2" Margin="4,4,0,0" Source="Images/append.png" MouseDown="RegisterMouseDown" MouseUp="AppendButton_MouseUp" ToolTip="(Ctrl + I) Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+		<Image Grid.Column="3" Margin="4,4,0,0" Source="Images/save.png" MouseDown="RegisterMouseDown" MouseUp="SaveButton_MouseUp" ToolTip="(Ctrl + S) Save current engine configs" Stretch="Fill"/>
+		<Image Grid.Column="4" Margin="4,4,0,0" Source="Images/saveas.png" MouseDown="RegisterMouseDown" MouseUp="SaveasButton_MouseUp" ToolTip="(Ctrl + Shift + S) Save current engine configs as new file" Stretch="Fill"/>
+		<Image Grid.Column="5" Margin="4,4,0,0" Source="Images/validate.png" MouseDown="RegisterMouseDown" MouseUp="ValidateButton_MouseUp" ToolTip="(Ctrl + V) Validate current engine list" Stretch="Fill"/>
+		<Image Grid.Column="6" Margin="4,4,0,0" Source="Images/export.png" MouseDown="RegisterMouseDown" MouseUp="ExportButton_MouseUp" ToolTip="(Ctrl + E) Export engine configs as KSP mod" Stretch="Fill"/>
+		<Image Grid.Column="7" Margin="4,4,0,0" Source="Images/duplicate.png" MouseDown="RegisterMouseDown" MouseUp="DuplicateButton_MouseUp" ToolTip="(Ctrl + D) Duplicate selected engines" Stretch="Fill"/>
+		<Image Grid.Column="8" Margin="4,4,0,0" Source="Images/add.png" MouseDown="RegisterMouseDown" MouseUp="AddButton_MouseUp" ToolTip="(Ctrl + [+]) Add new engine config" Stretch="Fill"/>
+		<Image Grid.Column="9" Margin="4,4,0,0" Source="Images/remove.png" MouseDown="RegisterMouseDown" MouseUp="RemoveButton_MouseUp" ToolTip="(Ctrl + [-]) Remove all selected engine configs" Stretch="Fill"/>
 		<Image Grid.Column="11" Margin="0,4,4,0" Source="Images/help.png" MouseDown="RegisterMouseDown" MouseUp="HelpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
 		<Image Grid.Column="12" Margin="0,4,4,0" Source="Images/settings.png" MouseDown="RegisterMouseDown" MouseUp="SettingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
-		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="MainDataGrid_BeginningEdit" CellEditEnding="MainDataGrid_CellEditEnding" PreviewKeyUp="MainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="MainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
+		<DataGrid PreviewKeyDown="MainDataGrid_PreviewKeyDown" HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="MainDataGrid_BeginningEdit" CellEditEnding="MainDataGrid_CellEditEnding" PreviewKeyUp="MainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="MainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn SortMemberPath="Active" Width="1">
 					<DataGridTemplateColumn.CellTemplate>

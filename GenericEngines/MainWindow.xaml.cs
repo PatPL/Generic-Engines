@@ -17,11 +17,38 @@ using System.Globalization;
 using System.ComponentModel;
 
 namespace GenericEngines {
-	/// <summary>
-	/// Logika interakcji dla klasy MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window {
 
+	public class Command : ICommand {
+		
+		private Action action;
+		public event EventHandler CanExecuteChanged;
+
+		public Command (Action _action) {
+			action = _action;
+		}
+
+		public bool CanExecute (object parameter) {
+			return true;
+		}
+
+		public void Execute (object parameter) {
+			action ();
+		}
+	}
+
+	public partial class MainWindow : Window {
+		
+		public ICommand New_Command => new Command (() => { NewButton_MouseUp (null, null); });
+		public ICommand Open_Command => new Command (() => { OpenButton_MouseUp (null, null); });
+		public ICommand Append_Command => new Command (() => { AppendButton_MouseUp (null, null); });
+		public ICommand Save_Command => new Command (() => { SaveButton_MouseUp (null, null); });
+		public ICommand SaveAs_Command => new Command (() => { SaveasButton_MouseUp (null, null); });
+		public ICommand Validate_Command => new Command (() => { ValidateButton_MouseUp (null, null); });
+		public ICommand Export_Command => new Command (() => { ExportButton_MouseUp (null, null); });
+		public ICommand Duplicate_Command => new Command (() => { DuplicateButton_MouseUp (null, null); });
+		public ICommand Add_Command => new Command (() => { AddButton_MouseUp (null, null); });
+		public ICommand Remove_Command => new Command (() => { RemoveButton_MouseUp (null, null); });
+		
 		object lastMouseDownObject;
 
 		bool isEdited = false;
@@ -41,6 +68,7 @@ namespace GenericEngines {
 		}
 
 		public MainWindow () {
+			this.DataContext = this;
 			InitializeComponent ();
 		}
 
@@ -345,9 +373,9 @@ namespace GenericEngines {
 		}
 
 		private void MainDataGrid_KeyUp (object sender, KeyEventArgs e) {
-			if (e.Key == Key.Delete && !isEdited) {
-				RemoveButton_MouseUp (null, null);
-			}
+			
+			
+			
 		}
 
 		private void MainDataGrid_BeginningEdit (object sender, DataGridBeginningEditEventArgs e) {
@@ -667,6 +695,40 @@ namespace GenericEngines {
 				currentEngine.MasterEngineName = "";
 			} else {
 				combo.SelectedItem = master;
+			}
+		}
+
+		private void Window_KeyUp (object sender, KeyEventArgs e) {
+			
+			if (e.Key == Key.RightCtrl && mainDataGrid.Items.Count != 0) {
+				mainDataGrid.Focus ();
+
+				if (mainDataGrid.CurrentCell.IsValid) {
+					DataGridCellInfo tmp = mainDataGrid.CurrentCell;
+					mainDataGrid.CurrentCell = new DataGridCellInfo (mainDataGrid.Items[0], mainDataGrid.Columns[0]);
+					mainDataGrid.CurrentCell = tmp;
+					//For whatever reason this must be like this
+					//Thanks microsoft
+				} else {
+					mainDataGrid.CurrentCell = new DataGridCellInfo (mainDataGrid.Items[0], mainDataGrid.Columns[0]);
+				}
+			}
+
+			if (e.Key == Key.Space && mainDataGrid.CurrentCell.IsValid) {
+				mainDataGrid.BeginEdit ();
+
+				KeyEventArgs tabPressEventArgs = new KeyEventArgs (Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab) { RoutedEvent = Keyboard.KeyDownEvent };
+				InputManager.Current.ProcessInput (tabPressEventArgs);
+			}
+			
+			if (e.Key == Key.Enter) {
+				mainDataGrid.CommitEdit ();
+			}
+		}
+
+		private void MainDataGrid_PreviewKeyDown (object sender, KeyEventArgs e) {
+			if (e.Key == Key.Enter || e.Key == Key.Return) {
+				e.Handled = true;
 			}
 		}
 	}
