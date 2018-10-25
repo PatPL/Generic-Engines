@@ -373,6 +373,26 @@ namespace GenericEngines {
 					"Size2A",
 					"node_fairing_collider"
 				}
+			}, new ModelInfo { //Model.MK55
+				OriginalHeight = 1.87,
+				OriginalWidth = 0.434,
+				OriginalBaseWidth = 0.98,
+				PlumeSizeMultiplier = 0.39,
+				PlumePosition = -0.16,
+				NodeStackTop = 0.0,
+				NodeStackBottom = 0.0,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.12,
+				TankOnModel = false,
+				RadialAttachment = true,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/Mk55",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Gimbal",
+				ModelName = "Mk55 (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = null
 			}
 		};
 
@@ -467,7 +487,8 @@ namespace GenericEngines {
 		NERVA,
 		LVT30,
 		LVT45,
-		P1057
+		P1057,
+		MK55
 	}
 
 	/// <summary>
