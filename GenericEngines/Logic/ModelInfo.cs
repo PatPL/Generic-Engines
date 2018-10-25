@@ -458,6 +458,29 @@ namespace GenericEngines {
 				HiddenMuObjects = new string[] {
 					"fairing"
 				}
+			}, new ModelInfo { //Model.BallNukeS
+				OriginalHeight = 0.767,
+				OriginalWidth = 0.407,
+				OriginalBaseWidth = 0.585,
+				PlumeSizeMultiplier = 0.36,
+				PlumePosition = -0.03,
+				NodeStackTop = 0.065,
+				NodeStackBottom = -0.702,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.0,
+				TankOnModel = false,
+				RadialAttachment = false,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/PoodleNTR",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "thrustTransform",
+				ModelName = "Small Sphere NTR (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = new string[] {
+					"Size1B",
+					"fairing"
+				}
 			}
 		};
 
@@ -556,7 +579,8 @@ namespace GenericEngines {
 		MK55,
 		OMSL,
 		Poodle,
-		BallNuke
+		BallNuke,
+		BallNukeS
 	}
 
 	/// <summary>
