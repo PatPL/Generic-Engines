@@ -498,10 +498,33 @@ namespace GenericEngines {
 				TextureDefinitions = "",
 				ThrustTransformName = "thrustTransform",
 				GimbalTransformName = "Nozzle",
-				ModelName = "Skipper (VSR)",
+				ModelName = "Gas Generator (VSR)",
 				ModelType = EngineGroupType.Fake,
 				HiddenMuObjects = new string[] {
 					"fairing"
+				}
+			}, new ModelInfo { //Model.SkipperR
+				OriginalHeight = 2.655,
+				OriginalWidth = 1.415,
+				OriginalBaseWidth = 1.225,
+				PlumeSizeMultiplier = 1.3,
+				PlumePosition = 0.0,
+				NodeStackTop = 0.007,
+				NodeStackBottom = -2.648,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.0,
+				TankOnModel = false,
+				RadialAttachment = false,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/Skipper",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Obj_Gimbal",
+				ModelName = "Skipper (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = new string[] {
+					"obj_fairing",
+					"Size2A"
 				}
 			}
 		};
@@ -603,7 +626,8 @@ namespace GenericEngines {
 		Poodle,
 		BallNuke,
 		BallNukeS,
-		Skipper
+		Skipper,
+		SkipperR
 	}
 
 	/// <summary>
