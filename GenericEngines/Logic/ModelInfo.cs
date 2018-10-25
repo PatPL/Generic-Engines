@@ -413,6 +413,29 @@ namespace GenericEngines {
 				ModelName = "OMS-L (VSR)",
 				ModelType = EngineGroupType.Fake,
 				HiddenMuObjects = null
+			}, new ModelInfo { //Model.Poodle
+				OriginalHeight = 1.584,
+				OriginalWidth = 1.222,
+				OriginalBaseWidth = 1.196,
+				PlumeSizeMultiplier = 1.12,
+				PlumePosition = 0.0,
+				NodeStackTop = 0.722,
+				NodeStackBottom = -0.862,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.0,
+				TankOnModel = false,
+				RadialAttachment = false,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/Poodle",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Obj_Gimbal",
+				ModelName = "Poodle (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = new string[] {
+					"Size2B",
+					"fairing"
+				}
 			}
 		};
 
@@ -509,7 +532,8 @@ namespace GenericEngines {
 		LVT45,
 		P1057,
 		MK55,
-		OMSL
+		OMSL,
+		Poodle
 	}
 
 	/// <summary>
