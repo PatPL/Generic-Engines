@@ -481,6 +481,28 @@ namespace GenericEngines {
 					"Size1B",
 					"fairing"
 				}
+			}, new ModelInfo { //Model.Skipper
+				OriginalHeight = 3.514,
+				OriginalWidth = 1.6,
+				OriginalBaseWidth = 2.504,
+				PlumeSizeMultiplier = 1.45,
+				PlumePosition = -0.65,
+				NodeStackTop = 1.19,
+				NodeStackBottom = -2.324,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.0,
+				TankOnModel = false,
+				RadialAttachment = false,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/Size2MedEngineB",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Nozzle",
+				ModelName = "Skipper (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = new string[] {
+					"fairing"
+				}
 			}
 		};
 
@@ -580,7 +602,8 @@ namespace GenericEngines {
 		OMSL,
 		Poodle,
 		BallNuke,
-		BallNukeS
+		BallNukeS,
+		Skipper
 	}
 
 	/// <summary>
