@@ -276,5 +276,14 @@
   <ItemGroup>
     <Resource Include="Images\validate.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\BallNuke.jpg" />
+    <Resource Include="ModelPreviews\BallNukeS.jpg" />
+    <Resource Include="ModelPreviews\OMSL.jpg" />
+    <Resource Include="ModelPreviews\P1057.jpg" />
+    <Resource Include="ModelPreviews\Poodle.jpg" />
+    <Resource Include="ModelPreviews\Skipper.jpg" />
+    <Resource Include="ModelPreviews\SkipperR.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
