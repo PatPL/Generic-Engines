@@ -47,39 +47,12 @@ namespace GenericEngines {
 			}
 		}
 
-		public bool DisplayInfoBoxPanel {
-			get {
-				return bool.Parse (Settings.Get ("DisplayInfoBoxPanel"));
-			}
-			set {
-				Settings.Set ("DisplayInfoBoxPanel", value.ToString ());
-			}
-		}
-
 		public bool MoreEngineInfo {
 			get {
-				return bool.Parse (Settings.Get ("MoreEngineInfo"));
+				return bool.Parse (Settings.Get (Setting.MoreEngineInfo));
 			}
 			set {
-				Settings.Set ("MoreEngineInfo", value.ToString ());
-			}
-		}
-
-		public bool AvoidCollisionOnNewEngine {
-			get {
-				return bool.Parse (Settings.Get ("AvoidCollisionOnNewEngine"));
-			}
-			set {
-				Settings.Set ("AvoidCollisionOnNewEngine", value.ToString ());
-			}
-		}
-
-		public bool ValidateIDOnInput {
-			get {
-				return bool.Parse (Settings.Get ("ValidateIDOnInput"));
-			}
-			set {
-				Settings.Set ("ValidateIDOnInput", value.ToString ());
+				Settings.Set (Setting.MoreEngineInfo, value.ToString ());
 			}
 		}
 

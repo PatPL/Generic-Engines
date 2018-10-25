@@ -20,8 +20,11 @@ namespace GenericEngines {
 
 	public class Command : ICommand {
 		
-		private Action action;
+		private readonly Action action;
+		
+		#pragma warning disable CS0067
 		public event EventHandler CanExecuteChanged;
+		#pragma warning restore CS0067
 
 		public Command (Action _action) {
 			action = _action;

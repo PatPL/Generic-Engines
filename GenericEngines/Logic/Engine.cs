@@ -24,7 +24,7 @@ namespace GenericEngines {
 
 		// Serializer versions
 		public bool Active { get; set; } //0
-		public string Name { get => _name; set { _name = value; NotifyPropertyChanged ("RealEngineName"); } } //0
+		public string Name { get => _name; set { _name = value; NotifyPropertyChanged ("NameLabel"); } } //0
 		public double Mass { get; set; } //0
 		public double Thrust { get => _thrust; set { _thrust = value; NotifyPropertyChanged ("MinimumThrustLabel"); NotifyPropertyChanged ("MassLabel"); } } //0
 		public double AtmIsp { get => _atmIsp; set { _atmIsp = value; NotifyPropertyChanged ("ThrustLabel"); } } //0
@@ -65,13 +65,15 @@ namespace GenericEngines {
 		public List<DoubleTuple> ThrustCurve { get; set; } //9
 		public bool UseTanks { get; set; } //10
 		public bool LimitTanks { get; set; } //10
-		public Polymorphism PolyType { get; set; } //11
+		public Polymorphism PolyType { get => _polyType; set { _polyType = value; NotifyEveryProperty (); } } //11
 		public string MasterEngineName { get; set; } //11
 		public int MasterEngineCost { get; set; } //12
 		public double MasterEngineMass { get; set; } //12
-		
+
 		//This is necessary to fix deleting
 		public static int UIDc = 1;
+		private Polymorphism _polyType;
+
 		public int UID { get; set; }
 
 		#endregion
@@ -95,7 +97,8 @@ namespace GenericEngines {
 				}
 
 				NotifyEveryProperty ();
-			} get {
+			}
+			get {
 				//Just to be displayed
 				return new Engine () { Name = MasterEngineName };
 			}
@@ -215,7 +218,7 @@ namespace GenericEngines {
 		public string ThrustCurveConfig {
 			get {
 				string output = "";
-				
+
 				if (ThrustCurve.Count <= 0) {
 
 				} else {
@@ -623,13 +626,13 @@ namespace GenericEngines {
 			get {
 				switch (EngineVariant) {
 					case EngineType.Liquid:
-					return "LIQUID_ENGINE";
+						return "LIQUID_ENGINE";
 					case EngineType.Solid:
-					return "SOLID_BOOSTER";
+						return "SOLID_BOOSTER";
 					//case EngineType.RCS:
 					//return "RCS_MODULE";
 					default:
-					return "unknown";
+						return "unknown";
 				}
 			}
 		}
@@ -641,11 +644,11 @@ namespace GenericEngines {
 			get {
 				switch (EngineVariant) {
 					case EngineType.Liquid:
-					return "LiquidFuel";
+						return "LiquidFuel";
 					case EngineType.Solid:
-					return "SolidBooster";
+						return "SolidBooster";
 					default:
-					return "unknown";
+						return "unknown";
 				}
 			}
 		}
@@ -657,11 +660,11 @@ namespace GenericEngines {
 			get {
 				switch (EngineVariant) {
 					case EngineType.Liquid:
-					return "True";
+						return "True";
 					case EngineType.Solid:
-					return "False";
+						return "False";
 					default:
-					return "True";
+						return "True";
 				}
 			}
 		}
@@ -673,11 +676,11 @@ namespace GenericEngines {
 			get {
 				switch (EngineVariant) {
 					case EngineType.Liquid:
-					return "True";
+						return "True";
 					case EngineType.Solid:
-					return "False";
+						return "False";
 					default:
-					return "True";
+						return "True";
 				}
 			}
 		}
@@ -689,11 +692,11 @@ namespace GenericEngines {
 			get {
 				switch (EngineVariant) {
 					case EngineType.Liquid:
-					return "False";
+						return "False";
 					case EngineType.Solid:
-					return "True";
+						return "True";
 					default:
-					return "False";
+						return "False";
 				}
 			}
 		}
@@ -886,17 +889,17 @@ namespace GenericEngines {
 			get {
 				switch (PolyType) {
 					case Polymorphism.Single:
-					return "Single";
+						return "Single";
 					case Polymorphism.MultiModeMaster:
-					return "Multimode Master";
+						return "Multimode Master";
 					case Polymorphism.MultiModeSlave:
-					return $"Multimode slave to {MasterEngineName}";
+						return $"Multimode slave to {MasterEngineName}";
 					case Polymorphism.MultiConfigMaster:
-					return "Multiconfig Master";
+						return "Multiconfig Master";
 					case Polymorphism.MultiConfigSlave:
-					return $"Multiconfig slave to {MasterEngineName}";
+						return $"Multiconfig slave to {MasterEngineName}";
 					default:
-					return "Something went wrong";
+						return "Something went wrong";
 				}
 			}
 		}
@@ -1087,17 +1090,14 @@ namespace GenericEngines {
 		public string EngineIDInterface {
 			get {
 				return Name;
-			} set {
+			}
+			set {
 				string input = "";
 
-				if (Settings.GetBool (Setting.ValidateIDOnInput)) {
-					foreach (char i in value) {
-						if (Regex.IsMatch (i.ToString (), "[a-zA-Z0-9-]{1}")) {
-							input += i;
-						}
+				foreach (char i in value) {
+					if (Regex.IsMatch (i.ToString (), "[a-zA-Z0-9-]{1}")) {
+						input += i;
 					}
-				} else {
-					input = value;
 				}
 
 				input = input.Replace (' ', '-');
@@ -1119,7 +1119,7 @@ namespace GenericEngines {
 
 				double usedVolume = 0.0;
 				foreach (FuelRatioElement i in TanksContents) {
-					
+
 					double volume = Math.Min (i.Ratio / FuelTypeList.GetFuelUtilisation (i.Propellant), (LimitTanks ? TanksVolume - usedVolume : double.MaxValue));
 					usedVolume += volume;
 
@@ -1176,7 +1176,7 @@ namespace GenericEngines {
 		/// </summary> 1000
 		public Engine () {
 			UID = UIDc++;
-			
+
 			Active = false;
 			Name = "New-Engine";
 			Mass = 1.0;
@@ -1244,7 +1244,7 @@ namespace GenericEngines {
 				NotifyPropertyChanged (i.Name);
 			}
 		}
-		
+
 		/// <summary>
 		/// Same as 'new Engine ()'. Returns default engine
 		/// </summary>

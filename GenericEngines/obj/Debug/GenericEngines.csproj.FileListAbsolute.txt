@@ -75,11 +75,8 @@ C:\Users\Uczen\Documents\Generic-Engines-0.3\GenericEngines\obj\Debug\GenericEng
 C:\Users\Uczen\Documents\Generic-Engines-0.3\GenericEngines\obj\Debug\GenericEngines.csproj.GenerateResource.cache
 C:\Users\Uczen\Documents\Generic-Engines-0.3\GenericEngines\obj\Debug\GenericEngines.csproj.CoreCompileInputs.cache
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.csprojAssemblyReference.cache
-C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\About.g.cs
-C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\ConfirmWindow.g.cs
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\MainWindow.g.cs
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Properties\TestWindow.g.cs
-C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.g.cs
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\App.g.cs
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines_MarkupCompile.cache
@@ -89,11 +86,8 @@ C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Gener
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\bin\Debug\GenericEngines.exe.config
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\bin\Debug\GenericEngines.exe
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\bin\Debug\GenericEngines.pdb
-C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\About.baml
-C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\ConfirmWindow.baml
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\MainWindow.baml
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Properties\TestWindow.baml
-C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\SettingsWindow.baml
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.g.resources
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.Properties.Resources.resources
 C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\GenericEngines.csproj.GenerateResource.cache
@@ -108,3 +102,11 @@ C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\C
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.baml
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ListMessageBox.g.cs
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\obj\Debug\Windows\ListMessageBox.baml
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\About.g.cs
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.g.cs
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\ListMessageBox.g.cs
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\SettingsWindow.g.cs
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\About.baml
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\ConfirmWindow.baml
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\ListMessageBox.baml
+C:\Users\Uczen\Source\Repos\PatPL\Generic-Engines\GenericEngines\obj\Debug\Windows\SettingsWindow.baml
