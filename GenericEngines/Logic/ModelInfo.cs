@@ -393,6 +393,26 @@ namespace GenericEngines {
 				ModelName = "Mk55 (VSR)",
 				ModelType = EngineGroupType.Fake,
 				HiddenMuObjects = null
+			}, new ModelInfo { //Model.OMSL
+				OriginalHeight = 0.288,
+				OriginalWidth = 0.773,
+				OriginalBaseWidth = 0.653,
+				PlumeSizeMultiplier = 0.72,
+				PlumePosition = -0.3,
+				NodeStackTop = -0.012,
+				NodeStackBottom = -1.24,
+				OriginalTankVolume = 0.0,
+				RadialAttachmentPoint = 0.0,
+				TankOnModel = false,
+				RadialAttachment = false,
+				CanAttachOnModel = false,
+				ModelPath = "VenStockRevamp/Squad/Parts/Propulsion/OMS-L",
+				TextureDefinitions = "",
+				ThrustTransformName = "thrustTransform",
+				GimbalTransformName = "Nozzle",
+				ModelName = "OMS-L (VSR)",
+				ModelType = EngineGroupType.Fake,
+				HiddenMuObjects = null
 			}
 		};
 
@@ -488,7 +508,8 @@ namespace GenericEngines {
 		LVT30,
 		LVT45,
 		P1057,
-		MK55
+		MK55,
+		OMSL
 	}
 
 	/// <summary>
