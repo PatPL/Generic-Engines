@@ -51,7 +51,9 @@ namespace GenericEngines {
 		public ICommand Duplicate_Command => new Command (() => { DuplicateButton_MouseUp (null, null); });
 		public ICommand Add_Command => new Command (() => { AddButton_MouseUp (null, null); });
 		public ICommand Remove_Command => new Command (() => { RemoveButton_MouseUp (null, null); });
-		
+		public ICommand Settings_Command => new Command (() => { SettingsButton_MouseUp (null, null); });
+		public ICommand About_Command => new Command (() => { HelpButton_MouseUp (null, null); });
+
 		object lastMouseDownObject;
 
 		bool isEdited = false;
