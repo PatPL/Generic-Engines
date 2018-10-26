@@ -539,6 +539,9 @@ namespace GenericEngines {
 						CurrentGDList.Remove (i);
 					}
 
+					CurrentGD.CommitEdit ();
+					CurrentGD.CancelEdit ();
+
 					CurrentGD.Items.Refresh ();
 				}
 			}
