@@ -296,5 +296,8 @@
     <Resource Include="Images\MenuIcons16\save16.png" />
     <Resource Include="Images\MenuIcons16\saveas16.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MenuIcons16\validate16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -85,5 +85,8 @@
         <CheckBox Grid.Row="3" IsChecked="{Binding MoreEngineInfo, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" Height="16" Margin="8,0,0,0"/>
         <TextBlock Grid.Row="3" VerticalAlignment="Center" FontFamily="Verdana" FontSize="16" Margin="32,0,0,0">Show more info about engines</TextBlock>
 
-    </Grid>
+		<CheckBox Grid.Row="4" IsChecked="{Binding UseCompactMenu, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" Height="16" Margin="8,0,0,0"/>
+		<TextBlock Grid.Row="4" VerticalAlignment="Center" FontFamily="Verdana" FontSize="16" Margin="32,0,0,0">Use regular, compact menu</TextBlock>
+
+	</Grid>
 </Window>

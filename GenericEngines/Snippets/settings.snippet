@@ -25,9 +25,9 @@
 			</Declarations>
 			<Code Language="csharp"><![CDATA[public $settingType$ $settingID$ {
 			get {
-				return $settingType$.Parse (Settings.Get ("$settingID$"));
+				return $settingType$.Parse (Settings.Get (Setting.$settingID$));
 			} set {
-				Settings.Set ("$settingID$", value.ToString ());
+				Settings.Set (Setting.$settingID$, value.ToString ());
 			}
 		}]]>
 			</Code>

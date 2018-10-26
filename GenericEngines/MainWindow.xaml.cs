@@ -39,7 +39,7 @@ namespace GenericEngines {
 		}
 	}
 
-	public partial class MainWindow : Window {
+	public partial class MainWindow : Window, INotifyPropertyChanged {
 		
 		public ICommand New_Command => new Command (() => { NewButton_MouseUp (null, null); });
 		public ICommand Open_Command => new Command (() => { OpenButton_MouseUp (null, null); });
@@ -137,6 +137,16 @@ namespace GenericEngines {
 			} else {
 				throw new NullReferenceException ("mainDataGrid is null");
 			}
+		}
+
+		public bool UseCompactMenu => Settings.GetBool (Setting.UseCompactMenu);
+
+		/// <summary>
+		/// Update the property in UI
+		/// </summary>
+		/// <param name="name">The property to be updated</param>
+		public void NotifyPropertyChanged (string name) {
+			PropertyChanged?.Invoke (this, new PropertyChangedEventArgs (name));
 		}
 
 		private void RegisterMouseDown (object sender, MouseButtonEventArgs e) {
@@ -384,6 +394,8 @@ namespace GenericEngines {
 				foreach (Engine i in Engines) {
 					i.NotifyEveryProperty ();
 				}
+
+				NotifyPropertyChanged ("UseCompactMenu");
 			}
 		}
 
@@ -459,6 +471,8 @@ namespace GenericEngines {
 			{ "Tank", typeof (FuelRatioElement) },
 			{ "Thrust Curve", typeof (DoubleTuple) }
 		};
+
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void MainDataGrid_SetCurrentGDList (object sender, DataGridBeginningEditEventArgs e) {
 			if (e.Column.Header != null) {

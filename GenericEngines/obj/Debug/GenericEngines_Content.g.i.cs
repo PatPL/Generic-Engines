@@ -8,14 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/add16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/append16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/duplicate16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/export16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/new16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/open16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/remove16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/save16.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/saveas16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/validate16.png")]
 
 

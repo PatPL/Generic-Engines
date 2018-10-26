@@ -169,27 +169,67 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-        <Menu Height="20" Margin="0,0,0,-4" Background="#FFDDDDDD" FontFamily="Verdana">
+		<Menu Visibility="{Binding UseCompactMenu, Converter={StaticResource b2v}}" Height="20" Margin="0,0,0,-4" Background="#FFDDDDDD" FontFamily="Verdana">
             <MenuItem Header="File">
-                <MenuItem Header="New (Ctrl + N)" Command="{Binding New_Command}"/>
-                <MenuItem Header="Open (Ctrl + O)" Command="{Binding Open_Command}"/>
-                <MenuItem Header="Append (Ctrl + I)" Command="{Binding Append_Command}"/>
-                <Separator/>
-                <MenuItem Header="Save (Ctrl + S)" Command="{Binding Save_Command}"/>
-                <MenuItem Header="Save as (Ctrl + Shift + S)" Command="{Binding SaveAs_Command}"/>
-                <MenuItem Header="Validate (Ctrl + V)" Command="{Binding Validate_Command}"/>
-                <MenuItem Header="Export (Ctrl + E)" Command="{Binding Export_Command}"/>
+				<MenuItem Header="New (Ctrl + N)" Command="{Binding New_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/new16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Open (Ctrl + O)" Command="{Binding Open_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/open16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Append (Ctrl + I)" Command="{Binding Append_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/append16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator/>
+				<MenuItem Header="Save (Ctrl + S)" Command="{Binding Save_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/save16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Save as (Ctrl + Shift + S)" Command="{Binding SaveAs_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/saveas16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Validate (Ctrl + V)" Command="{Binding Validate_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/validate16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Export (Ctrl + E)" Command="{Binding Export_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/export16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
             </MenuItem>
             <MenuItem Header="Engine">
-                <MenuItem Header="Add (Ctrl + [+])" Command="{Binding Add_Command}"/>
-                <MenuItem Header="Remove (Ctrl + [-])" Command="{Binding Remove_Command}"/>
-                <MenuItem Header="Duplicate (Ctrl + D)" Command="{Binding Duplicate_Command}"/>
-            </MenuItem>
+				<MenuItem Header="Add (Ctrl + [+])" Command="{Binding Add_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/add16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Remove (Ctrl + [-])" Command="{Binding Remove_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/remove16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Duplicate (Ctrl + D)" Command="{Binding Duplicate_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/duplicate16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
             <MenuItem Header="Settings" Command="{Binding Settings_Command}"/>
             <MenuItem Header="About" Command="{Binding About_Command}"/>
         </Menu>
-        
-        <Grid Height="36" Visibility="Collapsed">
+
+		<Grid Height="36"  Visibility="{Binding UseCompactMenu, Converter={StaticResource rb2v}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="36"/>
                 <ColumnDefinition Width="36"/>

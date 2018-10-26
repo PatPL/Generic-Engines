@@ -56,6 +56,15 @@ namespace GenericEngines {
 			}
 		}
 
+		public bool UseCompactMenu {
+			get {
+				return bool.Parse (Settings.Get (Setting.UseCompactMenu));
+			}
+			set {
+				Settings.Set (Setting.UseCompactMenu, value.ToString ());
+			}
+		}
+
 		// /Settings
 
 		object lastMouseDownObject;
