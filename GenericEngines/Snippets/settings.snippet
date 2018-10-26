@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>sett</Title>
+			<Shortcut>sett</Shortcut>
+			<Description>SettingGenerator</Description>
+			<Author>Microsoft Corporation</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>settingType</ID>
+					<ToolTip>Setting Type</ToolTip>
+					<Default>bool</Default>
+				</Literal>
+				<Literal>
+					<ID>settingID</ID>
+					<ToolTip>Setting Key</ToolTip>
+					<Default>SettingKey</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp"><![CDATA[public $settingType$ $settingID$ {
+			get {
+				return $settingType$.Parse (Settings.Get (Setting.$settingID$));
+			} set {
+				Settings.Set (Setting.$settingID$, value.ToString ());
+			}
+		}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

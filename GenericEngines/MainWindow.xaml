@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenericEngines"
         mc:Ignorable="d"
-        Title="Generic Engines" Height="600" Width="800" Closing="mainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico">
+        Title="Generic Engines" Height="600" Width="800" KeyUp="Window_KeyUp" Closing="MainWindow_Closing" UseLayoutRounding="True" Icon="icon.ico" FontFamily="Verdana">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="b2v" />
 		<local:ReversedBooleanToVisibilityConverter x:Key="rb2v" />
+		<local:MultiModeSlaveVisibilityConverter x:Key="mms2v" />
+		<local:MultiConfigSlaveVisibilityConverter x:Key="mcs2v" />
 		<Style TargetType="CheckBox">
 			<Setter Property="HorizontalAlignment" Value="Center"/>
 			<Setter Property="VerticalAlignment" Value="Center"/>
@@ -146,37 +148,117 @@
 			</Setter>
 		</Style>
 	</Window.Resources>
+	<Window.InputBindings>
+		<KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding New_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding Open_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="I" Command="{Binding Append_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding Save_Command}"/>
+		<KeyBinding Modifiers="Ctrl+Shift" Key="S" Command="{Binding SaveAs_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding Validate_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding Export_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding Duplicate_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="Add" Command="{Binding Add_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="OemPlus" Command="{Binding Add_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="Subtract" Command="{Binding Remove_Command}"/>
+		<KeyBinding Modifiers="Ctrl" Key="OemMinus" Command="{Binding Remove_Command}"/>
+	</Window.InputBindings>
 	<Grid Margin="0,0,0,0" Background="#FFDDDDDD">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="*" MinWidth="4"/>
-			<ColumnDefinition Width="36"/>
-			<ColumnDefinition Width="36"/>
-		</Grid.ColumnDefinitions>
+		
 		<Grid.RowDefinitions>
-			<RowDefinition Height="36"/>
+			<RowDefinition MaxHeight="36" Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Image Grid.Column="0" Margin="4,4,0,0" Source="new.png" MouseDown="registerMouseDown" MouseUp="newButton_MouseUp" ToolTip="Open a new empty file" Stretch="Fill"/>
-		<Image Grid.Column="1" Margin="4,4,0,0" Source="open.png" MouseDown="registerMouseDown" MouseUp="openButton_MouseUp" ToolTip="Open engine configs from file" Stretch="Fill"/>
-		<Image Grid.Column="2" Margin="4,4,0,0" Source="append.png" MouseDown="registerMouseDown" MouseUp="appendButton_MouseUp" ToolTip="Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-		<Image Grid.Column="3" Margin="4,4,0,0" Source="save.png" MouseDown="registerMouseDown" MouseUp="saveButton_MouseUp" ToolTip="Save current engine configs" Stretch="Fill"/>
-		<Image Grid.Column="4" Margin="4,4,0,0" Source="saveas.png" MouseDown="registerMouseDown" MouseUp="saveasButton_MouseUp" ToolTip="Save current engine configs as new file" Stretch="Fill"/>
-		<Image Grid.Column="5" Margin="4,4,0,0" Source="export.png" MouseDown="registerMouseDown" MouseUp="exportButton_MouseUp" ToolTip="Export engine configs as KSP mod" Stretch="Fill"/>
-		<Image Grid.Column="6" Margin="4,4,0,0" Source="duplicate.png" MouseDown="registerMouseDown" MouseUp="duplicateButton_MouseUp" ToolTip="Duplicate selected engines" Stretch="Fill"/>
-		<Image Grid.Column="7" Margin="4,4,0,0" Source="add.png" MouseDown="registerMouseDown" MouseUp="addButton_MouseUp" ToolTip="Add new engine config" Stretch="Fill"/>
-		<Image Grid.Column="8" Margin="4,4,0,0" Source="remove.png" MouseDown="registerMouseDown" MouseUp="removeButton_MouseUp" ToolTip="Remove all selected engine configs" Stretch="Fill"/>
-		<Image Grid.Column="10" Margin="0,4,4,0" Source="help.png" MouseDown="registerMouseDown" MouseUp="helpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
-		<Image Grid.Column="11" Margin="0,4,4,0" Source="settings.png" MouseDown="registerMouseDown" MouseUp="settingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
-		<DataGrid HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="mainDataGrid_BeginningEdit" CellEditEnding="mainDataGrid_CellEditEnding" PreviewKeyUp="mainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="mainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
+
+		<Menu Visibility="{Binding UseCompactMenu, Converter={StaticResource b2v}}" Height="20" Margin="0,0,0,-4" Background="#FFDDDDDD" FontFamily="Verdana">
+            <MenuItem Header="File">
+				<MenuItem Header="New (Ctrl + N)" Command="{Binding New_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/new16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Open (Ctrl + O)" Command="{Binding Open_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/open16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Append (Ctrl + I)" Command="{Binding Append_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/append16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator/>
+				<MenuItem Header="Save (Ctrl + S)" Command="{Binding Save_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/save16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Save as (Ctrl + Shift + S)" Command="{Binding SaveAs_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/saveas16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Validate (Ctrl + V)" Command="{Binding Validate_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/validate16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Export (Ctrl + E)" Command="{Binding Export_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/export16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+            </MenuItem>
+            <MenuItem Header="Engine">
+				<MenuItem Header="Add (Ctrl + [+])" Command="{Binding Add_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/add16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Remove (Ctrl + [-])" Command="{Binding Remove_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/remove16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Duplicate (Ctrl + D)" Command="{Binding Duplicate_Command}">
+					<MenuItem.Icon>
+						<Image Width="16" Height="16" SnapsToDevicePixels="True" Source="Images/MenuIcons16/duplicate16.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+            <MenuItem Header="Settings" Command="{Binding Settings_Command}"/>
+            <MenuItem Header="About" Command="{Binding About_Command}"/>
+        </Menu>
+
+		<Grid Height="36"  Visibility="{Binding UseCompactMenu, Converter={StaticResource rb2v}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="*" MinWidth="4"/>
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="36"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Margin="4,4,0,0" Source="Images/new.png" MouseDown="RegisterMouseDown" MouseUp="NewButton_MouseUp" ToolTip="(Ctrl + N) Open a new empty file" Stretch="Fill"/>
+            <Image Grid.Column="1" Margin="4,4,0,0" Source="Images/open.png" MouseDown="RegisterMouseDown" MouseUp="OpenButton_MouseUp" ToolTip="(Ctrl + O) Open engine configs from file" Stretch="Fill"/>
+            <Image Grid.Column="2" Margin="4,4,0,0" Source="Images/append.png" MouseDown="RegisterMouseDown" MouseUp="AppendButton_MouseUp" ToolTip="(Ctrl + I) Append engines from file to current list" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image Grid.Column="3" Margin="4,4,0,0" Source="Images/save.png" MouseDown="RegisterMouseDown" MouseUp="SaveButton_MouseUp" ToolTip="(Ctrl + S) Save current engine configs" Stretch="Fill"/>
+            <Image Grid.Column="4" Margin="4,4,0,0" Source="Images/saveas.png" MouseDown="RegisterMouseDown" MouseUp="SaveasButton_MouseUp" ToolTip="(Ctrl + Shift + S) Save current engine configs as new file" Stretch="Fill"/>
+            <Image Grid.Column="5" Margin="4,4,0,0" Source="Images/validate.png" MouseDown="RegisterMouseDown" MouseUp="ValidateButton_MouseUp" ToolTip="(Ctrl + V) Validate current engine list" Stretch="Fill"/>
+            <Image Grid.Column="6" Margin="4,4,0,0" Source="Images/export.png" MouseDown="RegisterMouseDown" MouseUp="ExportButton_MouseUp" ToolTip="(Ctrl + E) Export engine configs as KSP mod" Stretch="Fill"/>
+            <Image Grid.Column="7" Margin="4,4,0,0" Source="Images/duplicate.png" MouseDown="RegisterMouseDown" MouseUp="DuplicateButton_MouseUp" ToolTip="(Ctrl + D) Duplicate selected engines" Stretch="Fill"/>
+            <Image Grid.Column="8" Margin="4,4,0,0" Source="Images/add.png" MouseDown="RegisterMouseDown" MouseUp="AddButton_MouseUp" ToolTip="(Ctrl + [+]) Add new engine config" Stretch="Fill"/>
+            <Image Grid.Column="9" Margin="4,4,0,0" Source="Images/remove.png" MouseDown="RegisterMouseDown" MouseUp="RemoveButton_MouseUp" ToolTip="(Ctrl + [-]) Remove all selected engine configs" Stretch="Fill"/>
+            <Image Grid.Column="11" Margin="0,4,4,0" Source="Images/help.png" MouseDown="RegisterMouseDown" MouseUp="HelpButton_MouseUp" ToolTip="Help &amp; About" Stretch="Fill"/>
+            <Image Grid.Column="12" Margin="0,4,4,0" Source="Images/settings.png" MouseDown="RegisterMouseDown" MouseUp="SettingsButton_MouseUp" ToolTip="Open settings window" Stretch="Fill"/>
+        </Grid>
+        <DataGrid PreviewKeyDown="MainDataGrid_PreviewKeyDown" HeadersVisibility="Column" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false" BeginningEdit="MainDataGrid_BeginningEdit" CellEditEnding="MainDataGrid_CellEditEnding" PreviewKeyUp="MainDataGrid_KeyUp" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="MainDataGrid_Loaded" Margin="0,4,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn SortMemberPath="Active" Width="1">
 					<DataGridTemplateColumn.CellTemplate>
@@ -191,15 +273,15 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
-				<DataGridTemplateColumn SortMemberPath="Name">
+				<DataGridTemplateColumn SortMemberPath="EngineIDInterface">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=Name}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=EngineIDInterface}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<TextBox Text="{Binding Path=Name, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+							<TextBox Text="{Binding Path=EngineIDInterface, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -210,9 +292,20 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="RealEngineName" MaxWidth="250">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=RealEngineName, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=NameLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -230,9 +323,29 @@
 									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Row="0" Text="Title" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
-								<TextBox Grid.Row="1" Text="{Binding Path=EngineName, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBox Grid.Row="1" Text="{Binding Path=EngineName, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana">
+									<TextBox.Style>
+										<Style TargetType="TextBox">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+													<Setter Property="IsEnabled" Value="False"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBox.Style>
+								</TextBox>
 								<TextBlock Grid.Row="2" Text="Manufacturer" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
-								<TextBox Grid.Row="3" Text="{Binding Path=EngineManufacturer, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+								<TextBox Grid.Row="3" Text="{Binding Path=EngineManufacturer, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana">
+									<TextBox.Style>
+										<Style TargetType="TextBox">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+													<Setter Property="IsEnabled" Value="False"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBox.Style>
+								</TextBox>
 								<TextBlock Grid.Row="4" Text="Description" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,2,0,0"/>
 								<TextBox TextWrapping="Wrap" Grid.Row="5" Text="{Binding Path=EngineDescription, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" VerticalAlignment="Top" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" Width="250"></TextBox>
 							</Grid>
@@ -246,6 +359,22 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="EngineVariant">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=EngineVariant, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -253,7 +382,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<ComboBox Loaded="engineTypeCombo_Loaded" SelectedValue="{Binding Path=EngineVariant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+							<ComboBox Loaded="EngineTypeCombo_Loaded" SelectedValue="{Binding Path=EngineVariant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -264,9 +393,20 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="Mass">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-                            <TextBlock Text="{Binding Path=MassStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=MassLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -284,7 +424,7 @@
 				<DataGridTemplateColumn SortMemberPath="Thrust">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-                            <TextBlock Text="{Binding Path=ThrustStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                            <TextBlock Text="{Binding Path=ThrustLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -302,7 +442,7 @@
 				<DataGridTemplateColumn SortMemberPath="MinThrust">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-                            <TextBlock Text="{Binding Path=MinimumThrustStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                            <TextBlock Text="{Binding Path=MinimumThrustLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -396,8 +536,8 @@
 									<RowDefinition Height="18"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new propellant" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected propellants" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="38,2,2,0">Mass</TextBlock>
 								<CheckBox IsChecked="{Binding Path=FuelVolumeRatios, UpdateSourceTrigger=PropertyChanged}" Margin="70,2,2,0" Style="{StaticResource CheckBoxSwitch}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 								<TextBlock Foreground="#FF000000" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Verdana" Margin="104,2,2,0">Volume</TextBlock>
@@ -406,7 +546,7 @@
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
-													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
+													<ComboBox Loaded="PropellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
 										</DataGridTemplateColumn>
@@ -437,6 +577,22 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="AlternatorPower">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=AlternatorPower, StringFormat={}{0}kW}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -457,7 +613,7 @@
 				<DataGridTemplateColumn SortMemberPath="Ignitions">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-                            <TextBlock Text="{Binding Path=IgnitionsStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+                            <TextBlock Text="{Binding Path=IgnitionsLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -476,7 +632,7 @@
 				<DataGridTemplateColumn>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=VisualStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=VisualLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -492,7 +648,7 @@
 								</Grid.ColumnDefinitions>
 								<TextBlock Text="Model" VerticalAlignment="Center" Margin="2,0" FontFamily="Verdana"/>
 								<TextBlock Text="Plume" Grid.Row="1" VerticalAlignment="Center" FontFamily="Verdana" Margin="2,0"/>
-								<ComboBox ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="modelName" SelectedValuePath="model" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalContentAlignment="Stretch" Padding="4,3">
+								<ComboBox IsEnabled="{Binding IsNotSlave}" ItemsSource="{Binding ModelsWithLabels}" DisplayMemberPath="modelName" SelectedValuePath="model" SelectedValue="{Binding Path=ModelID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="0" Width="Auto" HorizontalContentAlignment="Stretch" Padding="4,3">
 									<ComboBox.GroupStyle>
 										<GroupStyle>
 											<GroupStyle.HeaderTemplate>
@@ -514,10 +670,10 @@
 										</DataTemplate>
 									</ComboBox.ItemTemplate>
 									<ComboBox.ToolTip>
-										<Image Source="{Binding CurrentModelTooltip}" Margin="1,1,0,0"/>
+										<Image Source="{Binding CurrentModelPreviewImagePath}" Margin="1,1,0,0"/>
 									</ComboBox.ToolTip>
 								</ComboBox>
-								<ComboBox Loaded="plumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
+								<ComboBox Loaded="PlumeCombo_Loaded" SelectedValue="{Binding Path=PlumeID, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana" Grid.Column="1" Grid.Row="1" MinWidth="50"></ComboBox>
 							</Grid>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
@@ -529,9 +685,25 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn SortMemberPath="Width">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=Dimensions, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=DimensionsLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -567,9 +739,25 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn SortMemberPath="Gimbal">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=GimbalStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=GimbalLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -611,14 +799,25 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=TechNodeStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=TechNodeLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
 						<DataTemplate>
-							<ComboBox PreviewKeyUp="techComboBox_PreviewKeyUp" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
+							<ComboBox PreviewKeyUp="TechComboBox_PreviewKeyUp" IsEditable="True" IsTextSearchEnabled="False" ItemsSource="{Binding TechNodesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=TechUnlockNode, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"></ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellEditingTemplate>
 					<DataGridTemplateColumn.HeaderTemplate>
@@ -629,6 +828,17 @@
 				</DataGridTemplateColumn>
 				
 				<DataGridTemplateColumn SortMemberPath="EntryCost">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=EntryCost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -647,6 +857,17 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="Cost">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding Path=Cost, StringFormat={}{0}VF}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
@@ -666,9 +887,25 @@
 				
 				<!-- Test Flight -->
 				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeMaster">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=TestFlightStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=TestFlightLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -737,9 +974,9 @@
                                     <RowDefinition Height="18"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Image Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-                                <Image Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Margin="38,2,2,0" Source="sort-mini.png" MouseDown="registerMouseDown" MouseUp="sortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Margin="38,2,2,0" Source="Images/sort-mini.png" MouseDown="RegisterMouseDown" MouseUp="SortThrustCurve_MouseUp" ToolTip="Sort the thrust curve by Fuel%" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
                                 <DataGrid ItemsSource="{Binding Path=ThrustCurve}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
                                     <DataGrid.Columns>
                                         <DataGridTemplateColumn Header="Fuel%">
@@ -781,9 +1018,25 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Header="Tank">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiConfigSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBlock Text="{Binding Path=TankStatus, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+							<TextBlock Text="{Binding Path=TankLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 					<DataGridTemplateColumn.CellEditingTemplate>
@@ -809,20 +1062,20 @@
 								<CheckBox Grid.Row="1" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" x:Name="LimitTanksCheckbox" IsChecked="{Binding Path=LimitTanks, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="16" Height="16" Margin="113,1,1,0"/>
 
 								<TextBlock Grid.Row="2" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="to" Margin="2,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
-								<TextBox Grid.Row="2" IsEnabled="{Binding IsChecked, ElementName=LimitTanksCheckbox}" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" PreviewKeyDown="tanksVolumeInput_PrewiewKeyDown" Padding="-1" Margin="18,1,0,0" HorizontalAlignment="Left" Width="110" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
+								<TextBox Grid.Row="2" IsEnabled="{Binding IsChecked, ElementName=LimitTanksCheckbox}" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Text="{Binding Path=TanksVolume, UpdateSourceTrigger=LostFocus}" PreviewKeyDown="TanksVolumeInput_PrewiewKeyDown" Padding="-1" Margin="18,1,0,0" HorizontalAlignment="Left" Width="110" FontFamily="Verdana" Height="20" VerticalAlignment="Top" TextAlignment="Right" FontSize="12"/>
 								<TextBlock Grid.Row="2" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="L" Margin="130,1,3,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left" Height="Auto"/>
 
 								<TextBlock Grid.Row="3" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Foreground="#FF000000" Text="{Binding TankVolumeEstimateLabel}" Margin="2,1,2,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="12" HorizontalAlignment="Left"/>
 
-								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="2,2,2,0" Source="add-mini.png" MouseDown="registerMouseDown" MouseUp="addGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="20,2,2,0" Source="remove-mini.png" MouseDown="registerMouseDown" MouseUp="removeGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
+								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								
 								<DataGrid Grid.Row="5" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn Header="Propellant">
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
-													<ComboBox Loaded="propellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
+													<ComboBox Loaded="PropellantCombo_Loaded" SelectedValue="{Binding Path=Propellant, UpdateSourceTrigger=PropertyChanged}" FontFamily="Verdana"/>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
 										</DataGridTemplateColumn>
@@ -830,12 +1083,25 @@
 										<DataGridTemplateColumn Header="Amount">
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
-													<TextBlock Text="{Binding Path=Ratio, StringFormat={}{0}L}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+													<TextBlock Text="{Binding Path=RatioAsVolumeLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
 											<DataGridTemplateColumn.CellEditingTemplate>
 												<DataTemplate>
 													<TextBox Text="{Binding Path=Ratio, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellEditingTemplate>
+										</DataGridTemplateColumn>
+
+										<DataGridTemplateColumn Header="Mass">
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Path=MassLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+											<DataGridTemplateColumn.CellEditingTemplate>
+												<DataTemplate>
+													<TextBox Text="{Binding Path=Mass, UpdateSourceTrigger=LostFocus}" FontFamily="Verdana"></TextBox>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellEditingTemplate>
 										</DataGridTemplateColumn>
@@ -851,7 +1117,40 @@
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
-				
+
+				<DataGridTemplateColumn Header="Polymorphism">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=PolyLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<!-- Paste grid -->
+							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="auto" MaxHeight="20"/>
+								</Grid.RowDefinitions>
+
+								<ComboBox ItemsSource="{Binding PolyTypesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding PolyType, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" Margin="0"/>
+
+								<ComboBox Grid.Row="1" Loaded="MasterIDComboBox_Loaded" DisplayMemberPath="Name" DropDownOpened="MasterIDComboBox_OpenDropbox" SelectedValue="{Binding SetMasterEngine, UpdateSourceTrigger=PropertyChanged}"/>
+
+							</Grid>
+							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Polymorphism" ToolTip="Polymorphism" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn>
 					<DataGridTemplateColumn.HeaderTemplate>
 						<DataTemplate>

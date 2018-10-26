@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Pat\Documents\GitHub\Generic-Engines\GenericEngines\App.xaml
-5-1320031564
+6-2121488878
 
-301222148348
+33-1750263664
 14-2086114219
-About.xaml;ConfirmWindow.xaml;MainWindow.xaml;Properties\TestWindow.xaml;SettingsWindow.xaml;
+Windows\About.xaml;Windows\ConfirmWindow.xaml;MainWindow.xaml;Properties\TestWindow.xaml;Windows\ListMessageBox.xaml;Windows\SettingsWindow.xaml;
 
 False
 

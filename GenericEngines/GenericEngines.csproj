@@ -50,7 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -80,37 +81,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="About.xaml.cs">
+    <Compile Include="Logic\EngineUtility.cs" />
+    <Compile Include="Logic\MainWindowLogic.cs" />
+    <Compile Include="Logic\PolymorphismEnumWrapper.cs" />
+    <Compile Include="Logic\PolymorphismType.cs" />
+    <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AllTankDefinition.cs" />
-    <Compile Include="AppInfo.cs" />
-    <Compile Include="DoubleTuple.cs" />
-    <Compile Include="EngineType.cs" />
-    <Compile Include="Exporter.cs" />
-    <Compile Include="FuelRatioList.cs" />
-    <Compile Include="ModelEnumWrapper.cs" />
-    <Compile Include="ModelInfo.cs" />
-    <Compile Include="PlumeInfo.cs" />
-    <Compile Include="PrimitiveTypeExtensions.cs" />
-    <Compile Include="Properties\FuelRatioElement.cs" />
+    <Compile Include="Logic\AllTankDefinition.cs" />
+    <Compile Include="Logic\AppInfo.cs" />
+    <Compile Include="Logic\DoubleTuple.cs" />
+    <Compile Include="Logic\EngineType.cs" />
+    <Compile Include="Logic\Exporter.cs" />
+    <Compile Include="Logic\ModelEnumWrapper.cs" />
+    <Compile Include="Logic\ModelInfo.cs" />
+    <Compile Include="Logic\PlumeInfo.cs" />
+    <Compile Include="Logic\PrimitiveTypeExtensions.cs" />
+    <Compile Include="Logic\FuelRatioElement.cs" />
     <Compile Include="Properties\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReversedBooleanToVisibilityConverter.cs" />
-    <Compile Include="Serializer.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
+    <Compile Include="Logic\VisibilityConverters.cs" />
+    <Compile Include="Logic\Serializer.cs" />
+    <Compile Include="Logic\Settings.cs" />
+    <Compile Include="Windows\ListMessageBox.xaml.cs">
+      <DependentUpon>ListMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TankType.cs" />
-    <Compile Include="TechNode.cs" />
-    <Compile Include="TechNodeEnumWrapper.cs" />
-    <Page Include="About.xaml">
+    <Compile Include="Logic\TankType.cs" />
+    <Compile Include="Logic\TechNodeList.cs" />
+    <Compile Include="Logic\TechNodeEnumWrapper.cs" />
+    <Page Include="Windows\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ConfirmWindow.xaml">
+    <Page Include="Windows\ConfirmWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,13 +129,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FuelType.cs" />
-    <Compile Include="ConfirmBox.cs" />
-    <Compile Include="ConfirmWindow.xaml.cs">
+    <Compile Include="Logic\FuelTypeList.cs" />
+    <Compile Include="Logic\ConfirmBox.cs" />
+    <Compile Include="Windows\ConfirmWindow.xaml.cs">
       <DependentUpon>ConfirmWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Engine.cs" />
-    <Compile Include="FuelRatios.cs" />
+    <Compile Include="Logic\Engine.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -137,7 +143,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="Windows\ListMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,34 +176,35 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Snippets\settings.snippet" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="add.png" />
+    <Resource Include="Images\add.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ModelPreviews\LR91.jpg" />
-    <Resource Include="remove.png" />
+    <Resource Include="Images\remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="save.png" />
+    <Resource Include="Images\save.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="open.png" />
+    <Resource Include="Images\open.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="export.png" />
+    <Resource Include="Images\export.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="saveas.png" />
+    <Resource Include="Images\saveas.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="add-mini.png" />
+    <Resource Include="Images\add-mini.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="remove-mini.png" />
+    <Resource Include="Images\remove-mini.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
@@ -208,29 +219,29 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="settings.png" />
+    <Resource Include="Images\settings.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="chooseDirectory24.png" />
-    <Resource Include="chooseDirectory32.png" />
+    <Resource Include="Images\chooseDirectory24.png" />
+    <Resource Include="Images\chooseDirectory32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="steam.png" />
+    <Resource Include="Images\steam.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="append.png" />
+    <Resource Include="Images\append.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="new.png" />
+    <Resource Include="Images\new.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="help.png" />
+    <Resource Include="Images\help.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\GenericEnginesPlumeScaleFixer.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="duplicate.png" />
+    <Resource Include="Images\duplicate.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ModelPreviews\Aestus.jpg" />
@@ -242,7 +253,7 @@
     <Resource Include="ModelPreviews\Thruster.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.ico" />
+    <Resource Include="Images\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ModelPreviews\RT2.jpg" />
@@ -257,7 +268,36 @@
     <Resource Include="ModelPreviews\RD0105.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="sort-mini.png" />
+    <Resource Include="Images\sort-mini.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\validate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ModelPreviews\BallNuke.jpg" />
+    <Resource Include="ModelPreviews\BallNukeS.jpg" />
+    <Resource Include="ModelPreviews\OMSL.jpg" />
+    <Resource Include="ModelPreviews\P1057.jpg" />
+    <Resource Include="ModelPreviews\Poodle.jpg" />
+    <Resource Include="ModelPreviews\Skipper.jpg" />
+    <Resource Include="ModelPreviews\SkipperR.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MenuIcons16\add16.png" />
+    <Resource Include="Images\MenuIcons16\append16.png" />
+    <Resource Include="Images\MenuIcons16\duplicate16.png" />
+    <Resource Include="Images\MenuIcons16\export16.png" />
+    <Resource Include="Images\MenuIcons16\new16.png" />
+    <Resource Include="Images\MenuIcons16\open16.png" />
+    <Resource Include="Images\MenuIcons16\remove16.png" />
+    <Resource Include="Images\MenuIcons16\save16.png" />
+    <Resource Include="Images\MenuIcons16\saveas16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MenuIcons16\validate16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

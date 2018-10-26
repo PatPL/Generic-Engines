@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sort-mini.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/validate16.png")]
 
 
