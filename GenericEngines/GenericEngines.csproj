@@ -285,5 +285,16 @@
     <Resource Include="ModelPreviews\Skipper.jpg" />
     <Resource Include="ModelPreviews\SkipperR.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MenuIcons16\add16.png" />
+    <Resource Include="Images\MenuIcons16\append16.png" />
+    <Resource Include="Images\MenuIcons16\duplicate16.png" />
+    <Resource Include="Images\MenuIcons16\export16.png" />
+    <Resource Include="Images\MenuIcons16\new16.png" />
+    <Resource Include="Images\MenuIcons16\open16.png" />
+    <Resource Include="Images\MenuIcons16\remove16.png" />
+    <Resource Include="Images\MenuIcons16\save16.png" />
+    <Resource Include="Images\MenuIcons16\saveas16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

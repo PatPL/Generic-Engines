@@ -8,12 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/ballnuke.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/ballnukes.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/omsl.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/p1057.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/poodle.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/skipper.jpg")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("modelpreviews/skipperr.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/add16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/append16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/duplicate16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/export16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/new16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/open16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/remove16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/save16.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/menuicons16/saveas16.png")]
 
 
