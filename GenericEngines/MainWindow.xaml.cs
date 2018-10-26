@@ -146,9 +146,25 @@ namespace GenericEngines {
 				mainDataGrid.CommitEdit ();
 				mainDataGrid.CancelEdit ();
 
+				List<(int, Engine)> toDuplicate = new List<(int, Engine)> ();
+
 				foreach (Engine i in mainDataGrid.SelectedItems) {
-					//Creates a copy
-					Engines.Add (Serializer.Deserialize (Serializer.Serialize (i), out int _));
+					toDuplicate.Add ((i.UID, Serializer.Deserialize (Serializer.Serialize (i), out int _)));
+				}
+
+				toDuplicate.Sort (delegate ((int, Engine) a, (int, Engine) b) {
+					//Will sort descending
+					if (a.Item1 > b.Item1) {
+						return 1;
+					} else if (a.Item1 < b.Item1) {
+						return -1;
+					} else {
+						return 0;
+					}
+				});
+
+				foreach ((int, Engine) i in toDuplicate) {
+					Engines.Add (i.Item2);
 				}
 
 				mainDataGrid.UnselectAll ();
