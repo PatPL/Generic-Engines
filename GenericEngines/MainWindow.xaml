@@ -358,6 +358,39 @@
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
 
+				<DataGridTemplateColumn Header="Polymorphism">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Path=PolyLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<!-- Paste grid -->
+							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="20"/>
+									<RowDefinition Height="auto" MaxHeight="20"/>
+								</Grid.RowDefinitions>
+
+								<ComboBox ItemsSource="{Binding PolyTypesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding PolyType, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" Margin="0"/>
+
+								<ComboBox Grid.Row="1" Loaded="MasterIDComboBox_Loaded" DisplayMemberPath="Name" DropDownOpened="MasterIDComboBox_OpenDropbox" SelectedValue="{Binding SetMasterEngine, UpdateSourceTrigger=PropertyChanged}"/>
+
+							</Grid>
+							<!-- /Paste -->
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock Text="Polymorphism" ToolTip="Polymorphism" FontFamily="Verdana"></TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.HeaderTemplate>
+				</DataGridTemplateColumn>
+
 				<DataGridTemplateColumn SortMemberPath="EngineVariant">
 					<DataGridTemplateColumn.CellStyle>
 						<Style TargetType="DataGridCell">
@@ -1017,7 +1050,7 @@
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Tank">
+				<DataGridTemplateColumn Header="Tank">
 					<DataGridTemplateColumn.CellStyle>
 						<Style TargetType="DataGridCell">
 							<Style.Triggers>
@@ -1069,7 +1102,7 @@
 
 								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="2,2,2,0" Source="Images/add-mini.png" MouseDown="RegisterMouseDown" MouseUp="AddGD_MouseUp" ToolTip="Add new resource" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
 								<Image Grid.Row="4" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" Margin="20,2,2,0" Source="Images/remove-mini.png" MouseDown="RegisterMouseDown" MouseUp="RemoveGD_MouseUp" ToolTip="Remove all selected resources" Width="16" HorizontalAlignment="Left" Cursor="Hand" Height="Auto" VerticalAlignment="Stretch"/>
-								
+
 								<DataGrid Grid.Row="5" Visibility="{Binding IsChecked, ElementName=UseTanksCheckbox, Converter={StaticResource b2v}}" ItemsSource="{Binding Path=TanksContents}" AutoGenerateColumns="false" CanUserAddRows="False" CanUserDeleteRows="False" Loaded="GD_Loaded" Margin="0,2,0,0" Grid.ColumnSpan="999" Background="#FFBBBBBB" AlternatingRowBackground="#FFAAAAAA" AlternationCount="2" RowBackground="#FFCCCCCC" HorizontalGridLinesBrush="#FF444444" VerticalGridLinesBrush="#FF444444" CanUserSortColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Verdana">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn Header="Propellant">
@@ -1114,39 +1147,6 @@
 					<DataGridTemplateColumn.HeaderTemplate>
 						<DataTemplate>
 							<TextBlock Text="Tank" ToolTip="Tank" FontFamily="Verdana"></TextBlock>
-						</DataTemplate>
-					</DataGridTemplateColumn.HeaderTemplate>
-				</DataGridTemplateColumn>
-
-				<DataGridTemplateColumn Header="Polymorphism">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Path=PolyLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-					<DataGridTemplateColumn.CellEditingTemplate>
-						<DataTemplate>
-							<!-- Paste grid -->
-							<Grid Margin="0,0,0,0" Background="#FFDDDDDD" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="20"/>
-									<RowDefinition Height="auto" MaxHeight="20"/>
-								</Grid.RowDefinitions>
-
-								<ComboBox ItemsSource="{Binding PolyTypesWithLabels}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding PolyType, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" Margin="0"/>
-
-								<ComboBox Grid.Row="1" Loaded="MasterIDComboBox_Loaded" DisplayMemberPath="Name" DropDownOpened="MasterIDComboBox_OpenDropbox" SelectedValue="{Binding SetMasterEngine, UpdateSourceTrigger=PropertyChanged}"/>
-
-							</Grid>
-							<!-- /Paste -->
-						</DataTemplate>
-					</DataGridTemplateColumn.CellEditingTemplate>
-					<DataGridTemplateColumn.HeaderTemplate>
-						<DataTemplate>
-							<TextBlock Text="Polymorphism" ToolTip="Polymorphism" FontFamily="Verdana"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.HeaderTemplate>
 				</DataGridTemplateColumn>
