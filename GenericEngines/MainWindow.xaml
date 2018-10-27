@@ -644,6 +644,22 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn SortMemberPath="Ignitions">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeSlave">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding PolyType}" Value="MultiModeMaster">
+									<Setter Property="Background" Value="#FF444444"/>
+									<Setter Property="Foreground" Value="#FF444444"/>
+									<Setter Property="IsEnabled" Value="False"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
                             <TextBlock Text="{Binding Path=IgnitionsLabel, StringFormat={}{0}}" FontFamily="Verdana" VerticalAlignment="Center" Margin="1,1,1,1"></TextBlock>
